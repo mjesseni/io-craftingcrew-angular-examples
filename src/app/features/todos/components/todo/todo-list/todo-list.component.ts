@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, effect, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {selectAllTodos, selectLoading} from "../../../store/todo.selectors";
 import {Store} from "@ngrx/store";
 import {Router} from "@angular/router";
