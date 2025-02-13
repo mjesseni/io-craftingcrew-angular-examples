@@ -114,8 +114,9 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the Apache Version 2.0 License. See the LICENSE file for details.
 
 ## Contact
 
-For any questions or feedback, please reach out to [your-email@example.com].
+For any questions or feedback, please reach out to me [Mail](mailto:markus.jessenitschnig@smarter-software.com).
+You can also find me on [LinkedIn](https://www.linkedin.com/in/markus-jessenitschnig-190a6812a/)
