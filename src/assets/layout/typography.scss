@@ -47,7 +47,7 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-semibold leading-5 text-surface-900;
+  @apply font-semibold leading-5 text-surface-700 dark:text-surface-300;
 
   &:first-child {
     @apply mt-0;
