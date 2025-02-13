@@ -3,6 +3,8 @@ import {ComponentStore} from '@ngrx/component-store';
 import {AppLayoutState, ColorScheme, initialLayoutState, MenuMode, TopbarColorScheme} from './app.layout.state';
 import {MenuService} from './app.menu.service';
 import {environment} from "../../../../../environments/environment";
+import {Store} from "@ngrx/store";
+import {take} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,7 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
   overlayOpen$ = this.select(state => state.staticMenuMobileActive);
   private menuModeObs$ = this.select(state => state.config.menuMode);
 
-  constructor(menuService: MenuService) {
+  constructor(menuService: MenuService, private store: Store) {
     super(initialLayoutState);  // Initialize store with the initial state
 
     // Reset menu items when the menu mode changes to specific types
@@ -54,12 +56,14 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    * Hides the menu by updating related state properties.
    */
   readonly hideMenu = this.updater((state) => {
-    return {
-      ...state,
-      overlayMenuActive: false,
-      staticMenuMobileActive: false,
-      menuHoverActive: false
-    };
+    return this.logStateChange('Hide menu', state,
+      {
+        ...state,
+        overlayMenuActive: false,
+        staticMenuMobileActive: false,
+        menuHoverActive: false
+      }
+    );
   });
 
   /**
@@ -68,10 +72,12 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateConfigSidebarVisibility = this.updater((state, visibility: boolean) => {
     if (state.configSidebarVisible !== visibility) {
-      return {
-        ...state,
-        configSidebarVisible: visibility
-      };
+      return this.logStateChange('Update configuration sidebar visibility', state,
+        {
+          ...state,
+          configSidebarVisible: visibility
+        }
+      );
     }
     return state;
   });
@@ -82,10 +88,12 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateProfileSidebarVisible = this.updater((state, visibility: boolean) => {
     if (state.profileSidebarVisible !== visibility) {
-      return {
-        ...state,
-        profileSidebarVisible: visibility
-      };
+      return this.logStateChange('Update profile sidebar visibility', state,
+        {
+          ...state,
+          profileSidebarVisible: visibility
+        }
+      );
     }
     return state;
   });
@@ -96,10 +104,12 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateOverlayMenuActive = this.updater((state, active: boolean) => {
     if (state.overlayMenuActive !== active) {
-      return {
-        ...state,
-        overlayMenuActive: active
-      };
+      return this.logStateChange('Update overlay menu active', state,
+        {
+          ...state,
+          overlayMenuActive: active
+        }
+      );
     }
     return state;
   });
@@ -124,10 +134,12 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateStaticMenuDesktopInactive = this.updater((state, inactive: boolean) => {
     if (state.staticMenuDesktopInactive !== inactive) {
-      return {
-        ...state,
-        staticMenuDesktopInactive: inactive
-      };
+      return this.logStateChange('Update static menu desktop active', state,
+        {
+          ...state,
+          staticMenuDesktopInactive: inactive
+        }
+      );
     }
     return state;
   });
@@ -138,10 +150,12 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateStaticMenuMobileActive = this.updater((state, active: boolean) => {
     if (state.staticMenuMobileActive !== active) {
-      return {
-        ...state,
-        staticMenuMobileActive: active
-      };
+      return this.logStateChange('Update static menu mobile active', state,
+        {
+          ...state,
+          staticMenuMobileActive: active
+        }
+      );
     }
     return state;
   });
@@ -152,12 +166,10 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateSidebarActive = this.updater((state, active: boolean) => {
     if (state.sidebarActive !== active) {
-      const updatedState = {
+      return this.logStateChange('Update Sidebar Active', state, {
         ...state,
         sidebarActive: active
-      };
-      this.logStateChange('Update Sidebar Active', updatedState);
-      return updatedState;
+      });
     }
     return state;
   });
@@ -168,10 +180,10 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
    */
   readonly updateAnchored = this.updater((state, anchored: boolean) => {
     if (state.anchored !== anchored) {
-      return {
+      return this.logStateChange('Update Anchored', state, {
         ...state,
         anchored: anchored
-      };
+      });
     }
     return state;
   });
@@ -218,16 +230,14 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
       const menuTheme = this.isHorizontal(mode) && state.config.topbarTheme === 'transparent'
         ? state.config.menuTheme : state.config.topbarTheme;
 
-      const updatedState = {
+      return this.logStateChange('Update menu mode', state, {
         ...state,
         config: {
           ...state.config,
           menuMode: mode,
           menuTheme: menuTheme
         }
-      };
-      this.logStateChange('Update menu mode', updatedState);
-      return updatedState;
+      });
     }
     return state;
   });
@@ -324,12 +334,23 @@ export class AppLayoutStore extends ComponentStore<AppLayoutState> {
   }
 
   // Log state changes to DevTools
-  private logStateChange(action: string, newState: AppLayoutState) {
-    if (!this.production$()) {
-      (window as any).__REDUX_DEVTOOLS_EXTENSION__?.send(
-        { type: `[LayoutStore] ${action}` },
-        newState
-      );
+  private logStateChange(action: string, state: AppLayoutState, newState: AppLayoutState): AppLayoutState {
+    if (!this.production$() && state !== newState) {
+      // Get the current global state from the store
+      this.store.select((state) => state).pipe(take(1)).subscribe((currentState) => {
+        // Merge the custom state into the global state
+        const updatedState = {
+          ...currentState,
+          layout: newState
+        };
+
+        // Send the updated state to Redux DevTools
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__?.send(
+          {type: `[LayoutStore] ${action}`},
+          updatedState
+        );
+      });
     }
+    return newState;
   }
 }

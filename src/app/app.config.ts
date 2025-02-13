@@ -12,7 +12,7 @@ import {providePrimeNG} from "primeng/config";
 import {customThemePreset} from "../../customThemePreset";
 import {provideStoreDevtools} from "@ngrx/store-devtools";
 import {provideRouterStore, routerReducer} from "@ngrx/router-store";
-import {provideStore} from "@ngrx/store";
+import {provideState, provideStore} from "@ngrx/store";
 import {todoReducer} from "./features/todos/store/todo.reducer";
 import {provideEffects} from "@ngrx/effects";
 import {TodoEffects} from "./features/todos/store/todo.effects";
@@ -51,16 +51,17 @@ export const appConfig: ApplicationConfig = {
       loader: TranslationLoaderService
     }),
 
-    provideStore({
-      router: routerReducer,
-      todo: todoReducer,
-    }),
-    provideEffects([TodoEffects]),
-    provideRouterStore(),
+    provideStore(), // Provide the root store
+    provideRouterStore(), // Configure the router state management
+    provideState('router', routerReducer), // Register 'router' as a feature state
+    provideState('todo', todoReducer), // Register 'todo' as a feature state
+    provideEffects([TodoEffects]), // Register effects for 'todo'
 
     /* dev tools */
     provideStoreDevtools({
       maxAge: 25,
+      trace: false,
+      traceLimit: 25,
       logOnly: !isDevMode(),
     }),
   ]

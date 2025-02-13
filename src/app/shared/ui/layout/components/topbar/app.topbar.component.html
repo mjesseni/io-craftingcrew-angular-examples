@@ -10,7 +10,6 @@
     </div>
     <div class="topbar-end pr-4">
         <ul class="topbar-menu">
-            <!--            [class]="layoutService.isHorizontal() ? 'topbar-search hidden' : 'topbar-search hidden sm:block'"-->
             <li class="topbar-search hidden sm:block">
                 <span class="p-input-icon-left">
                     <p-iconfield>
@@ -20,7 +19,6 @@
                 </span>
             </li>
 
-            <!--            [class]="layoutService.isHorizontal() ? 'block topbar-item' : 'block sm:hidden topbar-item'"-->
             <li class="block sm:hidden relative">
                 <button #searchToggle class="p-2 rounded-md hover:bg-gray-200 transition"
                         [class]="!isMenuHidden ? 'hidden' : 'block'" (click)="toggleSearchMenu()">
