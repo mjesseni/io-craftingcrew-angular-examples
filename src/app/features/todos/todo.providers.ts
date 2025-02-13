@@ -4,7 +4,7 @@ import {provideStore} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
 import {TodoEffects} from "./store/todo.effects";
 
-export const provideTodoFeature = (): EnvironmentProviders => {
+export const provideTodoFeatureStore = (): EnvironmentProviders => {
   return makeEnvironmentProviders([
     provideStore({todo: todoReducer}),
     provideEffects([TodoEffects]),

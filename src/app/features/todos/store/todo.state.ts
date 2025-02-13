@@ -1,6 +1,6 @@
 import {Todo} from "../model/todo.model";
 import {provideRouter} from "@angular/router";
-import {todoRoutes} from "../components/todo/todo.routes";
+import {todoRoutes} from "../todo.routes";
 import {provideStore} from "@ngrx/store";
 import {todoReducer} from "./todo.reducer";
 import {provideEffects} from "@ngrx/effects";

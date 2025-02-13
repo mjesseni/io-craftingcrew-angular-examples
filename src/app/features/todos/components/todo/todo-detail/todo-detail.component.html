@@ -4,19 +4,19 @@
               class="grid grid-cols-12 md:grid-cols-6 gap-x-6 gap-y-6">
             <div class="field">
                 <label for="title">Title</label>
-                <p-skeleton *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
+                <p-skeleton [id]="'title'" *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
                 <input *ngIf="!loading$()" id="title" type="text" formControlName="title" pInputText class="w-full"/>
             </div>
 
             <div class="field">
                 <label for="description">Description</label>
-                <p-skeleton *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
+                <p-skeleton [id]="'description'" *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
                 <input *ngIf="!loading$()" id="description" type="text" formControlName="description" pInputText/>
             </div>
 
             <div class="field flex space-x-2">
                 <p-checkbox *ngIf="!loading$()" inputId="completed" formControlName="completed" binary="true"></p-checkbox>
-                <p-skeleton *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
+                <p-skeleton [id]="'completed'" *ngIf="loading$()" styleClass="mt-2 w-full block" height="2.3rem"/>
                 <label [for]="'completed'">Completed</label>
             </div>
 

@@ -1,0 +1,10 @@
+<div class="max-w-4xl mx-auto rounded-xl bg-surface-300 shadow-xl">
+    <p-panel header="Counter (RxJS On-Push)">
+        <div class="grid grid-cols-12 md:grid-cols-6 gap-x-6 gap-y-6">
+            <div class="field">
+                <label>Counter</label>
+                <span><app-counter-display [counter]="(counter$ | async)!"></app-counter-display></span>
+            </div>
+        </div>
+    </p-panel>
+</div>

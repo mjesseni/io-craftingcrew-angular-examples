@@ -13,9 +13,7 @@ import {customThemePreset} from "../../customThemePreset";
 import {provideStoreDevtools} from "@ngrx/store-devtools";
 import {provideRouterStore, routerReducer} from "@ngrx/router-store";
 import {provideState, provideStore} from "@ngrx/store";
-import {todoReducer} from "./features/todos/store/todo.reducer";
-import {provideEffects} from "@ngrx/effects";
-import {TodoEffects} from "./features/todos/store/todo.effects";
+import {provideTodoFeatureStore} from "./features/todos/todo.providers";
 
 export const appConfig: ApplicationConfig = {
 
@@ -54,8 +52,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(), // Provide the root store
     provideRouterStore(), // Configure the router state management
     provideState('router', routerReducer), // Register 'router' as a feature state
-    provideState('todo', todoReducer), // Register 'todo' as a feature state
-    provideEffects([TodoEffects]), // Register effects for 'todo'
+    provideTodoFeatureStore(),
 
     /* dev tools */
     provideStoreDevtools({

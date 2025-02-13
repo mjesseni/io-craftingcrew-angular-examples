@@ -36,6 +36,32 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/todo']
           }
         ]
+      },
+      {
+        label: 'Change Detection',
+        icon: 'pi-objects-column',
+        items: [
+          {
+            label: 'Default',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/change/detection/default']
+          },
+          {
+            label: 'On-Push',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/change/detection/onpush']
+          },
+          {
+            label: 'On-Push Signals',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/change/detection/signal']
+          },
+          {
+            label: 'On-Push RxJS',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/change/detection/rxjs']
+          }
+        ]
       }
     ];
   }
