@@ -1,0 +1,12 @@
+<div class="layout-container group lg:[&layout-static] lg:[&layout-static-inactive] lg:[&layout-overlay]"
+     [class.production]="production$()" [class.development]="!production$()"  [ngClass]="containerClass$()">
+    <app-topbar></app-topbar>
+    <div class="layout-content-wrapper ml-0 lg:group-[layout-static]:ml-[22rem] lg:group-[layout-static-inactive]:ml-0 lg:group-[layout-overlay]:ml-0 transition-[margin-left] duration-300 ease-[cubic-bezier(0,0,0.2,1)]">
+        <div class="layout-content xl2:w-[1504px] xl2:mx-auto">
+            <app-breadcrumb></app-breadcrumb>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <app-profilemenu></app-profilemenu>
+    <div class="layout-mask"></div>
+</div>

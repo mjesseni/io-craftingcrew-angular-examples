@@ -1,0 +1,27 @@
+.p-drawer {
+    background: $overlayContentBg;
+    color: $panelContentTextColor;
+    border: $overlayContentBorder;
+    box-shadow: $overlayContainerShadow;
+
+    .p-drawer-header {
+        padding: $panelHeaderPadding;
+
+        .p-drawer-close,
+        .p-drawer-icon {
+            @include action-icon();
+        }
+
+        & + .p-drawer-content {
+            padding-top: 0;
+        }
+    }
+
+    .p-drawer-content {
+        padding: $panelContentPadding;
+    }
+
+    .p-drawer-footer {
+        padding: $panelHeaderPadding;
+    }
+}

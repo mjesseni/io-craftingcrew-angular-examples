@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.craftingcrew.academy</groupId>
+    <artifactId>io-craftingcrew-angular-examples</artifactId>
+
+    <build>
+        <resources>
+            <!-- filter only index.html, this is where the filtering markers are -->
+            <resource>
+                <directory>src/main/web</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>META-INF/resources/index.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/web</directory>
+                <excludes>
+                    <exclude>META-INF/resources/index.html</exclude>
+                </excludes>
+                <includes>
+                    <include>META-INF/resources/**</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnWarning>true</failOnWarning>
+                    <ignoredUnusedDeclaredDependencies/>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>node</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.eirslett</groupId>
+                            <artifactId>frontend-maven-plugin</artifactId>
+                            <version>${frontend-maven-plugin.version}</version>
+                            <configuration>
+                                <nodeVersion>${frontend-maven-plugin.nodeVersion}</nodeVersion>
+                                <npmVersion>${frontend-maven-plugin.npmVersion}</npmVersion>
+                                <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>                    
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <phase>initialize</phase>
+                            </execution>
+                            <execution>
+                                <id>setting npm config</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>install npm packages</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>ci --unsafe-perm</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>build angular application</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build:mvn -- --progress=false</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>test angular application</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <arguments>run test -- --watch=false</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>lint angular application</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <arguments>run lint</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>        
+    </profiles>
+</project>

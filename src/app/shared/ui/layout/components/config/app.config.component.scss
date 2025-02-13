@@ -1,0 +1,19 @@
+.layout-config-button {
+  @apply block fixed w-12 h-12 leading-[3rem] text-center top-1/2 right-0 -mt-6 bg-primary-color text-primary-color-text rounded-tl-[var(--border-radius)] rounded-bl-[var(--border-radius)] rounded-tr-none rounded-br-none transition-colors duration-[var(--transition-duration)] overflow-hidden cursor-pointer z-[999] shadow-[0_-0.25rem_1rem_rgba(0,0,0,0.15)];
+
+  i {
+    @apply text-[2rem] leading-[inherit] transform rotate-0 transition-transform duration-1000;
+  }
+
+  &:hover {
+    @apply bg-primary-400;
+  }
+}
+
+.layout-config-sidebar {
+  &.p-drawer {
+    .p-drawer-content {
+      @apply pl-8 pr-8;
+    }
+  }
+}

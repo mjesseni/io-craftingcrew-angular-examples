@@ -1,0 +1,93 @@
+.layout-topbar {
+  @apply flex justify-between items-center bg-surface-200 shadow-none min-h-[4.4rem] py-4 px-0 w-full dark:bg-surface-900;
+
+  .topbar-start {
+    .topbar-menubutton {
+      @apply inline-flex items-center justify-center mr-8 rounded-[50%] w-10 h-10 shrink-0 transition-colors duration-300 border-none cursor-pointer hover:bg-surface-400 dark:hover:bg-primary-400;
+
+      i {
+        @apply text-xl text-surface-700 dark:text-surface-200 transition-colors duration-300;
+      }
+    }
+  }
+
+  .topbar-menu {
+    @apply flex justify-end items-center m-0 list-none grow text-primary-200;
+
+    li {
+      @apply ml-6;
+      &.topbar-item {
+        @apply ml-6 inline-flex items-center justify-center relative rounded-[50%];
+
+        img {
+          @apply w-8 h-8;
+        }
+
+        button {
+          @apply rounded-[50%] w-8 h-8 transition-shadow duration-300;
+
+          &:focus {
+            @apply shadow-primary-contrast;
+          }
+        }
+
+        ul {
+          @apply absolute -bottom-[9.4rem] right-0 hidden text-primary-200 bg-surface-200 shadow-lg;
+          &.active-topbar-menu {
+            @apply block bg-surface-200 rounded-b-xl dark:bg-surface-800;
+          }
+
+          a {
+            @apply text-primary-400 font-medium hover:text-primary-emphasis;
+          }
+
+          .p-input-icon-left {
+            i {
+              @apply text-primary-200;
+            }
+
+            input {
+              &::placeholder {
+                @apply text-primary-200;
+              }
+            }
+
+          }
+
+          .p-inputtext {
+            @apply pt-2 pb-2 rounded-full text-surface-700 border-2 border-surface-700 bg-primary-200;
+          }
+        }
+      }
+
+      button {
+        span {
+          @apply text-surface-700;
+        }
+      }
+
+
+      &.topbar-search {
+        .p-input-icon-left {
+          i {
+            @apply text-primary-400;
+          }
+
+          input {
+            &::placeholder {
+              @apply text-surface-400;
+            }
+          }
+        }
+
+        .p-inputtext {
+          @apply pt-2 pb-2 rounded-full text-surface-200 border-surface-300 bg-surface-300 dark:bg-surface-700 dark:border-surface-700 caret-primary-400 focus:border-primary-400;
+        }
+      }
+    }
+  }
+}
+
+.ng-hidden {
+  display: none !important;
+}

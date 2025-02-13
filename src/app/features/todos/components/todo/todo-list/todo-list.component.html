@@ -1,0 +1,26 @@
+<div class="p-4">
+    <h2>Todo List</h2>
+    <p-table [value]="todos$()" [loading]="loading$()" [paginator]="true" [rows]="10"
+             [responsiveLayout]="'scroll'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-todo>
+            <tr>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.description }}</td>
+                <td>{{ todo.completed ? 'Completed' : 'Pending' }}</td>
+                <td>
+                    <button pButton type="button" class="p-button-outlined"
+                            (click)="navigateToDetail(todo.id)">View
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

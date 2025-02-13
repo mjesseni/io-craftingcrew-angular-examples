@@ -1,0 +1,24 @@
+.layout-sidebar {
+  @apply fixed h-full top-0 left-0 w-[22rem] bg-surface-300 shadow-none flex flex-col dark:bg-surface-700;
+
+  .sidebar-header {
+    @apply px-8 py-6 flex justify-start items-center;
+
+    a {
+      @apply flex items-center;
+    }
+    .app-logo {
+      .app-logo-normal {
+        @apply inline h-8 w-auto;
+      }
+
+      .app-logo-single {
+        @apply hidden;
+      }
+    }
+  }
+
+  .layout-menu-container {
+    @apply overflow-auto flex-1 pb-8;
+  }
+}

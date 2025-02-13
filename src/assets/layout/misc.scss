@@ -1,0 +1,114 @@
+/* */
+/* GLOBAL CUSTOMIZATIONS */
+/* */
+* {
+  @apply box-border;
+}
+
+html {
+  @apply h-full text-sm;
+}
+
+body {
+  @apply font-normal p-0 m-0 min-h-full bg-surface-200 text-current font-custom dark:bg-surface-900;
+}
+
+a {
+  @apply no-underline;
+}
+
+
+/* customizations */
+.p-treetable {
+  [styleclass="p-paginator-bottom"] {
+    .p-paginator {
+      @apply rounded-none border-[0_1px_1px_1px];
+    }
+  }
+}
+
+.p-selectbutton {
+  .p-button {
+    @apply p-2 text-xl;
+  }
+}
+
+.ellipsis-column {
+  @apply whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full;
+}
+
+.code-block {
+  @apply whitespace-pre-wrap break-words;
+}
+
+.hljs {
+  @apply bg-none;
+}
+
+code {
+  overflow-x: unset;
+  overflow-y: unset;
+  @apply flex-1 leading-7 min-h-full p-[1em_1.2em_1em_1.2em];
+
+  &.hljs-line-numbers {
+    @apply p-0;
+  }
+}
+
+
+.p-tablist {
+  .p-tablist-tab-list {
+    @apply gap-1;
+  };
+
+  .p-tab {
+    @apply rounded-tl-xl rounded-tr-xl;
+  }
+}
+
+.p-tabpanels {
+  @apply rounded-tr-xl rounded-bl-xl rounded-br-xl;
+}
+
+
+/* */
+/* CARD STYLING */
+/* */
+.card {
+  @apply bg-surface-300 text-primary-emphasis font-medium box-border p-8 mb-8 shadow-none rounded-3xl dark:bg-surface-700;
+
+  &:last-child {
+    @apply mb-0;
+  }
+
+  .card-header {
+    @apply flex justify-between pb-5;
+
+    h6 {
+      @apply mb-1;
+    }
+
+    .subtitle {
+      @apply text-primary font-semibold;
+    }
+  }
+
+  .card-subtitle {
+    @apply text-primary font-semibold;
+  }
+
+  &.no-gutter {
+    @apply mb-0;
+  }
+}
+
+/* */
+/* TOAST STYLING */
+/* */
+.p-toast {
+  &.p-toast-top-right,
+  &.p-toast-top-left,
+  &.p-toast-top-center {
+    @apply top-16;
+  }
+}

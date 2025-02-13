@@ -1,0 +1,35 @@
+/* PrimeNG ICONS */
+@forward "primeicons/primeicons.css";
+/* CUSTOM SCSS STYLINGS */
+@use "assets/layout/typography";
+@use "assets/layout/animations";
+@use "assets/layout/responsive";
+@use "assets/layout/misc";
+@use "assets/layout/preloading.css";
+
+/* Quill Text Editor for p-editor */
+@forward '../node_modules/quill/dist/quill.core.css';
+@forward '../node_modules/quill/dist/quill.snow.css';
+
+/* Demos */
+//@forward 'assets/demo/styles/flags/flags.css';
+//@forward 'assets/demo/styles/badges.scss';
+//@forward 'assets/demo/styles/code.scss';
+
+/* TailwindCSS */
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer primeng;
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+:root {
+  --p-preset: custom-theme;
+}

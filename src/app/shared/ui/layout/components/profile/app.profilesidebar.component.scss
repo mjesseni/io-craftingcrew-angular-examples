@@ -1,0 +1,13 @@
+.layout-profile-sidebar {
+  &.p-drawer {
+    @apply w-[29.85rem];
+
+    .p-drawer-content {
+      @apply p-[0_1.5rem_2.85rem_0];
+    }
+  }
+}
+
+.favorite-item {
+  @apply bg-surface-200 hover:bg-surface-50 dark:bg-surface-600 dark:hover:bg-surface-500 flex items-center justify-center rounded-xl m-2 transition-all duration-200;
+}

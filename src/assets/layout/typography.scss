@@ -1,0 +1,101 @@
+/* */
+/* FONT IMPORTS */
+/* */
+/* poppins-regular - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''), url('./fonts/poppins-v20-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('./fonts/poppins-v20-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-500 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  src: local(''), url('./fonts/poppins-v20-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('./fonts/poppins-v20-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-600 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  src: local(''), url('./fonts/poppins-v20-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('./fonts/poppins-v20-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* poppins-700 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''), url('./fonts/poppins-v20-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+  url('./fonts/poppins-v20-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+
+/* */
+/* TYPOGRAPHY */
+/* */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-semibold leading-5 text-surface-900;
+
+  &:first-child {
+    @apply mt-0;
+  }
+}
+
+h1 {
+  @apply text-5xl;
+
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-3xl;
+
+}
+
+h4 {
+  @apply text-2xl;
+}
+
+h5 {
+  @apply text-xl;
+}
+
+h6 {
+  @apply text-base;
+}
+
+mark {
+  @apply bg-[#fff8e1] py-1 px-2 rounded-xl font-mono;
+}
+
+blockquote {
+  @apply my-4 mx-0 py-0 px-8 border-l-4 border-[#90a4ae];
+}
+
+hr {
+  @apply border-t-surface-700 border-[1px] my-4;
+}
+
+p {
+  @apply m-[0_0_1rem_0] leading-6;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}

@@ -1,0 +1,12 @@
+.layout-breadcrumb {
+  @apply pr-8 mb-6;
+
+  ol {
+    @apply flex items-center m-0 p-0 list-none gap-4 flex-wrap text-surface-700 dark:text-surface-200;
+
+    li {
+      @apply font-medium;
+    }
+  }
+}
+

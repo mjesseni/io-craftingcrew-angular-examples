@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "dashboard": {
+      "title": "Dashboards",
+      "home": {
+        "title": "Home"
+      }
+    },
+    "todo": {
+      "title": "Todos",
+      "list": {
+        "title": "Todo List"
+      }
+    }
+  }
+}

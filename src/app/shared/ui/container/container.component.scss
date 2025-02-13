@@ -1,0 +1,4 @@
+.container {
+  @apply min-h-full max-w-6xl mx-auto grid gap-4;
+  grid-template-rows: auto 1fr auto;
+}

@@ -1,0 +1,8 @@
+<p-dialog header="{{modalTitle}}" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" (onHide)="close()"
+          draggable="false" resizable="false">
+    <ng-content select="[modal-content]"></ng-content> <!-- Put main content in here -->
+    <div class="flex justify-end gap-2">
+        <p-button label="Cancel" severity="danger" (onClick)="close()"/>
+        <ng-content select="[modal-action]"></ng-content> <!-- Actions goes in here -->
+    </div>
+</p-dialog>

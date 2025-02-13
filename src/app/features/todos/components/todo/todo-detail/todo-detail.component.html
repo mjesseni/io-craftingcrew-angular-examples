@@ -1,0 +1,24 @@
+<p-panel header="Todo Details" class="surface-card p-4 shadow-2 border-round">
+    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="grid formgrid p-fluid">
+        <div class="field mb-4 col-12">
+            <label for="title" class="font-medium">Title</label>
+            <input id="title" type="text" formControlName="title" pInputText/>
+        </div>
+
+        <div class="field mb-4 col-12 md:col-6">
+            <label for="description" class="col-span-1 text-sm font-medium">Description</label>
+            <input id="description" type="text" formControlName="description" pInputText class="col-span-3 w-full"/>
+        </div>
+
+        <div class="field mb-4 col-12 md:col-6">
+            <label for="completed" class="col-span-1 text-sm font-medium">Completed</label>
+            <p-checkbox id="completed" inputId="completed" formControlName="completed" binary="true"
+                        class="col-span-3 w-full"></p-checkbox>
+        </div>
+
+        <div class="flex justify-end space-x-4 col-span-4">
+            <button pButton type="submit" class="p-button-primary">Save</button>
+            <button pButton type="button" class="p-button-secondary" (click)="onCancel()">Cancel</button>
+        </div>
+    </form>
+</p-panel>
