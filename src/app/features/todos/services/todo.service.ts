@@ -12,7 +12,7 @@ export class TodoService {
   ];
 
   getTodos(): Observable<Todo[]> {
-    return of(this.todos).pipe(delay(500)); // Simulate network delay
+    return of([...this.todos]).pipe(delay(500)); // Simulate network delay
   }
 
   addTodo(todo: Todo): Observable<Todo> {
