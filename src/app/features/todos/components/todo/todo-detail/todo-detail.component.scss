@@ -1,0 +1,11 @@
+.field {
+  @apply col-span-12 md:col-span-6;
+
+  label {
+    @apply font-medium text-sm block;
+  }
+
+  input {
+    @apply mt-2 w-full block;
+  }
+}

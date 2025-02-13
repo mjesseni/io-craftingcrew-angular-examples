@@ -1,24 +1,25 @@
-<p-panel header="Todo Details" class="surface-card p-4 shadow-2 border-round">
-    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="grid formgrid p-fluid">
-        <div class="field mb-4 col-12">
-            <label for="title" class="font-medium">Title</label>
-            <input id="title" type="text" formControlName="title" pInputText/>
-        </div>
+<div class="max-w-4xl mx-auto rounded-xl bg-surface-300 shadow-xl">
+  <p-panel header="Todo Details">
+    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="grid grid-cols-12 md:grid-cols-6 gap-x-6 gap-y-6">
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" pInputText class="w-full"/>
+      </div>
 
-        <div class="field mb-4 col-12 md:col-6">
-            <label for="description" class="col-span-1 text-sm font-medium">Description</label>
-            <input id="description" type="text" formControlName="description" pInputText class="col-span-3 w-full"/>
-        </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <input id="description" type="text" formControlName="description" pInputText/>
+      </div>
 
-        <div class="field mb-4 col-12 md:col-6">
-            <label for="completed" class="col-span-1 text-sm font-medium">Completed</label>
-            <p-checkbox id="completed" inputId="completed" formControlName="completed" binary="true"
-                        class="col-span-3 w-full"></p-checkbox>
-        </div>
+      <div class="field flex space-x-2">
+        <p-checkbox id="completed" inputId="completed" formControlName="completed" binary="true"></p-checkbox>
+        <label for="completed">Completed</label>
+      </div>
 
-        <div class="flex justify-end space-x-4 col-span-4">
-            <button pButton type="submit" class="p-button-primary">Save</button>
-            <button pButton type="button" class="p-button-secondary" (click)="onCancel()">Cancel</button>
-        </div>
+      <div class="flex col-span-12 md:col-span-6 justify-end space-x-4">
+        <button pButton type="submit" class="p-button-primary">Save</button>
+        <button pButton type="button" class="p-button-secondary" (click)="onCancel()">Cancel</button>
+      </div>
     </form>
-</p-panel>
+  </p-panel>
+</div>

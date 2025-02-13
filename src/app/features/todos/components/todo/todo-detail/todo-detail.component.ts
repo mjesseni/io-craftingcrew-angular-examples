@@ -20,6 +20,7 @@ import {selectRouteParam} from "../../../../../shared/route.selectors";
     InputText
   ],
   templateUrl: './todo-detail.component.html',
+  styleUrl: 'todo-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoDetailComponent {

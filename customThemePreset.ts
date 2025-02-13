@@ -3634,7 +3634,7 @@ export const customThemePreset = definePreset(Aura, {
             root: {
                 padding: "0.5rem 1rem",
                 gap: "0.25rem",
-                borderRadius: "{content.border.radius}",
+                borderRadius: "0", // {content.border.radius}
                 background: "{content.background}",
                 color: "{content.color}",
                 transitionDuration: "{transition.duration}"
@@ -3727,6 +3727,18 @@ export const customThemePreset = definePreset(Aura, {
             },
             footer: {
                 padding: "0 1.125rem 1.125rem 1.125rem"
+            },
+            colorScheme: {
+                light: {
+                    root: {
+                        borderColor: "{surface-300}",
+                    }
+                },
+                dark: {
+                    root: {
+                        borderColor: "{content.border.color}",
+                    }
+                }
             }
         },
         panelmenu: {
