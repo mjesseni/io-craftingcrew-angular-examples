@@ -112,3 +112,9 @@ code {
     @apply top-16;
   }
 }
+
+.p-overlay-mask {
+  &.p-datatable-mask {
+    position: absolute;
+  }
+}

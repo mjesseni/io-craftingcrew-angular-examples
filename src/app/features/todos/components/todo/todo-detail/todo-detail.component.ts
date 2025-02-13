@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, effect} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {Router} from "@angular/router";
-import {selectSelectedTodo} from "../../../store/todo.selectors";
+import {selectLoading, selectSelectedTodo} from "../../../store/todo.selectors";
 import {selectTodo, updateTodo} from "../../../store/todo.actions";
 import {Panel} from "primeng/panel";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
@@ -9,6 +9,8 @@ import {ButtonDirective} from "primeng/button";
 import {Checkbox} from "primeng/checkbox";
 import {InputText} from "primeng/inputtext";
 import {selectRouteParam} from "@craftingcrew/app/shared";
+import {Skeleton} from "primeng/skeleton";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-todo-detail',
@@ -17,7 +19,9 @@ import {selectRouteParam} from "@craftingcrew/app/shared";
     ReactiveFormsModule,
     ButtonDirective,
     Checkbox,
-    InputText
+    InputText,
+    Skeleton,
+    NgIf
   ],
   templateUrl: './todo-detail.component.html',
   styleUrl: 'todo-detail.component.scss',
@@ -30,7 +34,7 @@ export class TodoDetailComponent {
     description: [''],
     completed: [false],
   });
-
+  protected readonly loading$ = this.store.selectSignal(selectLoading);
   protected readonly todo$ = this.store.selectSignal(selectSelectedTodo);
   protected readonly id$ = this.store.selectSignal(selectRouteParam('id'));
 

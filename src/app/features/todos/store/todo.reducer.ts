@@ -1,5 +1,6 @@
 import {createReducer, on} from '@ngrx/store';
 import {
+  actionSuccess,
   addTodo,
   deleteTodo,
   loadTodos,
@@ -12,6 +13,7 @@ import {initialTodoState} from "./todo.state";
 
 export const todoReducer = createReducer(
   initialTodoState,
+  on(actionSuccess, (state) => ({...state, loading: false})),
   on(loadTodos, (state) => ({...state, loading: true})),
   on(loadTodosSuccess, (state, {todos}) => ({
     ...state,
@@ -35,8 +37,14 @@ export const todoReducer = createReducer(
     ...state,
     todos: state.todos.filter((t) => t.id !== id),
   })),
+  on(selectTodo, (state, { id }) => ({
+    ...state,
+    loading: true,
+    selectedTodo: null
+  })),
   on(selectTodoSuccess, (state, { id }) => ({
     ...state,
+    loading: false,
     selectedTodo: state.todos.find((t) => t.id === id) || null,
   }))
 );

@@ -1,5 +1,5 @@
 import {ApplicationConfig, isDevMode} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withRouterConfig} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
@@ -11,7 +11,6 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {providePrimeNG} from "primeng/config";
 import {customThemePreset} from "../../customThemePreset";
 import {provideStoreDevtools} from "@ngrx/store-devtools";
-import {provideTodoFeature} from "./features/todos/todo.providers";
 import {provideRouterStore, routerReducer} from "@ngrx/router-store";
 import {provideStore} from "@ngrx/store";
 import {todoReducer} from "./features/todos/store/todo.reducer";
@@ -38,7 +37,9 @@ export const appConfig: ApplicationConfig = {
       baseUrl: './assets/monaco/vs', // Location of Monaco assets
     }),
     provideHttpClient(),
-    provideRouter(routes),
+    provideRouter(routes,
+      withRouterConfig({onSameUrlNavigation: 'reload'})
+    ),
     provideAnimations(), provideHttpClient(), provideTransloco({
       config: {
         availableLangs: ['en', 'de'],

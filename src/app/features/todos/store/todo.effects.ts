@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {of, switchMap, withLatestFrom} from 'rxjs';
-import {catchError, map, mergeMap} from 'rxjs/operators';
+import {catchError, filter, map, mergeMap} from 'rxjs/operators';
 import {
+  actionSuccess,
   addTodo,
   deleteTodo,
   loadTodos,
@@ -15,11 +16,20 @@ import {
 import {TodoService} from "../services/todo.service";
 import {Store} from "@ngrx/store";
 import {selectAllTodosLoaded} from "./todo.selectors";
+import {routerNavigatedAction} from "@ngrx/router-store";
 
 @Injectable()
 export class TodoEffects {
   constructor(private actions$: Actions, private todoService: TodoService, private store: Store) {
   }
+
+  loadTodosOnRouteChange$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(routerNavigatedAction), // This comes from @ngrx/router-store
+      filter(action => action.payload.routerState.url === '/todo/list'),
+      map(() => loadTodos())
+    )
+  );
 
   loadTodos$ = createEffect(() =>
     this.actions$.pipe(
@@ -38,7 +48,7 @@ export class TodoEffects {
       ofType(addTodo),
       mergeMap(({todo}) =>
         this.todoService.addTodo(todo).pipe(
-          map(() => loadTodos()), // Refresh todos after adding
+          map(() => actionSuccess()), // Refresh todos after adding
           catchError((error) => of(loadTodosFailure({error})))
         )
       )
@@ -50,7 +60,7 @@ export class TodoEffects {
       ofType(updateTodo),
       mergeMap(({todo}) =>
         this.todoService.updateTodo(todo).pipe(
-          map(() => loadTodos()), // Refresh todos after updating
+          map(() => actionSuccess()), // Refresh todos after updating
           catchError((error) => of(loadTodosFailure({error})))
         )
       )
@@ -62,7 +72,7 @@ export class TodoEffects {
       ofType(deleteTodo),
       mergeMap(({id}) =>
         this.todoService.deleteTodo(id).pipe(
-          map(() => loadTodos()), // Refresh todos after deleting
+          map(() => actionSuccess()), // Refresh todos after deleting
           catchError((error) => of(loadTodosFailure({error})))
         )
       )

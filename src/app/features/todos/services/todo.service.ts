@@ -6,7 +6,7 @@ import {Todo} from "../model/todo.model";
 
 @Injectable({providedIn: 'root'})
 export class TodoService {
-  private todos: Todo[] = [
+  todos: Todo[] = [
     {id: '1', title: 'Sample Todo 1', description: 'Description 1', completed: false},
     {id: '2', title: 'Sample Todo 2', description: 'Description 2', completed: true},
   ];

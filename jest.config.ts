@@ -19,6 +19,10 @@ const jestConfig: JestConfigWithTsJest = {
     },
     moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
     extensionsToTreatAsEsm: ['.ts', '.mts'],
+    moduleNameMapper: {
+        '^@craftingcrew/app/shared(.*)$': '<rootDir>/src/app/shared$1',
+        '^@craftingcrew/app/environment(.*)$': '<rootDir>/src/environments$1',
+    },
 };
 
 export default jestConfig;

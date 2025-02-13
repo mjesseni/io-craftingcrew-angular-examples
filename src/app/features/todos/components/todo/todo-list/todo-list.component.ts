@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {selectAllTodos, selectLoading} from "../../../store/todo.selectors";
 import {Store} from "@ngrx/store";
 import {Router} from "@angular/router";
-import {loadTodos} from "../../../store/todo.actions";
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
 import {ButtonDirective} from "primeng/button";
@@ -17,15 +16,11 @@ import {ButtonDirective} from "primeng/button";
   templateUrl: './todo-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent {
   protected readonly todos$ = this.store.selectSignal(selectAllTodos);
   protected readonly loading$ = this.store.selectSignal(selectLoading);
 
   constructor(private store: Store, private router: Router) {
-  }
-
-  ngOnInit() {
-    this.store.dispatch(loadTodos());
   }
 
   navigateToDetail(id: string): void {
