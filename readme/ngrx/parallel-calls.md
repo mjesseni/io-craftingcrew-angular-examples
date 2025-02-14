@@ -1,8 +1,10 @@
 ## Performing Multiple REST Calls in Parallel in NgRx Effect
 
-You can perform multiple REST calls in parallel within an NgRx Effect using the `forkJoin` operator from RxJS. This ensures all requests are completed before proceeding and allows you to pass all responses to a follow-up action.
+You can perform multiple REST calls in parallel within an NgRx Effect using the `forkJoin` or `combineLatest` operator from RxJS. Both operators are useful but behave differently, depending on your use case. This document provides detailed explanations and examples of each approach.
 
-### Code Example
+### Code Example: Using `forkJoin`
+
+`forkJoin` waits for all observables to complete and emits their final values as a combined object. This is ideal when you have a set of observables (like HTTP calls) that you need to execute in parallel and use their results together.
 
 ```typescript
 import { Injectable } from '@angular/core';
@@ -19,7 +21,7 @@ export class MyEffects {
   loadData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadData),
-      mergeMap(() =>
+      mergeMap(() => 
         forkJoin({
           data1: this.myService.getData1(),
           data2: this.myService.getData2(),
@@ -32,10 +34,51 @@ export class MyEffects {
             const data3 = responses.data3;
 
             // Pass these values to the success action
-            return loadDataSuccess({
-              data1: data1,
-              data2: data2,
-              data3: data3
+            return loadDataSuccess({ 
+              data1: data1, 
+              data2: data2, 
+              data3: data3 
+            });
+          }),
+          catchError((error) => of(loadDataFailure({ error })))
+        )
+      )
+    )
+  );
+}
+```
+
+### Alternative Code Example: Using `combineLatest`
+
+`combineLatest` emits whenever any of the input observables emit a value, but it only starts emitting after all observables have emitted at least once. This is useful when the observables might emit continuously (e.g., streams) and you want to react to the latest combination of values.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { of, combineLatest } from 'rxjs';
+import { map, mergeMap, catchError } from 'rxjs/operators';
+import { MyService } from '../services/my-service.service';
+import { loadData, loadDataSuccess, loadDataFailure } from '../actions/my.actions';
+
+@Injectable()
+export class MyEffects {
+  constructor(private actions$: Actions, private myService: MyService) {}
+
+  loadData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadData),
+      mergeMap(() =>
+        combineLatest([
+          this.myService.getData1(),
+          this.myService.getData2(),
+          this.myService.getData3()
+        ]).pipe(
+          map(([data1, data2, data3]) => {
+            // Combine the latest values from the observables
+            return loadDataSuccess({ 
+              data1: data1, 
+              data2: data2, 
+              data3: data3 
             });
           }),
           catchError((error) => of(loadDataFailure({ error })))
@@ -48,9 +91,9 @@ export class MyEffects {
 
 ### Key Points
 
-#### 1. **Parallel REST Calls**
+#### 1. **Parallel REST Calls with `forkJoin`**
 - The `forkJoin` operator executes multiple REST calls in parallel.
-- It waits for all observables to complete before emitting an object with all responses.
+- It waits for all observables to complete before emitting an object with their final responses.
 - Example:
   ```typescript
   forkJoin({
@@ -59,11 +102,12 @@ export class MyEffects {
     data3: this.myService.getData3()
   })
   ```
+- Suitable for one-time completion tasks like HTTP calls.
 
-#### 2. **What Happens**
-- Each of the `getData` methods returns an observable (e.g., a result of an HTTP request).
-- The `forkJoin` operator subscribes to all the observables.
-- When all observables emit their final values and complete, `forkJoin` emits an object containing the values:
+#### 2. **What Happens with `forkJoin`**
+- Each `getData` method returns an observable (e.g., an HTTP request).
+- The `forkJoin` operator subscribes to all observables and waits for them to emit their final values and complete.
+- Once complete, `forkJoin` emits an object containing the responses:
   ```typescript
   {
     data1: <value emitted by data1>,
@@ -71,18 +115,34 @@ export class MyEffects {
     data3: <value emitted by data3>
   }
   ```
-- The emitted values are accessible via the keys (`data1`, `data2`, `data3`). These are the actual responses from the REST calls, not observables anymore.
 
-#### 3. **Error Handling**
+#### 3. **Parallel REST Calls with `combineLatest`**
+- The `combineLatest` operator emits whenever any observable emits a value but requires all observables to emit at least once before emitting the first combined value.
+- Example:
+  ```typescript
+  combineLatest([
+    this.myService.getData1(),
+    this.myService.getData2(),
+    this.myService.getData3()
+  ])
+  ```
+- Suitable for scenarios where observables emit continuously (e.g., real-time streams or event-based systems).
+
+#### 4. **What Happens with `combineLatest`**
+- Initially, `combineLatest` waits for all observables to emit at least once.
+- Once all observables have emitted, it emits an array containing the latest value from each observable.
+- Every time any observable emits, `combineLatest` emits a new array with the updated value and the latest values from the other observables.
+
+#### 5. **Error Handling**
 - Use `catchError` to handle errors and dispatch a failure action:
   ```typescript
   catchError((error) => of(loadDataFailure({ error })))
   ```
 
-#### 4. **Mapping Responses**
-- Once all REST calls are completed, `map` the responses into a single action payload:
+#### 6. **Mapping Responses**
+- Use `map` to transform the responses into a single action payload:
   ```typescript
-  map((responses) => loadDataSuccess({ data1: responses.data1, data2: responses.data2, data3: responses.data3 }))
+  map(([data1, data2, data3]) => loadDataSuccess({ data1, data2, data3 }))
   ```
 
 ### Complete Actions
@@ -132,6 +192,8 @@ export class MyService {
 
 ### Summary
 - Use `forkJoin` to perform parallel REST calls and wait for all responses.
+- Use `combineLatest` when you want to process the latest emitted values from observables continuously.
+- Understand that `combineLatest` waits for all observables to emit at least once before emitting combined values.
 - Map the combined responses into a single follow-up action.
 - Handle errors gracefully with `catchError`.
-- This ensures all REST calls are executed in parallel, and their responses are collected efficiently.
+- Choose the appropriate operator based on whether you need one-time results (`forkJoin`) or continuous updates (`combineLatest`).

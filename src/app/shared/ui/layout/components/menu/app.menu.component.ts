@@ -62,6 +62,27 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/examples/change/detection/rxjs']
           }
         ]
+      },
+      {
+        label: 'Reactive Programming',
+        icon: 'pi-objects-column',
+        items: [
+          {
+            label: 'Combine Latest',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/rxjs/combine-latest']
+          },
+          {
+            label: 'Fork Join',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/rxjs/fork-join']
+          },
+          {
+            label: 'Zip',
+            icon: 'pi pi-fw pi-list',
+            routerLink: ['/examples/rxjs/zip']
+          }
+        ]
       }
     ];
   }
