@@ -88,7 +88,7 @@ src/
     - Optimization of RxJS operators for handling streams efficiently.
 
 6. **Styling**:
-    - Use of Angular Material for consistent UI.
+    - Use of PrimeNG & TailwindCSS for consistent UI.
     - SCSS for modular and reusable styles.
 
 7. **Accessibility**:
