@@ -1,9 +1,10 @@
 @if (state()) {
-    <div class="cell-container h-20">
+    <div class="cell-container">
         <div class="cell-content">
             <div class="status-display">
                 <div tabindex="0" class="status" [ngClass]="{'open': open(), 'completed': completed(), 'approved': approved()}"
-                     (click)="onClick()" (keydown)="onKeyDown($event)"></div>
+                     [pTooltip]="open() ? 'open' : completed() ? 'completed' : approved() ? 'approved' : ''"
+                     tooltipPosition="right" (click)="onClick()" (keydown)="onKeyDown($event)"></div>
             </div>
             <div class="cell-display flex-grow" [ngClass]="{'justify-center': !working(), 'justify-start': working()}">
                 @if (working()) {

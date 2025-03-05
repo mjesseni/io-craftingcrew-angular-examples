@@ -169,4 +169,8 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
       this.timeRangeOption$.set({...this.timeRangeOption$()});
     }
   }
+
+  protected onApprove(event: MouseEvent, employeeState: any) {
+    event.preventDefault();
+  }
 }

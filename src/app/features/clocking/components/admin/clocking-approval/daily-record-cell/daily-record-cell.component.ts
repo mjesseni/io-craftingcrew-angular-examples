@@ -4,12 +4,14 @@ import {ApprovalStatus, WorkingStatus} from "../../../../model/clocking.model";
 import {DailyRecordState, Employee} from "../../../../store/clocking.state";
 import {formatTimeInMinutes} from "../../../../clocking.utils";
 import {ClockingService} from "../../../../services/clocking.service";
+import {Tooltip} from "primeng/tooltip";
 
 @Component({
   selector: 'app-daily-record-cell',
   imports: [
     NgIf,
-    NgClass
+    NgClass,
+    Tooltip
   ],
   templateUrl: './daily-record-cell.component.html',
   styleUrl: './daily-record-cell.component.scss'

@@ -1,7 +1,7 @@
 .cell-container {
   filter: brightness(80%);
   min-width: 65px;
-  @apply flex relative;
+  @apply flex relative h-20;
 
   .cell-actions {
     @apply absolute left-0 right-0 bottom-0 h-8 flex justify-center items-center cursor-pointer select-none;

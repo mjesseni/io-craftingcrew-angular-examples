@@ -70,8 +70,8 @@
             <ng-template pTemplate="body" let-employeeState>
                 <tr>
                     <td class="column-sticky">
-                        <div class="flex flex-row">
-                            <div class="employee detail flex flex-col flex-grow">
+                        <div class="employee-container flex flex-row">
+                            <div class="employee-detail flex flex-col flex-grow">
                                 <span class="name w-full">{{ employeeState.employee.name }}</span>
                                 <span class="summary w-full">{{ formatEmployeeSummary(employeeState) }}</span>
                                 <span class="status w-full">
@@ -83,6 +83,9 @@
                                         <span class="dark:text-blue-300 text-blue-600">Approved</span>
                                     }
                                 </span>
+                            </div>
+                            <div class="employee-actions">
+                                <a href="#" (click)="onApprove($event, employeeState)">approve</a>
                             </div>
                         </div>
                     </td>

@@ -66,22 +66,42 @@ th {
   z-index: 1;
 }
 
-.employee {
-  @apply items-center justify-center flex select-none;
-  &.avatar {
-    @apply w-10 h-10 rounded-full bg-blue-400 text-white text-lg;
-  }
-  &.detail {
-    @apply pl-2;
+.employee-container {
+  @apply flex relative;
+  filter: brightness(80%);
+
+  .employee-detail {
+    @apply items-center justify-center flex select-none pl-2;
+
     * {
-        @apply text-right;
+      @apply text-right;
     }
+
     .name {
       @apply overflow-hidden text-ellipsis pl-2;
       max-width: 170px;
     }
+
     .summary {
       @apply text-gray-400;
+    }
+  }
+
+  .employee-actions {
+    @apply absolute left-0 right-0 bottom-0 h-8 flex justify-center items-center cursor-pointer select-none;
+    background: var(--p-datatable-header-background);
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-bottom: -0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    * {
+      @apply w-full text-center text-base;
     }
   }
 }
