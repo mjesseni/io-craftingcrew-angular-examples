@@ -83,6 +83,17 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/examples/rxjs/zip']
           }
         ]
+      },
+      {
+        label: 'Clocking',
+        icon: 'pi-clock',
+        items: [
+          {
+            label: 'Approve',
+            icon: 'pi pi-fw pi-calendar-clock',
+            routerLink: ['/clocking/approve']
+          }
+        ]
       }
     ];
   }

@@ -6,7 +6,8 @@ import {
   loadTodos,
   loadTodosFailure,
   loadTodosSuccess,
-  selectTodo, selectTodoSuccess,
+  selectTodo,
+  selectTodoSuccess,
   updateTodo,
 } from './todo.actions';
 import {initialTodoState} from "./todo.state";
@@ -37,12 +38,12 @@ export const todoReducer = createReducer(
     ...state,
     todos: state.todos.filter((t) => t.id !== id),
   })),
-  on(selectTodo, (state, { id }) => ({
+  on(selectTodo, (state, {id}) => ({
     ...state,
     loading: true,
     selectedTodo: null
   })),
-  on(selectTodoSuccess, (state, { id }) => ({
+  on(selectTodoSuccess, (state, {id}) => ({
     ...state,
     loading: false,
     selectedTodo: state.todos.find((t) => t.id === id) || null,

@@ -1,0 +1,74 @@
+.cell-container {
+  filter: brightness(80%);
+  min-width: 65px;
+  @apply flex relative;
+
+  .cell-actions {
+    @apply absolute left-0 right-0 bottom-0 h-8 flex justify-center items-center cursor-pointer select-none;
+    background: var(--p-datatable-header-background);
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-bottom: -0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    * {
+      @apply w-full text-center text-base;
+    }
+  }
+
+  .cell-content {
+    @apply flex flex-grow h-full justify-start;
+    .cell-display {
+      @apply flex flex-col h-full;
+    }
+
+    .status-display {
+      @apply flex flex-col h-full pr-2;
+      margin-left: -5px;
+      margin-top: 1px;
+
+      .status {
+        @apply w-3 h-3 rounded-full bg-transparent cursor-pointer relative before:absolute before:inset-[-2px] before:border before:rounded-full before:opacity-0 hover:before:opacity-100 hover:before:transition-all;
+
+        &.open {
+          @apply dark:bg-orange-300 bg-orange-500 before:dark:border-orange-300 before:border-orange-500;
+        }
+
+        &.completed {
+          @apply dark:bg-green-300 bg-green-600 before:dark:border-green-300 before:border-green-600;
+        }
+
+        &.approved {
+          @apply dark:bg-blue-300 bg-blue-600 before:dark:border-blue-300 before:border-blue-600;
+        }
+      }
+    }
+  }
+}
+
+.time-entry {
+  @apply text-right text-lg select-none;
+  &.worked {
+  }
+
+  &.shortfall {
+    @apply dark:text-red-300 text-red-600 text-right;
+  }
+
+  &.overtime {
+    @apply dark:text-green-300 text-green-600 text-right
+  }
+
+  &.booked {
+    @apply text-gray-400;
+  }
+}
+
+.absence-entry {
+  @apply select-none text-center text-3xl;
+}

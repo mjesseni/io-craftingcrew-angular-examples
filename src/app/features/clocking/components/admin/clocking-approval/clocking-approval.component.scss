@@ -1,0 +1,88 @@
+th, td {
+  white-space: nowrap;
+  width: auto;
+}
+
+th {
+  @apply select-none;
+}
+
+
+/* Allow PrimeNG table to take full height */
+.p-datatable-wrapper {
+  flex-grow: 1; /* Ensures table stretches */
+}
+
+/* Make the p-table fill the available height */
+.p-datatable-wrapper {
+  flex-grow: 1;
+}
+
+.column-sticky, .header-sticky {
+  position: sticky;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure content inside the sticky column retains the background */
+.column-sticky {
+  z-index: 1;
+  background-color: inherit;
+  backdrop-filter: blur(5px); /* Adds a subtle blur to the column */
+}
+
+.header-sticky {
+  z-index: 2;
+}
+
+/* Adjust header appearance */
+.header-day {
+  text-align: center;
+  min-width: 75px;
+}
+
+.header-employee {
+  text-align: center;
+  max-width: 225px;
+}
+
+.header-balance {
+  left: 220px;
+}
+
+.column-day {
+  min-width: 75px;
+  text-align: right;
+}
+
+.column-balance {
+  left: 220px;
+  text-align: right;
+  @apply text-ellipsis;
+}
+
+/* Adjust for scrollable tables */
+.p-datatable-scrollable-body .column-sticky {
+  z-index: 1;
+}
+
+.employee {
+  @apply items-center justify-center flex select-none;
+  &.avatar {
+    @apply w-10 h-10 rounded-full bg-blue-400 text-white text-lg;
+  }
+  &.detail {
+    @apply pl-2;
+    * {
+        @apply text-right;
+    }
+    .name {
+      @apply overflow-hidden text-ellipsis pl-2;
+      max-width: 170px;
+    }
+    .summary {
+      @apply text-gray-400;
+    }
+  }
+}
+

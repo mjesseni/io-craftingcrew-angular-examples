@@ -2,14 +2,16 @@
   @apply fixed h-full top-0 left-0 w-[22rem] bg-surface-300 shadow-none flex flex-col dark:bg-surface-700;
 
   .sidebar-header {
-    @apply px-8 py-6 flex justify-start items-center;
+    @apply px-8 py-2 flex justify-start items-center;
 
     a {
       @apply flex items-center;
     }
+
     .app-logo {
+      @apply brightness-100 h-20;
       .app-logo-normal {
-        @apply inline h-8 w-auto;
+        @apply inline brightness-100 h-7 w-auto ml-4 mt-1;
       }
 
       .app-logo-single {
@@ -17,8 +19,19 @@
       }
     }
   }
-
+  .layout-app-selector-container {
+    @apply px-4 py-2 dark:bg-surface-700 select-none;
+    .app-back-button {
+        @apply w-8 brightness-90;
+    }
+    .app-name {
+      @apply pl-1 brightness-90 text-xl relative;
+    }
+  }
+  .layout-divider {
+    @apply border-t border-surface-600 my-0;
+  }
   .layout-menu-container {
-    @apply overflow-auto flex-1 pb-8;
+    @apply overflow-auto flex-1 pb-8 dark:bg-surface-700;
   }
 }

@@ -14,6 +14,9 @@ import {provideStoreDevtools} from "@ngrx/store-devtools";
 import {provideRouterStore, routerReducer} from "@ngrx/router-store";
 import {provideState, provideStore} from "@ngrx/store";
 import {provideTodoFeatureStore} from "./features/todos/todo.providers";
+import {provideClockingFeatureStore} from "./features/clocking/clocking.providers";
+import {todoReducer} from "./features/todos/store/todo.reducer";
+import {clockingReducer} from "./features/clocking/store/clocking.reducer";
 
 export const appConfig: ApplicationConfig = {
 
@@ -49,10 +52,14 @@ export const appConfig: ApplicationConfig = {
       loader: TranslationLoaderService
     }),
 
+
+    provideState('router', routerReducer), // Register 'router' as a feature state
+    provideState('todo', todoReducer), // Register 'router' as a feature state
+    provideState('clocking', clockingReducer), // Register 'router' as a feature state
     provideStore(), // Provide the root store
     provideRouterStore(), // Configure the router state management
-    provideState('router', routerReducer), // Register 'router' as a feature state
     provideTodoFeatureStore(),
+    provideClockingFeatureStore(),
 
     /* dev tools */
     provideStoreDevtools({

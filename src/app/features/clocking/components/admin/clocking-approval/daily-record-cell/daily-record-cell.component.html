@@ -1,0 +1,27 @@
+@if (state()) {
+    <div class="cell-container h-20">
+        <div class="cell-content">
+            <div class="status-display">
+                <div tabindex="0" class="status" [ngClass]="{'open': open(), 'completed': completed(), 'approved': approved()}"
+                     (click)="onClick()" (keydown)="onKeyDown($event)"></div>
+            </div>
+            <div class="cell-display flex-grow" [ngClass]="{'justify-center': !working(), 'justify-start': working()}">
+                @if (working()) {
+                    <span class="time-entry worked">{{ workedTimeDisplay() }}</span>
+                    <span *ngIf="overTime()" class="time-entry overtime">{{ overTimeDisplay() }}</span>
+                    <span *ngIf="shortTime()" class="time-entry shortfall">{{ shortTimeDisplay() }}</span>
+                    <span class="time-entry booked">{{ bookedTimeDisplay() }}</span>
+                } @else if (holiday()) {
+                    <span class="absence-entry material-icons">beach_access</span>
+                } @else if (sick()) {
+                    <span class="absence-entry material-icons">stethoscope</span>
+                }
+            </div>
+        </div>
+        <div class="cell-actions">
+            <a *ngIf="open()" href="#" (click)="onComplete($event)">finish</a>
+            <a *ngIf="completed()" href="#" (click)="onApprove($event)">approve</a>
+            <a *ngIf="approved()" href="#" (click)="onReopen($event)">reopen</a>
+        </div>
+    </div>
+}

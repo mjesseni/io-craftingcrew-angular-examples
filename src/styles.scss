@@ -6,6 +6,7 @@
 @use "assets/layout/responsive";
 @use "assets/layout/misc";
 @use "assets/layout/preloading.css";
+@use "assets/layout/icons";
 
 /* Quill Text Editor for p-editor */
 @forward '../node_modules/quill/dist/quill.core.css';
