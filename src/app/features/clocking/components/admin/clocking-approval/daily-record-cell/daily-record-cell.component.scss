@@ -28,9 +28,7 @@
     }
 
     .status-display {
-      @apply flex flex-col h-full pr-2;
-      margin-left: -5px;
-      margin-top: 1px;
+      @apply flex flex-col h-full w-5 pr-1;
 
       .status {
         @apply w-3 h-3 rounded-full bg-transparent cursor-pointer relative before:absolute before:inset-[-2px] before:border before:rounded-full before:opacity-0 hover:before:opacity-100 hover:before:transition-all;
@@ -70,5 +68,5 @@
 }
 
 .absence-entry {
-  @apply select-none text-center text-3xl;
+  @apply select-none text-center text-2xl;
 }
