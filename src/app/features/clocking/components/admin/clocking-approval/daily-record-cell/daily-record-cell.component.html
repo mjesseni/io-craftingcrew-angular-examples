@@ -10,7 +10,6 @@
                     <span class="absence-entry material-icons" pTooltip="Vacation"  tooltipPosition="left">beach_access</span>
                 } @else if (sick()) {
                     <span class="absence-entry material-icons" pTooltip="Sick Leave"  tooltipPosition="left">stethoscope</span>
-
                 }
             </div>
             <div class="cell-display flex-grow" [ngClass]="{'justify-center': !working(), 'justify-start': working()}">
