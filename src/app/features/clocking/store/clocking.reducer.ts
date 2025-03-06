@@ -1,11 +1,14 @@
 import {createReducer, on} from '@ngrx/store';
 import {initialClockingState} from "./clocking.state";
 import {
+  approveDailyRecord, approveDailyRecordsInRange,
   clockingActionSuccess,
+  completeDailyRecord,
   loadApprovals,
   loadApprovalsSuccess,
+  reopenDailyRecord,
   setNextDailyRecordState,
-  dailyRecordStateTransitionSuccess, completeDailyRecord, approveDailyRecord, reopenDailyRecord
+  stateTransitionSuccess
 } from "./clocking.actions";
 import {getMinApprovalState} from "../clocking.utils";
 
@@ -34,20 +37,22 @@ export const clockingReducer = createReducer(
   on(reopenDailyRecord, (state) => (
     {...state, loading: true}
   )),
-  on(dailyRecordStateTransitionSuccess, (state, {employee, dailyRecord}) => {
+  on(approveDailyRecordsInRange, (state) => (
+    {...state, loading: true}
+  )),
+  on(stateTransitionSuccess, (state, {employee, dailyRecords}) => {
     if (state.approval != null) {
       const employeeStates = state.approval.employeeStates.map(employeeState => {
         /* employee found */
         if (employeeState.employee.id === employee.id) {
-          const dailyRecords = employeeState.dailyRecords.map(record => {
-            if (record.day.date === dailyRecord.day.date) {
-              return dailyRecord;
-            }
-            return record;
+          const newDailyRecords = employeeState.dailyRecords.map(record => {
+            const dailyRecord = dailyRecords.find(changed => changed.day.date === record.day.date);
+            return dailyRecord ? dailyRecord : record;
           });
-          return {...employeeState,
-            approvalStatus: getMinApprovalState(dailyRecords),
-            dailyRecords: dailyRecords
+          return {
+            ...employeeState,
+            approvalStatus: getMinApprovalState(newDailyRecords),
+            dailyRecords: newDailyRecords
           };
         }
         /* other employee state */

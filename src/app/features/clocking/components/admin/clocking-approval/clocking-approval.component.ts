@@ -170,7 +170,9 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  protected onApprove(event: MouseEvent, employeeState: any) {
+  protected onApproveRecordsInRange(event: MouseEvent, employeeState: EmployeeApprovalState) {
     event.preventDefault();
+    this.clockingService.approveDailyRecordsInRange(employeeState.employee, startOfMonth(this.selectedMonth$()),
+      endOfMonth(this.selectedMonth$()));
   }
 }

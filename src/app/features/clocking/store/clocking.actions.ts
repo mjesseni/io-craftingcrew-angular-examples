@@ -28,5 +28,8 @@ export const approveDailyRecord = createAction('[Clocking] Set daily record stat
 export const reopenDailyRecord = createAction('[Clocking] Set daily record state to open',
   props<{employee: Employee, day: Day}>());
 
-export const dailyRecordStateTransitionSuccess = createAction('[Clocking] Daily record state transition success',
-  props<{employee: Employee, dailyRecord: DailyRecordState}>());
+export const stateTransitionSuccess = createAction('[Clocking] Daily record state transition success',
+  props<{employee: Employee, dailyRecords: DailyRecordState[]}>());
+
+export const approveDailyRecordsInRange = createAction('[Clocking] Set the states of daily records within the given date range states',
+  props<{employee: Employee, from: Date, to: Date}>());

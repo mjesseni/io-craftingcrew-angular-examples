@@ -5,6 +5,7 @@ import {ApprovalStatus, Day} from "../model/clocking.model";
 import {Store} from "@ngrx/store";
 import {
   approveDailyRecord,
+  approveDailyRecordsInRange,
   completeDailyRecord,
   loadApprovals,
   reopenDailyRecord,
@@ -99,6 +100,19 @@ export class ClockingService {
   }
 
   /**
+   * Dispatches an action to approve daily records for a given employee within a specified date range.
+   *
+   * @param employee - The employee for whom to approve daily records.
+   * @param from - The start date of the range for which to approve daily records.
+   * @param to - The end date of the range for which to approve daily records.
+   */
+  public approveDailyRecordsInRange(employee: Employee | undefined, from: Date | undefined, to: Date | undefined): void {
+    if (employee && from && to) {
+      this.clockingStore.dispatch(approveDailyRecordsInRange({employee, from, to}));
+    }
+  }
+
+  /**
    * Sets the next daily record state for a given employee and day.
    *
    * This method updates the approval status of the daily record for the specified employee and day.
@@ -108,24 +122,24 @@ export class ClockingService {
    * @param day - The day for which to set the next daily record state.
    * @returns An Observable of the updated DailyRecordState.
    */
-  public setNextDailyRecordState(employee: Employee, day: Day): Observable<DailyRecordState> {
+  public setNextDailyRecordState(employee: Employee, day: Day): Observable<DailyRecordState[]> {
     return this.clockingBackendService.setNextDailyRecordState(employee, day);
   }
 
+
   /**
-   * Updates the approval status of a daily record for a given employee and day.
+   * Sets the approval state for daily records of a given employee within a specified date range.
    *
-   * This method iterates through the employee states and updates the approval status
-   * of the daily record for the specified employee and day. It also updates the overall
-   * approval status of the employee based on the minimum approval state of their daily records.
+   * This method updates the approval status of the daily records for the specified employee and date range.
    *
-   * @param employee - The employee whose daily record approval status is to be updated.
-   * @param day - The day for which the daily record approval status is to be updated.
-   * @param newApprovalStatus - The new approval status to be set for the daily record.
-   * @returns An Observable of the updated DailyRecordState, or EMPTY if no record was found.
+   * @param employee - The employee for whom to set the daily record approval state.
+   * @param from - The start date of the range for which to set the approval state.
+   * @param to - The end date of the range for which to set the approval state.
+   * @param newApprovalStatus - The new approval status to set for the daily records.
+   * @returns An Observable of the updated ApprovalState.
    */
-  public setDailyRecordApprovalState(employee: Employee, day: Day, newApprovalStatus: ApprovalStatus) {
-    return this.clockingBackendService.setDailyRecordApprovalState(employee, day, newApprovalStatus);
+  public setDailyRecordApprovalState(employee: Employee, from: Date, to: Date, newApprovalStatus: ApprovalStatus) {
+    return this.clockingBackendService.setDailyRecordApprovalState(employee, from, to, newApprovalStatus);
   }
 
   /**

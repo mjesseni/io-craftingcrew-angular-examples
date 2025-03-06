@@ -3,7 +3,7 @@ import {ApprovalState, DailyRecordState, Employee, EmployeeApprovalState} from "
 import {ApprovalStatus, Day, WorkingStatus} from "../model/clocking.model";
 import {EMPTY, Observable, of, take} from "rxjs";
 import {getMinApprovalState} from "../clocking.utils";
-import {addDays, endOfMonth, format, getDate, isWeekend, startOfMonth} from "date-fns";
+import {addDays, endOfMonth, format, getDate, isAfter, isBefore, isSameDay, isWeekend, startOfMonth} from "date-fns";
 import {delay} from "rxjs/operators";
 
 @Injectable({
@@ -23,33 +23,34 @@ export class ClockingBackendService {
    * @param day - The day for which to set the next daily record state.
    * @returns An Observable of the updated DailyRecordState.
    */
-  public setNextDailyRecordState(employee: Employee, day: Day): Observable<DailyRecordState> {
+  public setNextDailyRecordState(employee: Employee, day: Day): Observable<DailyRecordState[]> {
     const current = this.findEmployeeDailyRecordState(employee, day);
     if (current) {
       const newApprovalStatus = this.getNextApprovalState(current.approvalStatus);
-      return this.setDailyRecordApprovalState(employee, day, newApprovalStatus);
+      return this.setDailyRecordApprovalState(employee, day.date, day.date, newApprovalStatus);
     }
     return EMPTY;
   }
 
+
   /**
-   * Updates the approval status of a daily record for a given employee and day.
+   * Sets the approval status for daily records of an employee within a date range.
    *
-   * This method iterates through the employee states and updates the approval status
-   * of the daily record for the specified employee and day. It also updates the overall
-   * approval status of the employee based on the minimum approval state of their daily records.
-   *
-   * @param employee - The employee whose daily record approval status is to be updated.
-   * @param day - The day for which the daily record approval status is to be updated.
-   * @param newApprovalStatus - The new approval status to be set for the daily record.
-   * @returns An Observable of the updated DailyRecordState, or EMPTY if no record was found.
+   * @param employee - The employee whose daily records are to be updated.
+   * @param from - The start date of the range.
+   * @param to - The end date of the range.
+   * @param newApprovalStatus - The new approval status to be set.
+   * @returns An Observable of the updated DailyRecordState array.
    */
-  public setDailyRecordApprovalState(employee: Employee, day: Day, newApprovalStatus: ApprovalStatus) {
+  public setDailyRecordApprovalState(employee: Employee, from: Date, to: Date, newApprovalStatus: ApprovalStatus): Observable<DailyRecordState[]> {
+    const changed: DailyRecordState[] = [];
     this.employeeStates = this.employeeStates.map(employeeState => {
       if (employeeState.employee.id === employee.id) {
         const dailyRecords = employeeState.dailyRecords.map(record => {
-          if (record.day.date === day.date) {
-            return {...record, approvalStatus: newApprovalStatus};
+          if (this.canChangeApprovalState(record, from, to, newApprovalStatus)) {
+            const changedRecord = {...record, approvalStatus: newApprovalStatus}
+            changed.push(changedRecord);
+            return changedRecord;
           }
           return record;
         });
@@ -62,8 +63,7 @@ export class ClockingBackendService {
       return employeeState;
     });
 
-    const changed = this.findEmployeeDailyRecordState(employee, day);
-    return changed ? of(changed).pipe(delay(150), take(1)) : EMPTY;
+    return of(changed).pipe(delay(150), take(1));
   }
 
   public loadEmployeeApprovals(from: Date, to: Date): Observable<ApprovalState> {
@@ -94,9 +94,32 @@ export class ClockingBackendService {
     }).pipe(delay(150), take(1));
   }
 
+  private canChangeApprovalState(record: DailyRecordState, from: Date, to: Date, newApprovalStatus: ApprovalStatus): boolean {
+    const affected = this.isInRange(record.date, from, to) && record.approvalStatus !== newApprovalStatus;
+    if (affected) {
+      switch (newApprovalStatus) {
+        case ApprovalStatus.OPEN:
+          return record.approvalStatus === ApprovalStatus.COMPLETED || record.approvalStatus === ApprovalStatus.APPROVED;
+        case ApprovalStatus.COMPLETED:
+          return record.approvalStatus === ApprovalStatus.OPEN;
+        case ApprovalStatus.APPROVED: {
+          if (record.day.weekend || record.workingStatus !== WorkingStatus.WORKING) {
+            return true;
+          }
+          return record.approvalStatus === ApprovalStatus.COMPLETED;
+        }
+      }
+    }
+    return false;
+  }
+
+  private isInRange(date: Date, from: Date, to: Date) {
+    return (isSameDay(from, date) || isAfter(date, from)) && (isSameDay(date, to) || isBefore(date, to))
+  }
+
   private findEmployeeDailyRecordState(employee: Employee, day: Day) {
     return this.employeeStates.find(state => state.employee.id === employee.id)?.dailyRecords
-      .find(record => record.day.date === day.date);
+      .find(record => isSameDay(record.day.date, day.date));
   }
 
   private getNextApprovalState(state: ApprovalStatus | undefined) {
