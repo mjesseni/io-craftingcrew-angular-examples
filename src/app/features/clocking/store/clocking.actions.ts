@@ -1,6 +1,6 @@
 import {createAction, props} from '@ngrx/store';
-import {ApprovalState, DailyRecordState, Employee} from "./clocking.state";
-import {Day} from "../model/clocking.model";
+import {ApprovalState, DailyRecordState} from "./clocking.state";
+import {Day, Employee} from "../model/clocking.model";
 
 export const clockingActionSuccess = createAction('[Clocking] Action Success');
 

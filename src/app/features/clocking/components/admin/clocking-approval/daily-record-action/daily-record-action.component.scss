@@ -1,0 +1,9 @@
+.actions {
+  @apply text-center text-lg p-0.5 w-full opacity-40 transition-opacity hover:opacity-95;
+  filter: brightness(0.8);
+  background: var(--p-datatable-header-background);
+
+  & > * {
+    @apply w-full;
+  }
+}

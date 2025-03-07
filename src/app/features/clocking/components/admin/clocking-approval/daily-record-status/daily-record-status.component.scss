@@ -1,0 +1,27 @@
+.status-container {
+  @apply flex flex-grow flex-row items-center;
+
+  .status {
+    @apply w-3 h-3 rounded-full bg-transparent cursor-pointer relative before:absolute before:inset-[-2px] before:border before:rounded-full before:opacity-0 hover:before:opacity-100 hover:before:transition-all;
+
+    &.open {
+      @apply dark:bg-orange-300 bg-orange-500 before:dark:border-orange-300 before:border-orange-500;
+    }
+
+    &.completed {
+      @apply dark:bg-green-300 bg-green-600 before:dark:border-green-300 before:border-green-600;
+    }
+
+    &.approved {
+      @apply dark:bg-blue-300 bg-blue-600 before:dark:border-blue-300 before:border-blue-600;
+    }
+  }
+
+  .absence {
+    @apply select-none flex flex-grow justify-end;
+
+    * {
+      @apply text-center text-2xl;
+    }
+  }
+}

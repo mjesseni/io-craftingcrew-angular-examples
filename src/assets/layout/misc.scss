@@ -118,3 +118,16 @@ code {
     position: absolute;
   }
 }
+
+/* */
+/* TOGGLE BUTTON */
+/* */
+.p-togglebutton {
+  &.icon-button {
+    .p-togglebutton-content {
+      .p-togglebutton-label {
+        display: none;
+      }
+    }
+  }
+}

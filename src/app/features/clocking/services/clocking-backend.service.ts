@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ApprovalState, DailyRecordState, Employee, EmployeeApprovalState} from "../store/clocking.state";
-import {ApprovalStatus, Day, WorkingStatus} from "../model/clocking.model";
+import {ApprovalState, DailyRecordState, EmployeeApprovalState, ProjectRecordState} from "../store/clocking.state";
+import {ApprovalStatus, Day, Employee, Project, WorkingStatus} from "../model/clocking.model";
 import {EMPTY, Observable, of, take} from "rxjs";
 import {getMinApprovalState} from "../clocking.utils";
 import {addDays, endOfMonth, format, getDate, isAfter, isBefore, isSameDay, isWeekend, startOfMonth} from "date-fns";
@@ -12,6 +12,14 @@ import {delay} from "rxjs/operators";
 export class ClockingBackendService {
 
   employeeStates: EmployeeApprovalState[] = [];
+  projects: Project[] = [
+    {id: '1', name: 'S2 - Clocking'},
+    {id: '2', name: 'S2 - Training'},
+    {id: '3', name: 'S2 - Intern'},
+    {id: '4', name: 'S2 - Smart Impact'},
+    {id: '5', name: 'S2 - Administration'},
+    {id: '6', name: 'S2 - Financial Services'}
+  ]
 
   /**
    * Sets the next daily record state for a given employee and day.
@@ -137,10 +145,15 @@ export class ClockingBackendService {
 
   private createEmployeeApprovalRecord(employeeId: string, employeeName: string, days: Day[]): EmployeeApprovalState {
     const employee: Employee = {id: employeeId, name: employeeName, initials: this.getInitials(employeeName)};
-    const dailyRecords = this.getDailyRecords(days);
+    const dailyRecords = this.createDailyRecords(days);
+    const workProjects = Array.from(new Set(dailyRecords.flatMap(record => record.projectRecords.map(pr => pr.project.id))))
+      .map(id => this.projects.find(project => project.id === id))
+      .sort((a, b) => a?.name.localeCompare(b?.name || '') || 0);
 
     return {
       employee: employee,
+      projects: workProjects,
+
       dailyRecords: dailyRecords,
 
       approvalStatus: getMinApprovalState(dailyRecords),
@@ -148,34 +161,59 @@ export class ClockingBackendService {
       normalTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.normalTimeMinutes || 0), 0),
       workedTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.workedTimeMinutes || 0), 0),
       bookedTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.bookedTimeMinutes || 0), 0),
+      absenceTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.absenceTimeMinutes || 0), 0),
+      vacationTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.vacationTimeMinutes || 0), 0),
 
     } as EmployeeApprovalState;
   }
 
-  private getDailyRecords(days: Day[]): DailyRecordState[] {
-    return days.map(day => {
-      if (!day.weekend) {
-        const normalTimeMinutes = 7.7 * 60;
-        const workedTimeMinutes = Math.floor(Math.random() * 60 * 10);
-        const bookedTimeMinutes = Math.random() > 0.5 ? workedTimeMinutes : Math.floor(Math.random() * workedTimeMinutes);
-        return {
-          date: day.date,
-          day: day,
+  private createDailyRecords(days: Day[]): DailyRecordState[] {
+    return days.map(day => this.createDailyRecord(day));
+  }
 
-          approvalStatus: this.getRandomApprovalStatus(),
-          workingStatus: this.getRandomWorkingStatus(),
-
-          normalTimeMinutes: normalTimeMinutes,
-          workedTimeMinutes: workedTimeMinutes,
-          bookedTimeMinutes: bookedTimeMinutes
-        } as DailyRecordState;
-      }
-
+  private createDailyRecord(day: Day) {
+    if (!day.weekend) {
+      const normalTimeMinutes = 7.7 * 60;
+      const workedTimeMinutes = Math.floor(Math.random() * 60 * 10);
+      const bookedTimeMinutes = Math.random() > 0.5 ? workedTimeMinutes : Math.floor(Math.random() * workedTimeMinutes);
+      const absenceTimeMinutes =  Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
+      const vacationTimeMinutes =  Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
       return {
         date: day.date,
-        day: day
+        day: day,
+
+        projectRecords: this.createProjectRecords(bookedTimeMinutes),
+
+        approvalStatus: this.getRandomApprovalStatus(),
+        workingStatus: this.getRandomWorkingStatus(),
+
+        normalTimeMinutes: normalTimeMinutes,
+        workedTimeMinutes: workedTimeMinutes,
+        bookedTimeMinutes: bookedTimeMinutes,
+        absenceTimeMinutes: absenceTimeMinutes,
+        vacationTimeMinutes: vacationTimeMinutes
       } as DailyRecordState;
+    }
+
+    return {
+      date: day.date,
+      day: day,
+      projectRecords: []
+    } as DailyRecordState;
+  }
+
+  private createProjectRecords(bookedTimeInMinutes: number): ProjectRecordState[] {
+    const projectRecords: ProjectRecordState[] = [];
+    const selectedProjects = this.projects.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1);
+    let remainingTime = bookedTimeInMinutes;
+
+    selectedProjects.forEach((project, index) => {
+      const time = index === selectedProjects.length - 1 ? remainingTime : Math.floor(Math.random() * remainingTime);
+      projectRecords.push({project: project, timeInMinutes: time});
+      remainingTime -= time;
     });
+
+    return projectRecords;
   }
 
   private getInitials(name: string): string {

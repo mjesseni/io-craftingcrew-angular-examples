@@ -1,3 +1,7 @@
+table {
+  @apply relative;
+}
+
 th, td {
   white-space: nowrap;
   width: auto;
@@ -7,33 +11,116 @@ th {
   @apply select-none;
 }
 
+tr {
+  @apply select-none;
+  &.detail-row, &.action-row, &.header-row {
+    td {
+      @apply text-gray-200;
+      border-bottom-width: 1px;
+      border-bottom-style: dotted;
+    }
 
-/* Allow PrimeNG table to take full height */
-.p-datatable-wrapper {
-  flex-grow: 1; /* Ensures table stretches */
+    td:first-of-type, th:first-of-type {
+      @apply overflow-hidden text-ellipsis px-4 sticky left-0 bg-inherit text-right text-base;
+      @apply min-w-60 max-w-60;
+      background: var(--p-datatable-header-background);
+      box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    td:last-of-type, th:last-of-type {
+      @apply overflow-hidden text-ellipsis px-4 sticky right-0 bg-inherit text-right text-base;
+      @apply min-w-28 max-w-28;
+      background: var(--p-datatable-header-background);
+      box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    td:first-of-type, td:last-of-type {
+      z-index: 1;
+    }
+
+    th:first-of-type, th:last-of-type {
+      z-index: 2;
+    }
+  }
+
+  &.detail-row {
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    td {
+      @apply py-0.5 px-2;
+      &.project {
+        @apply text-gray-400;
+      }
+
+      &.time {
+        &.value {
+          @apply text-right text-gray-400;
+          &.sum {
+            @apply text-color;
+          }
+
+          &.warning {
+            @apply text-orange-300;
+          }
+
+          &.success {
+            @apply text-green-300;
+          }
+
+          &.less {
+            @apply text-red-300;
+          }
+
+          &.more {
+            @apply text-green-300;
+          }
+        }
+      }
+    }
+  }
+
+  &.summary-row {
+    td {
+      @apply select-none ml-4 left-0 sticky h-10 py-3 overflow-visible min-w-60 max-w-60;
+      border-right: none;
+
+      .line {
+        @apply px-3 text-nowrap flex items-center text-lg;
+        width: 60rem;
+
+        .avatar {
+          @apply w-10 h-10 flex items-center justify-center rounded-full font-normal text-lg;
+          color: var(--p-button-primary-color);
+          background: var(--p-button-primary-background);
+        }
+      }
+    }
+  }
+
+  &.action-row {
+    td {
+      padding: 0 !important;
+
+      &.actions {
+        @apply justify-center items-center cursor-pointer select-none bg-opacity-0;
+        background-color: inherit;
+
+        .action {
+          @apply text-center text-lg p-0.5 w-full opacity-40 transition-opacity hover:opacity-95;
+          filter: brightness(0.8);
+          background: var(--p-datatable-header-background);
+
+          & > * {
+            @apply w-full;
+          }
+        }
+      }
+    }
+  }
 }
 
-/* Make the p-table fill the available height */
-.p-datatable-wrapper {
-  flex-grow: 1;
-}
-
-.column-sticky, .header-sticky {
-  position: sticky;
-  left: 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Ensure content inside the sticky column retains the background */
-.column-sticky {
-  z-index: 1;
-  background-color: inherit;
-  backdrop-filter: blur(5px); /* Adds a subtle blur to the column */
-}
-
-.header-sticky {
-  z-index: 2;
-}
 
 /* Adjust header appearance */
 .header-day {
@@ -45,64 +132,3 @@ th {
   text-align: center;
   max-width: 225px;
 }
-
-.header-balance {
-  left: 220px;
-}
-
-.column-day {
-  min-width: 75px;
-  text-align: right;
-}
-
-.column-balance {
-  left: 220px;
-  text-align: right;
-  @apply text-ellipsis;
-}
-
-/* Adjust for scrollable tables */
-.p-datatable-scrollable-body .column-sticky {
-  z-index: 1;
-}
-
-.employee-container {
-  @apply flex relative;
-  filter: brightness(80%);
-
-  .employee-detail {
-    @apply items-center justify-center flex select-none pl-2;
-
-    * {
-      @apply text-right;
-    }
-
-    .name {
-      @apply overflow-hidden text-ellipsis pl-2;
-      max-width: 170px;
-    }
-
-    .summary {
-      @apply text-gray-400;
-    }
-  }
-
-  .employee-actions {
-    @apply absolute left-0 right-0 bottom-0 h-8 flex justify-center items-center cursor-pointer select-none;
-    background: var(--p-datatable-header-background);
-    margin-left: -1rem;
-    margin-right: -1rem;
-    margin-bottom: -0.75rem;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-
-    &:hover {
-      opacity: 0.75;
-    }
-
-    * {
-      @apply w-full text-center text-base;
-    }
-  }
-}
-

@@ -1,0 +1,5 @@
+<div *ngIf="working() || sick() || holiday()" class="actions">
+    <button *ngIf="open()" (click)="onComplete($event)">finish</button>
+    <button *ngIf="completed()" (click)="onApprove($event)">approve</button>
+    <button *ngIf="approved()" (click)="onReopen($event)">reopen</button>
+</div>

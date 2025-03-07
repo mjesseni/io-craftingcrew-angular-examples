@@ -13,8 +13,7 @@ import {
   stateTransitionSuccess
 } from "./clocking.actions";
 import {mergeMap, of} from "rxjs";
-import {ApprovalStatus} from "../model/clocking.model";
-import {Employee} from "./clocking.state";
+import {ApprovalStatus, Employee} from "../model/clocking.model";
 
 @Injectable()
 export class ClockingEffects {

@@ -1,6 +1,8 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   ElementRef,
   HostListener,
@@ -16,16 +18,17 @@ import {addDays, endOfMonth, startOfMonth} from "date-fns";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {FormsModule} from "@angular/forms";
-import {Checkbox} from "primeng/checkbox";
 import {DatePicker, DatePickerTypeView} from "primeng/datepicker";
-import {DailyRecordCellComponent} from "./daily-record-cell/daily-record-cell.component";
 import {ApprovalStatus, Day} from "../../../model/clocking.model";
 import {ClockingService} from "../../../services/clocking.service";
 import {EmployeeApprovalState} from "../../../store/clocking.state";
-import {formatTimeInMinutes} from "../../../clocking.utils";
+import {formatTimeInMinutes, getProjectTimeDisplay, getProjectTimeSumDisplay} from "../../../clocking.utils";
 import {SelectButton} from "primeng/selectbutton";
 import {DisplayOption} from "@craftingcrew/app/shared";
 import {Tooltip} from "primeng/tooltip";
+import {DailyRecordStatusComponent} from "./daily-record-status/daily-record-status.component";
+import {DailyRecordActionComponent} from "./daily-record-action/daily-record-action.component";
+import {ToggleButton} from "primeng/togglebutton";
 
 @Component({
   selector: 'app-clocking-approval',
@@ -37,27 +40,34 @@ import {Tooltip} from "primeng/tooltip";
     ButtonDirective,
     Ripple,
     FormsModule,
-    Checkbox,
     DatePicker,
-    DailyRecordCellComponent,
     SelectButton,
-    Tooltip
+    Tooltip,
+    DailyRecordStatusComponent,
+    DailyRecordActionComponent,
+    ToggleButton
   ],
+  standalone: true,
   templateUrl: './clocking-approval.component.html',
-  styleUrl: './clocking-approval.component.scss'
+  styleUrl: './clocking-approval.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
   @ViewChild('tableContainer', {static: false}) tableContainer!: ElementRef;
 
-
   protected readonly ApprovalStatus = ApprovalStatus;
+  protected readonly formatTimeInMinutes = formatTimeInMinutes;
+  protected readonly getProjectTimeDisplay = getProjectTimeDisplay;
+  protected readonly getProjectTimeSumDisplay = getProjectTimeSumDisplay;
   protected readonly keydownListener = (event: KeyboardEvent) => this.onKeydown(event);
 
   protected readonly scrollHeight$ = signal<string>('400px');
   protected readonly selectedMonth$ = signal<Date>(new Date());
   protected readonly showWeekends$ = signal<boolean>(false);
+  protected readonly showProjects$ = computed(() => this.modeOption$()?.value === 'project-time')
   protected readonly mouseInside$ = signal<boolean>(false);
   protected readonly pickerMode$ = signal<DatePickerTypeView>('month');
+  protected readonly visibleDays$ = computed(() => this.approvalDays$().filter(day => this.showWeekends$() || !day.weekend).length);
 
   /* state signals */
   protected readonly loading$: Signal<boolean>;
@@ -69,13 +79,6 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
     {value: 'project-time', icon: 'widgets', title: 'Project Time'},
   ];
   protected modeOption$ = signal(this.modeOptions[0]);
-
-  protected timeRangeOptions: DisplayOption[] = [
-    {value: 'day-range', icon: 'calendar_view_day', title: 'Day'},
-    {value: 'week-range', icon: 'calendar_view_week', title: 'Week'},
-    {value: 'month-range', icon: 'calendar_view_month', title: 'Month'},
-  ];
-  protected timeRangeOption$ = signal(this.timeRangeOptions[0]);
 
   constructor(private clockingService: ClockingService) {
     this.loading$ = this.clockingService.loading$;
@@ -154,19 +157,6 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
       this.modeOption$.set(option);
     } else {
       this.modeOption$.set({...this.modeOption$()});
-    }
-  }
-
-  /**
-   * Sets the time range option.
-   *
-   * @param {DisplayOption} option - The selected display option for the time range.
-   */
-  protected onSetTimeRangeOption(option: DisplayOption) {
-    if (option) {
-      this.timeRangeOption$.set(option);
-    } else {
-      this.timeRangeOption$.set({...this.timeRangeOption$()});
     }
   }
 

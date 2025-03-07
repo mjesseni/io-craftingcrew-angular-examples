@@ -1,7 +1,7 @@
 import {computed, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {ApprovalState, ClockingState, DailyRecordState, Employee, EmployeeApprovalState} from "../store/clocking.state";
-import {ApprovalStatus, Day} from "../model/clocking.model";
+import {ApprovalState, ClockingState, DailyRecordState, EmployeeApprovalState} from "../store/clocking.state";
+import {ApprovalStatus, Day, Employee} from "../model/clocking.model";
 import {Store} from "@ngrx/store";
 import {
   approveDailyRecord,
