@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApprovalState, DailyRecordState, EmployeeApprovalState, ProjectRecordState} from "../store/clocking.state";
-import {ApprovalStatus, Day, Employee, Project, WorkingStatus} from "../model/clocking.model";
+import {ApprovalStatus, Day, Employee, Project, Team, WorkingStatus} from "../model/clocking.model";
 import {EMPTY, Observable, of, take} from "rxjs";
 import {getMinApprovalState} from "../clocking.utils";
 import {addDays, endOfMonth, format, getDate, isAfter, isBefore, isSameDay, isWeekend, startOfMonth} from "date-fns";
@@ -19,6 +19,12 @@ export class ClockingBackendService {
     {id: '4', name: 'S2 - Smart Impact'},
     {id: '5', name: 'S2 - Administration'},
     {id: '6', name: 'S2 - Financial Services'}
+  ]
+  teams: Team[] = [
+    {id: '1', name: 'Delta Team'},
+    {id: '2', name: 'Seal Team'},
+    {id: '3', name: 'Special Service Team'},
+    {id: '4', name: 'Joint Special Team'}
   ]
 
   /**
@@ -72,6 +78,10 @@ export class ClockingBackendService {
     });
 
     return of(changed).pipe(delay(150), take(1));
+  }
+
+  public leadTeams(): Observable<Team[]> {
+    return of(this.teams).pipe(delay(Math.random() * 150), take(1));
   }
 
   public loadEmployeeApprovals(from: Date, to: Date): Observable<ApprovalState> {
@@ -144,7 +154,10 @@ export class ClockingBackendService {
   }
 
   private createEmployeeApprovalRecord(employeeId: string, employeeName: string, days: Day[]): EmployeeApprovalState {
-    const employee: Employee = {id: employeeId, name: employeeName, initials: this.getInitials(employeeName)};
+    const employee: Employee = {
+      id: employeeId, name: employeeName, initials: this.getInitials(employeeName),
+      team: this.getRandomTeam()
+    };
     const dailyRecords = this.createDailyRecords(days);
     const workProjects = Array.from(new Set(dailyRecords.flatMap(record => record.projectRecords.map(pr => pr.project.id))))
       .map(id => this.projects.find(project => project.id === id))
@@ -176,8 +189,8 @@ export class ClockingBackendService {
       const normalTimeMinutes = 7.7 * 60;
       const workedTimeMinutes = Math.floor(Math.random() * 60 * 10);
       const bookedTimeMinutes = Math.random() > 0.5 ? workedTimeMinutes : Math.floor(Math.random() * workedTimeMinutes);
-      const absenceTimeMinutes =  Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
-      const vacationTimeMinutes =  Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
+      const absenceTimeMinutes = Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
+      const vacationTimeMinutes = Math.random() > 0.9 ? Math.floor(Math.random() * 60 * 10) : 0;
       return {
         date: day.date,
         day: day,
@@ -227,7 +240,7 @@ export class ClockingBackendService {
       result.push({
         date: currentDay,
         dayOfMonth: getDate(currentDay),
-        shortDayOfWeek: format(currentDay, 'E'),
+        shortDayOfWeek: format(currentDay, 'E').slice(0,2),
         weekend: isWeekend(currentDay)
       });
       currentDay = addDays(currentDay, 1);
@@ -243,5 +256,9 @@ export class ClockingBackendService {
   private getRandomWorkingStatus(): WorkingStatus {
     const statuses = Object.values(WorkingStatus).filter(value => typeof value === 'number') as WorkingStatus[];
     return statuses[Math.floor(Math.random() * statuses.length)] || WorkingStatus.WORKING;
+  }
+
+  private getRandomTeam(): Team {
+    return this.teams[Math.floor(Math.random() * this.teams.length)];
   }
 }

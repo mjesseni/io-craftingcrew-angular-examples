@@ -11,3 +11,8 @@ export const selectApprovalState = createSelector(
   selectClockingState,
   (state) => state.approval
 );
+
+export const selectTeams = createSelector(
+  selectClockingState,
+  (state) => state.teams
+);

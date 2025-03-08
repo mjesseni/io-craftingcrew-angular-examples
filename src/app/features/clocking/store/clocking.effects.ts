@@ -8,11 +8,14 @@ import {
   completeDailyRecord,
   loadApprovals,
   loadApprovalsSuccess,
+  loadInitialSuccess,
+  loadTeams,
+  loadTeamsSuccess,
   reopenDailyRecord,
   setNextDailyRecordState,
   stateTransitionSuccess
 } from "./clocking.actions";
-import {mergeMap, of} from "rxjs";
+import {mergeMap, of, withLatestFrom} from "rxjs";
 import {ApprovalStatus, Employee} from "../model/clocking.model";
 
 @Injectable()
@@ -33,6 +36,33 @@ export class ClockingEffects {
         }))
     })
   ));
+
+  loadTeams$ = createEffect(() => this.actions$.pipe(
+    ofType(loadTeams),
+    mergeMap(() => {
+      return this.clockingService.loadTeams().pipe(
+        mergeMap((teams) => {
+          return of(loadTeamsSuccess({
+            teams: teams
+          }));
+        }))
+    })
+  ));
+
+  synchronizeLoad$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadApprovalsSuccess), // Waits for actionTwo
+      withLatestFrom(this.actions$.pipe(ofType(loadTeamsSuccess))), // Checks if actionOne has been received
+      mergeMap(([approvalResponse, teamsResponse]) => {
+        return of(loadInitialSuccess({
+          from: approvalResponse.from,
+          to: approvalResponse.to,
+          approval: approvalResponse.approval,
+          teams: teamsResponse.teams
+        }));
+      })
+    )
+  );
 
   setNextDailyRecordState$ = createEffect(() => this.actions$.pipe(
     ofType(setNextDailyRecordState, completeDailyRecord, approveDailyRecord, reopenDailyRecord),

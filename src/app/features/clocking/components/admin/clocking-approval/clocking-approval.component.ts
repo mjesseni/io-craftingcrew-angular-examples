@@ -6,6 +6,7 @@ import {
   effect,
   ElementRef,
   HostListener,
+  model,
   OnDestroy,
   Signal,
   signal,
@@ -19,7 +20,7 @@ import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {FormsModule} from "@angular/forms";
 import {DatePicker, DatePickerTypeView} from "primeng/datepicker";
-import {ApprovalStatus, Day} from "../../../model/clocking.model";
+import {ApprovalStatus, Day, Team} from "../../../model/clocking.model";
 import {ClockingService} from "../../../services/clocking.service";
 import {EmployeeApprovalState} from "../../../store/clocking.state";
 import {formatTimeInMinutes, getProjectTimeDisplay, getProjectTimeSumDisplay} from "../../../clocking.utils";
@@ -29,6 +30,7 @@ import {Tooltip} from "primeng/tooltip";
 import {DailyRecordStatusComponent} from "./daily-record-status/daily-record-status.component";
 import {DailyRecordActionComponent} from "./daily-record-action/daily-record-action.component";
 import {ToggleButton} from "primeng/togglebutton";
+import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
 
 @Component({
   selector: 'app-clocking-approval',
@@ -45,7 +47,8 @@ import {ToggleButton} from "primeng/togglebutton";
     Tooltip,
     DailyRecordStatusComponent,
     DailyRecordActionComponent,
-    ToggleButton
+    ToggleButton,
+    DropdownModule
   ],
   standalone: true,
   templateUrl: './clocking-approval.component.html',
@@ -68,10 +71,12 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
   protected readonly mouseInside$ = signal<boolean>(false);
   protected readonly pickerMode$ = signal<DatePickerTypeView>('month');
   protected readonly visibleDays$ = computed(() => this.approvalDays$().filter(day => this.showWeekends$() || !day.weekend).length);
+  protected readonly selectedTeam$ = model<Team>();
 
   /* state signals */
   protected readonly loading$: Signal<boolean>;
   protected readonly approvalDays$: Signal<Day[]>;
+  protected readonly teams$: Signal<Team[]>;
   protected readonly employeeApprovalStates$: Signal<EmployeeApprovalState[]>;
 
   protected modeOptions: DisplayOption[] = [
@@ -82,11 +87,13 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
 
   constructor(private clockingService: ClockingService) {
     this.loading$ = this.clockingService.loading$;
+    this.teams$ = this.clockingService.teams$;
     this.approvalDays$ = this.clockingService.approvalDays$;
     this.employeeApprovalStates$ = this.clockingService.employeeApprovalStates$;
 
     effect(() => {
-      this.clockingService.dispatchLoadApprovals(startOfMonth(this.selectedMonth$()), endOfMonth(this.selectedMonth$()))
+      this.clockingService.dispatchLoadTeams();
+      this.clockingService.dispatchLoadApprovals(startOfMonth(this.selectedMonth$()), endOfMonth(this.selectedMonth$()));
     });
 
   }
@@ -160,9 +167,23 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Approves daily records for the specified employee within the selected month range.
+   *
+   * @param {MouseEvent} event - The mouse event that triggered the approval.
+   * @param {EmployeeApprovalState} employeeState - The state of the employee whose records are being approved.
+   */
   protected onApproveRecordsInRange(event: MouseEvent, employeeState: EmployeeApprovalState) {
     event.preventDefault();
-    this.clockingService.approveDailyRecordsInRange(employeeState.employee, startOfMonth(this.selectedMonth$()),
-      endOfMonth(this.selectedMonth$()));
+    this.clockingService.approveDailyRecordsInRange(employeeState.employee, startOfMonth(this.selectedMonth$()), endOfMonth(this.selectedMonth$()));
+  }
+
+  /**
+   * Handles the selection of a team from the dropdown.
+   *
+   * @param {DropdownChangeEvent} event - The event triggered by selecting a team from the dropdown.
+   */
+  protected onTeamSelected(event: DropdownChangeEvent) {
+    this.clockingService.dispatchApplyTeamFilter(event.value);
   }
 }

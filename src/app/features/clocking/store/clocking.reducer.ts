@@ -1,11 +1,12 @@
 import {createReducer, on} from '@ngrx/store';
 import {initialClockingState} from "./clocking.state";
 import {
-  approveDailyRecord, approveDailyRecordsInRange,
+  approveDailyRecord,
+  approveDailyRecordsInRange,
   clockingActionSuccess,
   completeDailyRecord,
   loadApprovals,
-  loadApprovalsSuccess,
+  loadInitialSuccess,
   reopenDailyRecord,
   setNextDailyRecordState,
   stateTransitionSuccess
@@ -22,8 +23,8 @@ export const clockingReducer = createReducer(
   on(loadApprovals, (state) => (
     {...state, loading: true}
   )),
-  on(loadApprovalsSuccess, (state, {approval}) => (
-    {...state, loading: false, approval: approval}
+  on(loadInitialSuccess, (state, {approval, teams}) => (
+    {...state, loading: false, approval: approval, teams: teams}
   )),
   on(setNextDailyRecordState, (state) => (
     {...state, loading: true}

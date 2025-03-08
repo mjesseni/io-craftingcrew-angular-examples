@@ -1,4 +1,4 @@
-import {ApprovalStatus, Day, Employee, Project, WorkingStatus} from "../model/clocking.model";
+import {ApprovalStatus, Day, Employee, Project, Team, WorkingStatus} from "../model/clocking.model";
 
 /**
  * Represents the state of a project record.
@@ -99,12 +99,16 @@ export interface ClockingState {
   loading: boolean;
   error: never | undefined;
 
+  teams: Team[];
   approval: ApprovalState | undefined
 }
 
 export const initialClockingState: ClockingState = {
   loading: false,
   error: undefined,
+
+  /* the teams */
+  teams: [],
 
   /* sub feature state*/
   approval: undefined

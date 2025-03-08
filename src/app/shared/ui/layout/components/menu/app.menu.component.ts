@@ -89,9 +89,14 @@ export class AppMenuComponent implements OnInit {
         icon: 'pi-clock',
         items: [
           {
+            label: 'Tracking',
+            icon: 'pi pi-fw pi-calendar-clock',
+            routerLink: ['/clocking/employee/tracking']
+          },
+          {
             label: 'Approve',
             icon: 'pi pi-fw pi-calendar-clock',
-            routerLink: ['/clocking/approve']
+            routerLink: ['/clocking/admin/approve']
           }
         ]
       }

@@ -1,17 +1,19 @@
 import {computed, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {ApprovalState, ClockingState, DailyRecordState, EmployeeApprovalState} from "../store/clocking.state";
-import {ApprovalStatus, Day, Employee} from "../model/clocking.model";
+import {ApprovalStatus, Day, Employee, Team} from "../model/clocking.model";
 import {Store} from "@ngrx/store";
 import {
+  applyTeamFilter,
   approveDailyRecord,
   approveDailyRecordsInRange,
   completeDailyRecord,
   loadApprovals,
+  loadTeams,
   reopenDailyRecord,
   setNextDailyRecordState
 } from "../store/clocking.actions";
-import {selectApprovalState, selectLoadingState} from "../store/clocking.selectors";
+import {selectApprovalState, selectLoadingState, selectTeams} from "../store/clocking.selectors";
 import {ClockingBackendService} from "./clocking-backend.service";
 
 /**
@@ -26,6 +28,7 @@ export class ClockingService {
 
   loading$ = this.clockingStore.selectSignal(selectLoadingState);
   approval$ = this.clockingStore.selectSignal(selectApprovalState);
+  teams$ = this.clockingStore.selectSignal(selectTeams);
   approvalDays$ = computed(() => this.approval$()?.days || []);
   employeeApprovalStates$ = computed(() => this.approval$()?.employeeStates || []);
 
@@ -47,6 +50,25 @@ export class ClockingService {
   public dispatchLoadApprovals(from: Date, to: Date): void {
     this.clockingStore.dispatch(loadApprovals({from, to}));
   }
+
+  /**
+   * Dispatches an action to load the list of teams.
+   */
+  public dispatchLoadTeams() {
+    this.clockingStore.dispatch(loadTeams());
+  }
+
+/**
+ * Dispatches an action to apply a filter for a specific team.
+ *
+ * This method triggers the `applyTeamFilter` action with the specified team,
+ * which will update the team filter in the store.
+ *
+ * @param team - The team to apply the filter for.
+ */
+public dispatchApplyTeamFilter(team: Team) {
+  this.clockingStore.dispatch(applyTeamFilter({team: team}));
+}
 
   /**
    * Dispatches an action to set the next daily record state for a given employee and day.
@@ -154,5 +176,16 @@ export class ClockingService {
    */
   public loadEmployeeApprovals(from: Date, to: Date): Observable<ApprovalState> {
     return this.clockingBackendService.loadEmployeeApprovals(from, to);
+  }
+
+  /**
+   * Loads the list of teams.
+   *
+   * This method fetches the list of teams from the backend service.
+   *
+   * @returns An Observable of the list of teams.
+   */
+  public loadTeams(): Observable<Team[]> {
+    return this.clockingBackendService.leadTeams();
   }
 }

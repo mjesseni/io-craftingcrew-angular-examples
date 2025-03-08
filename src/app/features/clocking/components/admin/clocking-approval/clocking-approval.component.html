@@ -10,6 +10,9 @@
                 <div class="flex flex-row items-center justify-between w-full gap-x-5">
                     <!-- Left Section -->
                     <div class="flex-1 flex flex-row items-center">
+                        <p-dropdown [options]="teams$()" [(ngModel)]="selectedTeam$" placeholder="Select a team"
+                                    optionLabel="name" class="w-2/3" (onChange)="onTeamSelected($event)">
+                        </p-dropdown>
                     </div>
 
                     <!-- Center Section (Month Selection) -->
@@ -51,14 +54,9 @@
                     <th class="z-10">&nbsp;</th>
                     @for (day of approvalDays$(); track day.date) {
                         <th *ngIf="!day.weekend || day.weekend === showWeekends$()" class="header-day">
-                            <div class="flex flex-col">
-                                <span class="text-center" [ngClass]="{'text-red-500': day.weekend}">
-                                    {{ day.shortDayOfWeek }}
-                                </span>
-                                <span class="text-center" [ngClass]="{'text-red-500': day.weekend}">
-                                    {{ day.dayOfMonth.toString().padStart(2, '0') }}
-                                </span>
-                            </div>
+                            <span class="text-center" [ngClass]="{'text-red-500': day.weekend}">
+                                {{ day.shortDayOfWeek }}.&nbsp;&nbsp;{{ day.dayOfMonth }}.
+                            </span>
                         </th>
                     }
                     <th class="font-bold"></th>
@@ -69,23 +67,28 @@
                 @let records = employeeState.dailyRecords;
                 @let projects = employeeState.projects;
                 @let employee = employeeState.employee;
+                @let team = employee.team;
                 @let open = employeeState.approvalStatus === ApprovalStatus.OPEN;
                 @let completed = employeeState.approvalStatus === ApprovalStatus.COMPLETED;
                 @let approved = employeeState.approvalStatus === ApprovalStatus.APPROVED;
 
-                <tr class="summary-row">
+                <tr class="summary-row" style="border-width: 10px">
                     <td>
                         <div class="line">
                             <div class="mr-5">
                                 <div class="avatar">{{ employee.initials }}</div>
                             </div>
-
-                            <div class="w-full">{{ employee.name }}</div>
-                            <div class="w-full">{{ formatEmployeeSummary(employeeState) }}</div>
-                            <div class="w-full">
-                                <span *ngIf="open" class="dark:text-orange-300 text-orange-500">Open</span>
-                                <span *ngIf="completed" class="dark:text-green-300 text-green-600">Completed</span>
-                                <span *ngIf="approved" class="dark:text-blue-300 text-blue-600">Approved</span>
+                            <div class="employee">
+                                <div>{{ employee.name }}</div>
+                                <div class="team">{{ team.name }}</div>
+                            </div>
+                            <div class="details">
+                                <div>{{ formatEmployeeSummary(employeeState) }}</div>
+                                <div class="status">
+                                    <span *ngIf="open" class="dark:text-orange-300 text-orange-500">Open</span>
+                                    <span *ngIf="completed" class="dark:text-green-300 text-green-600">Completed</span>
+                                    <span *ngIf="approved" class="dark:text-blue-300 text-blue-600">Approved</span>
+                                </div>
                             </div>
                         </div>
                     </td>

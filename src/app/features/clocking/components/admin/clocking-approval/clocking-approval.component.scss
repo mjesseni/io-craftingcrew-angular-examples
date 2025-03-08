@@ -20,17 +20,18 @@ tr {
       border-bottom-style: dotted;
     }
 
-    td:first-of-type, th:first-of-type {
-      @apply overflow-hidden text-ellipsis px-4 sticky left-0 bg-inherit text-right text-base;
-      @apply min-w-60 max-w-60;
+    td:first-of-type, th:first-of-type, td:last-of-type, th:last-of-type  {
+      @apply overflow-hidden text-ellipsis px-4 sticky bg-inherit text-right text-base;
       background: var(--p-datatable-header-background);
+    }
+
+    td:first-of-type, th:first-of-type {
+      @apply left-0 min-w-60 max-w-60;
       box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1);
     }
 
     td:last-of-type, th:last-of-type {
-      @apply overflow-hidden text-ellipsis px-4 sticky right-0 bg-inherit text-right text-base;
-      @apply min-w-28 max-w-28;
-      background: var(--p-datatable-header-background);
+      @apply right-0 min-w-28 max-w-28;
       box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -82,6 +83,7 @@ tr {
   }
 
   &.summary-row {
+
     td {
       @apply select-none ml-4 left-0 sticky h-10 py-3 overflow-visible min-w-60 max-w-60;
       border-right: none;
@@ -94,6 +96,25 @@ tr {
           @apply w-10 h-10 flex items-center justify-center rounded-full font-normal text-lg;
           color: var(--p-button-primary-color);
           background: var(--p-button-primary-background);
+        }
+
+        .employee {
+          @apply flex flex-col mr-10 w-44;
+          * {
+            @apply overflow-hidden text-ellipsis;
+          }
+
+          .team {
+            @apply text-base text-gray-400;
+          }
+        }
+
+        .details {
+          @apply flex flex-col;
+
+          .status {
+            @apply text-base;
+          }
         }
       }
     }
@@ -124,11 +145,5 @@ tr {
 
 /* Adjust header appearance */
 .header-day {
-  text-align: center;
-  min-width: 75px;
-}
-
-.header-employee {
-  text-align: center;
-  max-width: 225px;
+  @apply text-center min-w-24;
 }

@@ -5,10 +5,16 @@ export interface Day {
   weekend: boolean;
 }
 
+export interface Team {
+  id: string;
+  name: string;
+}
+
 export interface Employee {
   id: string;
   name: string;
   initials: string;
+  team: Team;
 }
 
 export interface Project {
