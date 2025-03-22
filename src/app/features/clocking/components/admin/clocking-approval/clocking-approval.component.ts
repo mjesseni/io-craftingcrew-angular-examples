@@ -21,7 +21,7 @@ import {Ripple} from "primeng/ripple";
 import {FormsModule} from "@angular/forms";
 import {DatePicker, DatePickerTypeView} from "primeng/datepicker";
 import {ApprovalStatus, Day, Team} from "../../../model/clocking.model";
-import {ClockingService} from "../../../services/clocking.service";
+import {ClockingApprovalService} from "../../../services/clocking-approval.service";
 import {EmployeeApprovalState} from "../../../store/clocking.state";
 import {formatTimeInMinutes, getProjectTimeDisplay, getProjectTimeSumDisplay} from "../../../clocking.utils";
 import {SelectButton} from "primeng/selectbutton";
@@ -90,7 +90,7 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
   ];
   protected modeOption$ = signal(this.modeOptions[0]);
 
-  constructor(private clockingService: ClockingService) {
+  constructor(private clockingService: ClockingApprovalService) {
     this.loading$ = this.clockingService.loading$;
     this.teams$ = this.clockingService.teams$;
     this.approvalDays$ = this.clockingService.approvalDays$;

@@ -14,7 +14,7 @@ import {
   setNextDailyRecordState
 } from "../store/clocking.actions";
 import {selectApprovalState, selectLoadingState, selectTeams} from "../store/clocking.selectors";
-import {ClockingBackendService} from "./clocking-backend.service";
+import {ClockingApprovalBackendService} from "./clocking-approval-backend.service";
 
 /**
  * Service for managing clocking actions and state.
@@ -24,7 +24,7 @@ import {ClockingBackendService} from "./clocking-backend.service";
  * operations.
  */
 @Injectable({providedIn: 'root'})
-export class ClockingService {
+export class ClockingApprovalService {
 
   loading$ = this.clockingStore.selectSignal(selectLoadingState);
   approval$ = this.clockingStore.selectSignal(selectApprovalState);
@@ -37,7 +37,7 @@ export class ClockingService {
   employeeStates: EmployeeApprovalState[] = [];
 
   constructor(private readonly clockingStore: Store<ClockingState>,
-              private readonly clockingBackendService: ClockingBackendService) {
+              private readonly clockingBackendService: ClockingApprovalBackendService) {
   }
 
   /**

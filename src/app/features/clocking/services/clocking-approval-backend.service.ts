@@ -9,7 +9,7 @@ import {delay} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class ClockingBackendService {
+export class ClockingApprovalBackendService {
 
   employeeStates: EmployeeApprovalState[] = [];
   projects: Project[] = [

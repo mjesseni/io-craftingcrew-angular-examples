@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {Store} from "@ngrx/store";
-import {ClockingService} from "../services/clocking.service";
+import {ClockingApprovalService} from "../services/clocking-approval.service";
 import {
   approveDailyRecord,
   approveDailyRecordsInRange,
@@ -20,7 +20,7 @@ import {ApprovalStatus, Employee} from "../model/clocking.model";
 
 @Injectable()
 export class ClockingEffects {
-  constructor(private actions$: Actions, private clockingService: ClockingService, private store: Store) {
+  constructor(private actions$: Actions, private clockingService: ClockingApprovalService, private store: Store) {
   }
 
   loadApprovals$ = createEffect(() => this.actions$.pipe(

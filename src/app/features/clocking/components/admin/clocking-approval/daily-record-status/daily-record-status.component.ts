@@ -3,7 +3,7 @@ import {NgClass, NgIf} from "@angular/common";
 import {Tooltip} from "primeng/tooltip";
 import {DailyRecordState} from "../../../../store/clocking.state";
 import {ApprovalStatus, Employee, WorkingStatus} from "../../../../model/clocking.model";
-import {ClockingService} from "../../../../services/clocking.service";
+import {ClockingApprovalService} from "../../../../services/clocking-approval.service";
 
 @Component({
   selector: 'app-daily-record-status',
@@ -30,7 +30,7 @@ export class DailyRecordStatusComponent {
   protected holiday = computed(() => this.record()?.workingStatus === WorkingStatus.HOLIDAY);
   protected sick = computed(() => this.record()?.workingStatus === WorkingStatus.SICK);
 
-  constructor(private readonly clockingService: ClockingService) {
+  constructor(private readonly clockingService: ClockingApprovalService) {
   }
 
   /**

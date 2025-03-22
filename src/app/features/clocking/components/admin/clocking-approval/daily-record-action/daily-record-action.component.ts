@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core
 import {NgIf} from "@angular/common";
 import {DailyRecordState} from "../../../../store/clocking.state";
 import {ApprovalStatus, Employee, WorkingStatus} from "../../../../model/clocking.model";
-import {ClockingService} from "../../../../services/clocking.service";
+import {ClockingApprovalService} from "../../../../services/clocking-approval.service";
 
 @Component({
   selector: 'app-daily-record-action',
@@ -27,7 +27,7 @@ export class DailyRecordActionComponent {
   protected holiday = computed(() => this.record()?.workingStatus === WorkingStatus.HOLIDAY);
   protected sick = computed(() => this.record()?.workingStatus === WorkingStatus.SICK);
 
-  constructor(private readonly clockingService: ClockingService) {
+  constructor(private readonly clockingService: ClockingApprovalService) {
   }
 
   protected onComplete(event: Event) {
