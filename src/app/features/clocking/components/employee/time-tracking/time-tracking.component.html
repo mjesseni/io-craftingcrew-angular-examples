@@ -150,8 +150,8 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-day>
                             <tr class="status-row">
-                                <td class="project">POI CrossNG</td>
-                                <td class="comment">07:20 / 07:42</td>
+                                <td class="project">S2 - Clocking</td>
+                                <td class="comment">Implement time tracking UI</td>
                                 <td class="time">03:30</td>
                             </tr>
                         </ng-template>
@@ -161,6 +161,29 @@
         }
     </div>
     <div class="infos">
+        <p-card header="Recent time bookings" styleClass="dark:bg-gray-600 dark:text-primary-100">
+            <p-table styleClass="recent-time-bookings table-light" [value]="openDays$()"
+                     [responsiveLayout]="'scroll'" [scrollable]="true" scrollHeight="250px">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="kind max-w-12">Kind</th>
+                        <th class="project max-w-12">Project</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-day>
+                    <tr class="project-row">
+                        <td class="kind">Office</td>
+                        <td class="project">S2 - Clocking</td>
+                    </tr>
+                    <tr class="task-row">
+                        <td></td>
+                        <td>
+                            Implement advanced clocking Ui
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
         <p-card header="Open days" styleClass="dark:bg-gray-600 dark:text-primary-100">
             <p-table styleClass="open-days table-light" [value]="openDays$()"
                      [responsiveLayout]="'scroll'" [scrollable]="true" scrollHeight="250px">
