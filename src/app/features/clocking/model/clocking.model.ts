@@ -24,6 +24,7 @@ export interface Project {
 
 export enum ApprovalStatus {
   OPEN,
+  FINISHED,
   COMPLETED,
   APPROVED
 }
@@ -32,4 +33,15 @@ export enum WorkingStatus {
   WORKING,
   HOLIDAY,
   SICK
+}
+
+export enum WorkEntryKind {
+  OFFICE,
+  HOMEOFFICE,
+  TRAVEL_ACTIVE,
+  TRAVEL_PASSIVE,
+  DOCTOR_VISIT,
+  SICK_LEAVE,
+  VACATION,
+  COMPENSATION
 }

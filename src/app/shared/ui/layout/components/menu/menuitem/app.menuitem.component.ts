@@ -46,7 +46,8 @@ import {TranslocoPipe} from '@jsverse/transloco';
             transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
         ])
     ],
-    imports: [NgIf, Ripple, NgClass, Tooltip, RouterLinkActive, RouterLink, NgFor, TranslocoPipe]
+    imports: [NgIf, Ripple, NgClass, Tooltip, RouterLinkActive, RouterLink, NgFor, TranslocoPipe],
+    standalone: true
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {
     /* eslint-disable */

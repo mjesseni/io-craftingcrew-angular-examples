@@ -83,10 +83,8 @@ tr {
   }
 
   &.summary-row {
-
     td {
-      @apply select-none ml-4 left-0 sticky h-10 py-3 overflow-visible min-w-60 max-w-60;
-      border-right: none;
+      @apply select-none ml-4 h-10 py-3;
 
       .line {
         @apply px-3 text-nowrap flex items-center text-lg;
@@ -117,6 +115,18 @@ tr {
           }
         }
       }
+    }
+    :not(td:first-of-type) {
+      &:not(td:last-of-type) {
+        @apply border-l-0;
+      }
+    }
+    td:first-of-type {
+      @apply left-0 sticky overflow-visible min-w-60 max-w-60;
+    }
+    td:last-of-type {
+      @apply right-0 sticky;
+      box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
     }
   }
 

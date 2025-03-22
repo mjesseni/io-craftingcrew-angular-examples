@@ -14,13 +14,15 @@ import {ClockingService} from "../../../../services/clocking.service";
   ],
   templateUrl: './daily-record-status.component.html',
   styleUrl: './daily-record-status.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class DailyRecordStatusComponent {
   record = input<DailyRecordState>();
   employee = input<Employee>();
 
-  protected open = computed(() => this.record()?.approvalStatus === ApprovalStatus.OPEN);
+  protected open = computed(() => (this.record()?.approvalStatus || ApprovalStatus.OPEN) === ApprovalStatus.OPEN);
+  protected finished = computed(() => this.record()?.approvalStatus === ApprovalStatus.FINISHED);
   protected completed = computed(() => this.record()?.approvalStatus === ApprovalStatus.COMPLETED);
   protected approved = computed(() => this.record()?.approvalStatus === ApprovalStatus.APPROVED);
 
@@ -46,7 +48,9 @@ export class DailyRecordStatusComponent {
     }
   }
 
-  protected onClick() {
+  protected onClick(evt: MouseEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
     this.onNextState();
   }
 }

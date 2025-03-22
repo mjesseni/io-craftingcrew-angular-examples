@@ -34,3 +34,73 @@
 :root {
   --p-preset: custom-theme;
 }
+
+.field {
+    @apply flex flex-col gap-1;
+    &.field-sm {
+      @apply max-w-24;
+    }
+    label {
+        @apply font-medium text-sm block ml-2 cursor-pointer;
+    }
+}
+
+.field-group-h {
+    @apply w-full flex;
+}
+
+.field-group-v {
+  @apply w-full flex flex-col grow;
+}
+
+.table-light {
+  @apply bg-inherit;
+  .p-datatable-table-container {
+    @apply bg-inherit;
+    table {
+      @apply bg-inherit;
+      thead {
+        @apply bg-inherit;
+      }
+      tr, th, td {
+        @apply bg-transparent px-0;
+        border-color: theme('colors.gray.400');
+        border-bottom-style: dashed;
+        border-bottom-width: 0.5px;
+      }
+
+      th, td {
+        &:last-of-type {
+          @apply pr-3;
+        }
+      }
+    }
+  }
+}
+
+.p-card-body {
+  @apply bg-inherit rounded-lg;
+  .p-card-content {
+    @apply bg-inherit;
+  }
+}
+
+p-table {
+  @apply bg-inherit;
+}
+
+th {
+  &.selected {
+    box-shadow: inset 0 -2px 0 theme('colors.primary');
+    filter: brightness(1.2);
+  }
+}
+
+
+.p-inputtext, .p-inputwrapper {
+  height: 2.75rem;;
+}
+
+.p-select-label {
+  @apply self-center;
+}

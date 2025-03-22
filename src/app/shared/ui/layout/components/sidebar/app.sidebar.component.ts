@@ -8,7 +8,8 @@ import {AppMenuComponent} from '../menu/app.menu.component';
     templateUrl: './app.sidebar.component.html',
     styleUrls: ['./app.sidebar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterLink, AppMenuComponent]
+    imports: [RouterLink, AppMenuComponent],
+    standalone: true
 })
 export class AppSidebarComponent {
 

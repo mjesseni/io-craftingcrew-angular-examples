@@ -9,7 +9,15 @@ export interface ProjectRecordState {
 
   /** The time spent on the project in minutes. */
   timeInMinutes: number;
+
+  /** Optional comment associated with the project record. */
+  comment?: string;
 }
+
+export interface TimeRecordState {
+
+}
+
 
 /**
  * Represents the state of a daily record for an employee.
@@ -43,7 +51,7 @@ export interface DailyRecordState {
   vacationTimeMinutes?: number;
 
   /** The array of project records associated with the daily record. */
-  projectRecords: ProjectRecordState[];
+  projectRecords?: ProjectRecordState[];
 }
 
 /**
@@ -76,6 +84,9 @@ export interface EmployeeApprovalState {
 
   /** The total vacation time in minutes for the employee. */
   vacationTimeMinutes: number;
+
+  /** Indicates whether the employee's approval state is visible. */
+  visible: boolean;
 }
 
 /**

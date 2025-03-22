@@ -31,6 +31,8 @@ export class ClockingService {
   teams$ = this.clockingStore.selectSignal(selectTeams);
   approvalDays$ = computed(() => this.approval$()?.days || []);
   employeeApprovalStates$ = computed(() => this.approval$()?.employeeStates || []);
+  visibleEmployeeApprovalStates$ = computed(() => this.employeeApprovalStates$()
+    .filter(state => state.visible));
 
   employeeStates: EmployeeApprovalState[] = [];
 
@@ -58,17 +60,17 @@ export class ClockingService {
     this.clockingStore.dispatch(loadTeams());
   }
 
-/**
- * Dispatches an action to apply a filter for a specific team.
- *
- * This method triggers the `applyTeamFilter` action with the specified team,
- * which will update the team filter in the store.
- *
- * @param team - The team to apply the filter for.
- */
-public dispatchApplyTeamFilter(team: Team) {
-  this.clockingStore.dispatch(applyTeamFilter({team: team}));
-}
+  /**
+   * Dispatches an action to apply a filter for a specific team.
+   *
+   * This method triggers the `applyTeamFilter` action with the specified team,
+   * which will update the team filter in the store.
+   *
+   * @param team - The team to apply the filter for.
+   */
+  public dispatchApplyTeamFilter(team: Team) {
+    this.clockingStore.dispatch(applyTeamFilter({team: team}));
+  }
 
   /**
    * Dispatches an action to set the next daily record state for a given employee and day.

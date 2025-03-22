@@ -5,7 +5,6 @@ import {Counter} from "../model/examples.model";
   selector: 'app-counter-display',
   imports: [],
   templateUrl: './counter-display.component.html',
-  styleUrl: './counter-display.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CounterDisplayComponent {

@@ -1,5 +1,5 @@
 import {DailyRecordState, EmployeeApprovalState} from "./store/clocking.state";
-import {Project} from "./model/clocking.model";
+import {Project, WorkEntryKind} from "./model/clocking.model";
 
 /**
  * Formats a given time in minutes to a string in the format `HH:mm`.
@@ -45,9 +45,18 @@ export const getProjectTimeDisplay = (state: DailyRecordState | undefined, proje
 
 export const getProjectTimeSumDisplay = (state: EmployeeApprovalState | undefined, project: Project) => {
   const projectTime = state?.dailyRecords
-    .map(record => record.projectRecords.find(projectRecord => projectRecord.project.id === project.id))
+    .map(record => record.projectRecords?.find(projectRecord => projectRecord.project.id === project.id))
     .filter(record => !!record)
     .reduce((sum, record) => sum + record!.timeInMinutes, 0) || 0;
 
   return projectTime > 0 ? formatTimeInMinutes(projectTime) : '';
+}
+
+/**
+ * Retrieves all work entry kinds as an array of strings.
+ *
+ * @returns {string[]} An array of work entry kinds.
+ */
+export const getWorkEntryKinds = (): string[] => {
+  return Object.values(WorkEntryKind).filter(value => typeof value === "string");
 }

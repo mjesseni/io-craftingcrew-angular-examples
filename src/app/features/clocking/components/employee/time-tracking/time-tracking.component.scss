@@ -1,0 +1,108 @@
+.page {
+  @apply grid grid-cols-12 gap-x-5;
+
+  .tracking {
+    @apply flex flex-col justify-start gap-5 col-span-8;
+
+    .header {
+      @apply flex flex-row justify-start rounded;
+
+      .week {
+        .p-datatable-table-container {
+          scrollbar-width: none; /* Hides scrollbar in Firefox */
+          -ms-overflow-style: none; /* Hides scrollbar in IE and Edge */
+        }
+
+        tr {
+          @apply select-none;
+          &.action-row, &.header-row {
+            td {
+              @apply text-gray-200;
+              border-bottom-width: 1px;
+            }
+
+            td:first-of-type, th:first-of-type, td:last-of-type, th:last-of-type {
+              @apply overflow-hidden text-ellipsis px-4 sticky bg-inherit text-right text-base;
+              background: var(--p-datatable-header-background);
+            }
+
+            td:first-of-type, th:first-of-type {
+              @apply left-0 min-w-16 max-w-16;
+              box-shadow: 3px 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            td:last-of-type, th:last-of-type {
+              @apply right-0 min-w-16 max-w-16;
+              box-shadow: -3px 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            td:first-of-type, td:last-of-type {
+              z-index: 1;
+            }
+
+            th:first-of-type, th:last-of-type {
+              z-index: 2;
+            }
+          }
+
+          &.header-row {
+            th {
+              &.weekend {
+                .day {
+                  .title {
+                    @apply text-red-400;
+                  }
+                }
+              }
+
+              .status {
+                @apply absolute top-1 right-1;
+              }
+            }
+          }
+
+          &.action-row {
+            td {
+              padding: 0 !important;
+
+              &.actions {
+                @apply justify-center items-center cursor-pointer select-none bg-opacity-0;
+                background-color: inherit;
+
+                .action {
+                  @apply text-center text-lg p-0.5 w-full opacity-40 transition-opacity hover:opacity-95;
+                  filter: brightness(0.8);
+                  background: var(--p-datatable-header-background);
+
+                  & > * {
+                    @apply w-full;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .content {
+      @apply flex flex-col gap-5;
+    }
+  }
+
+  .infos {
+    @apply flex flex-col gap-5 col-span-4;
+    .status-row {
+      .day {
+        @apply cursor-pointer;
+        &:hover {
+          color: theme('colors.primary-400');
+        }
+      }
+    }
+
+    .chart-container {
+      @apply w-full h-48;
+    }
+  }
+}

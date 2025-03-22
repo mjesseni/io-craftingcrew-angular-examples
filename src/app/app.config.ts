@@ -1,6 +1,7 @@
 import {ApplicationConfig, isDevMode} from '@angular/core';
 import {provideRouter, withRouterConfig} from '@angular/router';
 
+import * as echarts from 'echarts/core';
 import {routes} from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
@@ -17,6 +18,8 @@ import {provideTodoFeatureStore} from "./features/todos/todo.providers";
 import {provideClockingFeatureStore} from "./features/clocking/clocking.providers";
 import {todoReducer} from "./features/todos/store/todo.reducer";
 import {clockingReducer} from "./features/clocking/store/clocking.reducer";
+import {provideEchartsCore} from "ngx-echarts";
+import {provideNgxMask} from "ngx-mask";
 
 export const appConfig: ApplicationConfig = {
 
@@ -52,7 +55,8 @@ export const appConfig: ApplicationConfig = {
       loader: TranslationLoaderService
     }),
 
-
+    provideNgxMask(),
+    provideEchartsCore({echarts}),
     provideState('router', routerReducer), // Register 'router' as a feature state
     provideState('todo', todoReducer), // Register 'router' as a feature state
     provideState('clocking', clockingReducer), // Register 'router' as a feature state

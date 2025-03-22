@@ -11,13 +11,15 @@ import {ClockingService} from "../../../../services/clocking.service";
   ],
   templateUrl: './daily-record-action.component.html',
   styleUrl: './daily-record-action.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class DailyRecordActionComponent {
   record = input<DailyRecordState>();
   employee = input<Employee>();
 
   protected open = computed(() => this.record()?.approvalStatus === ApprovalStatus.OPEN);
+  protected finished = computed(() => this.record()?.approvalStatus === ApprovalStatus.FINISHED);
   protected completed = computed(() => this.record()?.approvalStatus === ApprovalStatus.COMPLETED);
   protected approved = computed(() => this.record()?.approvalStatus === ApprovalStatus.APPROVED);
 

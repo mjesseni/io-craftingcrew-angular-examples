@@ -1,213 +1,212 @@
-<div class="p-4">
-    <h2 class="mb-4">Timesheet Approval</h2>
-    <div #tableContainer class="table-container text-lg" (mouseenter)="mouseInside$.set(true)"
-         (mouseleave)="mouseInside$.set(false)">
-        <p-table [value]="employeeApprovalStates$()" [loading]="loading$()" [paginator]="false" [rows]="10"
-                 [showGridlines]="true"
-                 [responsiveLayout]="'scroll'" [scrollable]="true" [scrollHeight]="scrollHeight$()">
+<h2 class="mb-4">Timesheet Approval</h2>
+<div #tableContainer class="table-container text-lg" (mouseenter)="mouseInside$.set(true)"
+     (mouseleave)="mouseInside$.set(false)">
+    <p-table [value]="visibleEmployeeApprovalStates$()" [loading]="loading$()" [paginator]="false" [rows]="10"
+             [showGridlines]="true"
+             [responsiveLayout]="'scroll'" [scrollable]="true" [scrollHeight]="scrollHeight$()">
 
-            <ng-template pTemplate="caption">
-                <div class="flex flex-row items-center justify-between w-full gap-x-5">
-                    <!-- Left Section -->
-                    <div class="flex-1 flex flex-row items-center">
-                        <p-dropdown [options]="teams$()" [(ngModel)]="selectedTeam$" placeholder="Select a team"
-                                    optionLabel="name" class="w-2/3" (onChange)="onTeamSelected($event)">
-                        </p-dropdown>
-                    </div>
-
-                    <!-- Center Section (Month Selection) -->
-                    <div class="flex flex-1 justify-center items-center gap-x-3">
-                        <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
-                                (click)="onPrevMonth()">
-                            <i class="p-button-icon pi pi-chevron-left"></i>
-                        </button>
-                        <p-date-picker *ngIf="selectedMonth$()" inputId="selectedMonth"
-                                       [ngModel]="selectedMonth$()" (onSelect)="selectedMonth$.set($event)"
-                                       [view]="pickerMode$()" dateFormat="MM yy"
-                                       [showIcon]="true" [readonlyInput]="true"></p-date-picker>
-                        <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
-                                (click)="onNextMonth()">
-                            <i class="p-button-icon pi pi-chevron-right"></i>
-                        </button>
-                    </div>
-
-                    <!-- Right Section (Empty for future content) -->
-                    <div class="flex-1 flex justify-end gap-x-5 items-center">
-                        <p-togglebutton [ngModel]="showWeekends$()" (click)="showWeekends$.set(!showWeekends$())"
-                                        styleClass="icon-button">
-                            <ng-template #icon>
-                                <i class="material-icons md" pTooltip="Show full week" tooltipPosition="left">calendar_view_week</i>
-                            </ng-template>
-                        </p-togglebutton>
-                        <p-selectButton [options]="modeOptions" [ngModel]="modeOption$()"
-                                        (ngModelChange)="onSetModeOption($event)" optionLabel="justify">
-                            <ng-template #item let-item>
-                                <i class="material-icons md" [pTooltip]="item.title"
-                                   tooltipPosition="left">{{ item.icon }}</i>
-                            </ng-template>
-                        </p-selectButton>
-                    </div>
+        <ng-template pTemplate="caption">
+            <div class="flex flex-row items-center justify-between w-full gap-x-5">
+                <!-- Left Section -->
+                <div class="flex-1 flex flex-row items-center">
+                    <p-select [options]="teams$()" [(ngModel)]="selectedTeam$" placeholder="Select a team"
+                              optionLabel="name" class="w-2/3" showClear="true" (onChange)="onTeamSelected($event)">
+                    </p-select>
                 </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr class="header-row">
-                    <th class="z-10">&nbsp;</th>
-                    @for (day of approvalDays$(); track day.date) {
-                        <th *ngIf="!day.weekend || day.weekend === showWeekends$()" class="header-day">
+
+                <!-- Center Section (Month Selection) -->
+                <div class="flex flex-1 justify-center items-center gap-x-3">
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+                            (click)="onPrevMonth()">
+                        <i class="p-button-icon pi pi-chevron-left"></i>
+                    </button>
+                    <p-date-picker *ngIf="selectedMonth$()" inputId="selectedMonth"
+                                   [ngModel]="selectedMonth$()" (onSelect)="selectedMonth$.set($event)"
+                                   [view]="pickerMode$()" dateFormat="MM yy"
+                                   [showIcon]="true" [readonlyInput]="true"></p-date-picker>
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+                            (click)="onNextMonth()">
+                        <i class="p-button-icon pi pi-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Right Section (Empty for future content) -->
+                <div class="flex-1 flex justify-end gap-x-5 items-center">
+                    <p-togglebutton [ngModel]="showWeekends$()" (click)="showWeekends$.set(!showWeekends$())"
+                                    styleClass="icon-button">
+                        <ng-template #icon>
+                            <i class="material-icons md" pTooltip="Show full week" tooltipPosition="left">calendar_view_week</i>
+                        </ng-template>
+                    </p-togglebutton>
+                    <p-selectButton [options]="modeOptions" [ngModel]="modeOption$()"
+                                    (ngModelChange)="onSetModeOption($event)" optionLabel="justify">
+                        <ng-template #item let-item>
+                            <i class="material-icons md" [pTooltip]="item.title"
+                               tooltipPosition="left">{{ item.icon }}</i>
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr class="header-row">
+                <th class="z-10">&nbsp;</th>
+                @for (day of approvalDays$(); track day.date) {
+                    <th *ngIf="!day.weekend || day.weekend === showWeekends$()" class="header-day">
                             <span class="text-center" [ngClass]="{'text-red-500': day.weekend}">
                                 {{ day.shortDayOfWeek }}.&nbsp;&nbsp;{{ day.dayOfMonth }}.
                             </span>
-                        </th>
-                    }
-                    <th class="font-bold"></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-employeeState>
+                    </th>
+                }
+                <th class="font-bold"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employeeState>
+            @let records = employeeState.dailyRecords;
+            @let projects = employeeState.projects;
+            @let employee = employeeState.employee;
+            @let team = employee.team;
+            @let open = employeeState.approvalStatus === OPEN;
+            @let completed = employeeState.approvalStatus ===COMPLETED;
+            @let approved = employeeState.approvalStatus === APPROVED;
 
-                @let records = employeeState.dailyRecords;
-                @let projects = employeeState.projects;
-                @let employee = employeeState.employee;
-                @let team = employee.team;
-                @let open = employeeState.approvalStatus === ApprovalStatus.OPEN;
-                @let completed = employeeState.approvalStatus === ApprovalStatus.COMPLETED;
-                @let approved = employeeState.approvalStatus === ApprovalStatus.APPROVED;
-
-                <tr class="summary-row" style="border-width: 10px">
-                    <td>
-                        <div class="line">
-                            <div class="mr-5">
-                                <div class="avatar">{{ employee.initials }}</div>
-                            </div>
-                            <div class="employee">
-                                <div>{{ employee.name }}</div>
-                                <div class="team">{{ team.name }}</div>
-                            </div>
-                            <div class="details">
-                                <div>{{ formatEmployeeSummary(employeeState) }}</div>
-                                <div class="status">
-                                    <span *ngIf="open" class="dark:text-orange-300 text-orange-500">Open</span>
-                                    <span *ngIf="completed" class="dark:text-green-300 text-green-600">Completed</span>
-                                    <span *ngIf="approved" class="dark:text-blue-300 text-blue-600">Approved</span>
-                                </div>
+            <tr class="summary-row">
+                <td>
+                    <div class="line">
+                        <div class="mr-5">
+                            <div class="avatar">{{ employee.initials }}</div>
+                        </div>
+                        <div class="employee">
+                            <div>{{ employee.name }}</div>
+                            <div class="team">{{ team.name }}</div>
+                        </div>
+                        <div class="details">
+                            <div>{{ formatEmployeeSummary(employeeState) }}</div>
+                            <div class="status">
+                                <span *ngIf="open" class="dark:text-orange-300 text-orange-500">Open</span>
+                                <span *ngIf="completed" class="dark:text-green-300 text-green-600">Completed</span>
+                                <span *ngIf="approved" class="dark:text-blue-300 text-blue-600">Approved</span>
                             </div>
                         </div>
-                    </td>
-                    <td [colSpan]="visibleDays$() + 1" style="border-left: none; box-shadow: none;">&nbsp;</td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="status">Status</td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="status">
-                                <app-daily-record-status [record]="record"
-                                                         [employee]="employee"></app-daily-record-status>
-                            </td>
-                        }
-                    }
-                    <td>Summe</td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="time">Worked Time</td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="time value">
-                                {{ formatTimeInMinutes(record.workedTimeMinutes) }}
-                            </td>
-                        }
-                    }
-                    <td class="time value sum">
-                        {{ formatTimeInMinutes(employeeState.workedTimeMinutes) }}
-                    </td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="time">Over/Short time</td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            @let balance = record.workedTimeMinutes - record.normalTimeMinutes;
-                            <td class="time value" [ngClass]="{'more': balance > 0, 'less': balance < 0}">
-                                {{ formatTimeInMinutes(balance) }}
-                            </td>
-                        }
-                    }
-                    @let balance = employeeState.workedTimeMinutes - employeeState.normalTimeMinutes;
-                    <td class="time value sum" [ngClass]="{'more': balance > 0, 'less': balance < 0}">
-                        {{ formatTimeInMinutes(balance) }}
-                    </td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="time">Absence</td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="time value">
-                                {{ formatTimeInMinutes(record.absenceTimeMinutes) }}
-                            </td>
-                        }
-                    }
-                    <td class="time value sum">
-                        {{ formatTimeInMinutes(employeeState.absenceTimeMinutes) }}
-                    </td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="time">Vacation</td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="time value">
-                                {{ formatTimeInMinutes(record.vacationTimeMinutes) }}
-                            </td>
-                        }
-                    }
-                    <td class="time value sum">
-                        {{ formatTimeInMinutes(employeeState.vacationTimeMinutes) }}
-                    </td>
-                </tr>
-                <tr class="detail-row">
-                    <td class="time">Project Time</td>
-                    @for (record of records; track record.day.date) {
-                        @let deviating = record.workedTimeMinutes !== record.bookedTimeMinutes;
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="time value" [class.warning]="deviating" [class.success]="!deviating">
-                                {{ formatTimeInMinutes(record.bookedTimeMinutes) }}
-                            </td>
-                        }
-                    }
-                    <td class="time value sum">
-                        {{ formatTimeInMinutes(employeeState.bookedTimeMinutes) }}
-                    </td>
-                </tr>
-                @if (showProjects$()) {
-                    @for (project of projects; track project.id) {
-                        <tr class="detail-row">
-                            <td class="project">{{ project.name }}</td>
-                            @for (record of records; track record.day.date) {
-                                @if (!record.day.weekend || showWeekends$()) {
-                                    <td class="time value">
-                                        {{ getProjectTimeDisplay(record, project) }}
-                                    </td>
-                                }
-                            }
-                            <td class="time value">
-                                {{ getProjectTimeSumDisplay(employeeState, project) }}
-                            </td>
-                        </tr>
+                    </div>
+                </td>
+                <td [colSpan]="visibleDays$()">&nbsp;</td>
+                <td></td>
+            </tr>
+            <tr class="detail-row">
+                <td class="status">Status</td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="status">
+                            <app-daily-record-status [record]="record"
+                                                     [employee]="employee"></app-daily-record-status>
+                        </td>
                     }
                 }
-                <tr class="action-row">
-                    <td class="actions">
-                        <div class="action">
-                            <button (click)="onApproveRecordsInRange($event, employeeState)">approve</button>
-                        </div>
-                    </td>
-                    @for (record of records; track record.day.date) {
-                        @if (!record.day.weekend || showWeekends$()) {
-                            <td class="actions">
-                                <app-daily-record-action [record]="record"
-                                                         [employee]="employee"></app-daily-record-action>
-                            </td>
-                        }
+                <td>Summe</td>
+            </tr>
+            <tr class="detail-row">
+                <td class="time">Worked Time</td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="time value">
+                            {{ formatTimeInMinutes(record.workedTimeMinutes) }}
+                        </td>
                     }
-                    <td></td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+                }
+                <td class="time value sum">
+                    {{ formatTimeInMinutes(employeeState.workedTimeMinutes) }}
+                </td>
+            </tr>
+            <tr class="detail-row">
+                <td class="time">Over/Short time</td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        @let balance = record.workedTimeMinutes - record.normalTimeMinutes;
+                        <td class="time value" [ngClass]="{'more': balance > 0, 'less': balance < 0}">
+                            {{ formatTimeInMinutes(balance) }}
+                        </td>
+                    }
+                }
+                @let balance = employeeState.workedTimeMinutes - employeeState.normalTimeMinutes;
+                <td class="time value sum" [ngClass]="{'more': balance > 0, 'less': balance < 0}">
+                    {{ formatTimeInMinutes(balance) }}
+                </td>
+            </tr>
+            <tr class="detail-row">
+                <td class="time">Absence</td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="time value">
+                            {{ formatTimeInMinutes(record.absenceTimeMinutes) }}
+                        </td>
+                    }
+                }
+                <td class="time value sum">
+                    {{ formatTimeInMinutes(employeeState.absenceTimeMinutes) }}
+                </td>
+            </tr>
+            <tr class="detail-row">
+                <td class="time">Vacation</td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="time value">
+                            {{ formatTimeInMinutes(record.vacationTimeMinutes) }}
+                        </td>
+                    }
+                }
+                <td class="time value sum">
+                    {{ formatTimeInMinutes(employeeState.vacationTimeMinutes) }}
+                </td>
+            </tr>
+            <tr class="detail-row">
+                <td class="time">Project Time</td>
+                @for (record of records; track record.day.date) {
+                    @let deviating = record.workedTimeMinutes !== record.bookedTimeMinutes;
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="time value" [class.warning]="deviating" [class.success]="!deviating">
+                            {{ formatTimeInMinutes(record.bookedTimeMinutes) }}
+                        </td>
+                    }
+                }
+                <td class="time value sum">
+                    {{ formatTimeInMinutes(employeeState.bookedTimeMinutes) }}
+                </td>
+            </tr>
+            @if (showProjects$()) {
+                @for (project of projects; track project.id) {
+                    <tr class="detail-row">
+                        <td class="project">{{ project.name }}</td>
+                        @for (record of records; track record.day.date) {
+                            @if (!record.day.weekend || showWeekends$()) {
+                                <td class="time value">
+                                    {{ getProjectTimeDisplay(record, project) }}
+                                </td>
+                            }
+                        }
+                        <td class="time value">
+                            {{ getProjectTimeSumDisplay(employeeState, project) }}
+                        </td>
+                    </tr>
+                }
+            }
+            <tr class="action-row">
+                <td class="actions">
+                    <div class="action">
+                        <button (click)="onApproveRecordsInRange($event, employeeState)">approve</button>
+                    </div>
+                </td>
+                @for (record of records; track record.day.date) {
+                    @if (!record.day.weekend || showWeekends$()) {
+                        <td class="actions">
+                            <app-daily-record-action [record]="record"
+                                                     [employee]="employee"></app-daily-record-action>
+                        </td>
+                    }
+                }
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
+

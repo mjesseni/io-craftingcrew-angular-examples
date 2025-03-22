@@ -1,6 +1,7 @@
 import {createReducer, on} from '@ngrx/store';
-import {initialClockingState} from "./clocking.state";
+import {ClockingState, initialClockingState} from "./clocking.state";
 import {
+  applyTeamFilter,
   approveDailyRecord,
   approveDailyRecordsInRange,
   clockingActionSuccess,
@@ -41,6 +42,21 @@ export const clockingReducer = createReducer(
   on(approveDailyRecordsInRange, (state) => (
     {...state, loading: true}
   )),
+  on(applyTeamFilter, (state: ClockingState, {team}) => {
+    if (state.approval != null) {
+      let changed = false;
+      const employeeStates = state.approval.employeeStates.map(employeeState => {
+        const visible = team == null || employeeState.employee.team.id === team.id;
+        if (employeeState.visible !== visible) {
+          changed = true;
+          return {...employeeState, visible: visible};
+        }
+        return employeeState;
+      });
+      return changed ? {...state, approval: {...state.approval, employeeStates}} : state;
+    }
+    return state;
+  }),
   on(stateTransitionSuccess, (state, {employee, dailyRecords}) => {
     if (state.approval != null) {
       const employeeStates = state.approval.employeeStates.map(employeeState => {

@@ -159,7 +159,7 @@ export class ClockingBackendService {
       team: this.getRandomTeam()
     };
     const dailyRecords = this.createDailyRecords(days);
-    const workProjects = Array.from(new Set(dailyRecords.flatMap(record => record.projectRecords.map(pr => pr.project.id))))
+    const workProjects = Array.from(new Set(dailyRecords.flatMap(record => record.projectRecords?.map(pr => pr.project.id))))
       .map(id => this.projects.find(project => project.id === id))
       .sort((a, b) => a?.name.localeCompare(b?.name || '') || 0);
 
@@ -177,6 +177,7 @@ export class ClockingBackendService {
       absenceTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.absenceTimeMinutes || 0), 0),
       vacationTimeMinutes: dailyRecords.reduce((sum, record) => sum + (record?.vacationTimeMinutes || 0), 0),
 
+      visible: true
     } as EmployeeApprovalState;
   }
 

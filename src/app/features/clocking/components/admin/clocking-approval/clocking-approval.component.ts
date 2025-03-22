@@ -31,6 +31,7 @@ import {DailyRecordStatusComponent} from "./daily-record-status/daily-record-sta
 import {DailyRecordActionComponent} from "./daily-record-action/daily-record-action.component";
 import {ToggleButton} from "primeng/togglebutton";
 import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
+import {Select} from "primeng/select";
 
 @Component({
   selector: 'app-clocking-approval',
@@ -48,7 +49,8 @@ import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
     DailyRecordStatusComponent,
     DailyRecordActionComponent,
     ToggleButton,
-    DropdownModule
+    DropdownModule,
+    Select
   ],
   standalone: true,
   templateUrl: './clocking-approval.component.html',
@@ -58,7 +60,10 @@ import {DropdownChangeEvent, DropdownModule} from "primeng/dropdown";
 export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
   @ViewChild('tableContainer', {static: false}) tableContainer!: ElementRef;
 
-  protected readonly ApprovalStatus = ApprovalStatus;
+  OPEN = ApprovalStatus.OPEN;
+  APPROVED = ApprovalStatus.APPROVED;
+  COMPLETED = ApprovalStatus.COMPLETED;
+
   protected readonly formatTimeInMinutes = formatTimeInMinutes;
   protected readonly getProjectTimeDisplay = getProjectTimeDisplay;
   protected readonly getProjectTimeSumDisplay = getProjectTimeSumDisplay;
@@ -77,7 +82,7 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
   protected readonly loading$: Signal<boolean>;
   protected readonly approvalDays$: Signal<Day[]>;
   protected readonly teams$: Signal<Team[]>;
-  protected readonly employeeApprovalStates$: Signal<EmployeeApprovalState[]>;
+  protected readonly visibleEmployeeApprovalStates$: Signal<EmployeeApprovalState[]>;
 
   protected modeOptions: DisplayOption[] = [
     {value: 'working-time', icon: 'timer', title: 'Working Time'},
@@ -89,7 +94,7 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
     this.loading$ = this.clockingService.loading$;
     this.teams$ = this.clockingService.teams$;
     this.approvalDays$ = this.clockingService.approvalDays$;
-    this.employeeApprovalStates$ = this.clockingService.employeeApprovalStates$;
+    this.visibleEmployeeApprovalStates$ = this.clockingService.visibleEmployeeApprovalStates$;
 
     effect(() => {
       this.clockingService.dispatchLoadTeams();
@@ -120,9 +125,9 @@ export class ClockingApprovalComponent implements AfterViewInit, OnDestroy {
     if (!tableElement) return;
 
     const screenHeight = window.innerHeight; // Full viewport height
-    const tableOffsetTop = tableElement.getBoundingClientRect().top + 52; // Offset of actual <table>
+    const tableOffsetTop = tableElement.getBoundingClientRect().top; // Offset of actual <table>
 
-    const availableHeight = screenHeight - tableOffsetTop; // Remaining space for table
+    const availableHeight = screenHeight - tableOffsetTop - 20; // Remaining space for table
     this.scrollHeight$.set(`${availableHeight}px`); // Update signal dynamically
   }
 

@@ -14,7 +14,8 @@ interface Breadcrumb {
     templateUrl: './app.breadcrumb.component.html',
     styleUrls: ['./app.breadcrumb.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgFor, NgIf, AsyncPipe]
+    imports: [NgFor, NgIf, AsyncPipe],
+    standalone: true
 })
 export class AppBreadcrumbComponent {
     private readonly _breadcrumbs$ = new BehaviorSubject<Breadcrumb[]>([]);

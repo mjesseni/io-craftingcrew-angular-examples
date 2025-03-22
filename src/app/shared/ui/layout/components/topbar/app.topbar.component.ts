@@ -15,7 +15,8 @@ import {Tooltip} from 'primeng/tooltip';
   templateUrl: './app.topbar.component.html',
   styleUrls: ['./app.topbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppSidebarComponent, IconField, InputIcon, InputText, StyleClass, Ripple, ButtonDirective, Tooltip]
+  imports: [AppSidebarComponent, IconField, InputIcon, InputText, StyleClass, Ripple, ButtonDirective, Tooltip],
+  standalone: true
 })
 export class AppTopbarComponent {
   @ViewChild('menubutton') menuButton!: ElementRef;

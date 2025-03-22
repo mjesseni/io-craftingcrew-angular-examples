@@ -1,8 +1,8 @@
 <div class="status-container">
     <div tabindex="0" class="status"
-         [ngClass]="{'open': open(), 'completed': completed(), 'approved': approved()}"
-         [pTooltip]="open() ? 'open' : completed() ? 'completed' : approved() ? 'approved' : ''"
-         tooltipPosition="right" (click)="onClick()" (keydown)="onKeyDown($event)"></div>
+         [ngClass]="{'open': open(), 'finished': finished(), 'completed': completed(), 'approved': approved()}"
+         [pTooltip]="open() ? 'open' : finished() ? 'finished' : completed() ? 'completed' : approved() ? 'approved' : ''"
+         tooltipPosition="right" (click)="onClick($event)" (keydown)="onKeyDown($event)"></div>
     <div *ngIf="holiday()" class="absence">
         <span class="material-icons" pTooltip="Vacation" tooltipPosition="left">beach_access</span>
     </div>

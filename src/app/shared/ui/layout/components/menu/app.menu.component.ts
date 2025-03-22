@@ -7,7 +7,8 @@ import {AppMenuitemComponent} from './menuitem/app.menuitem.component';
   templateUrl: './app.menu.component.html',
   styleUrls: ['./app.menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgFor, NgIf, AppMenuitemComponent]
+  imports: [NgFor, NgIf, AppMenuitemComponent],
+  standalone: true
 })
 export class AppMenuComponent implements OnInit {
   /* eslint-disable */
