@@ -21,7 +21,7 @@
   }
 
   .djs-popup {
-    background-color: unset;
+    background-color: #364153;
   }
 
   .djs-direct-editing-parent {
@@ -30,15 +30,17 @@
 
   .djs-palette {
     @apply shadow-xl left-0 top-0;
+    margin-left: -55px;
     background:unset;
     * {
-      color:white;
+      color: var(--p-surface-300);
     }
   }
 
   .djs-parent {
-    padding-left: 100px !important;
-    padding-top: 25px !important;
+    overflow: visible !important;
+    margin-left: 55px !important;
+    margin-top: 25px !important;
   }
 
   svg {
