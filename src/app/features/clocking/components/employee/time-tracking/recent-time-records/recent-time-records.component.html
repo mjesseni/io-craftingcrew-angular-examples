@@ -1,0 +1,20 @@
+<p-card header="Recent time bookings" styleClass="dark:bg-gray-600 dark:text-primary-100">
+    <p-table styleClass="recent-time-bookings table-light" [value]="records$()"
+             [responsiveLayout]="'scroll'" [scrollable]="true" scrollHeight="250px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="kind min-w-32">Kind</th>
+                <th class="project w-full">Project</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-day>
+            <tr class="project-row">
+                <td class="kind align-top text-nowrap text-ellipsis">Office</td>
+                <td class="project">
+                    <div class="name">S2 - Clocking</div>
+                    <div class="comment">Implement advanced clocking UI</div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

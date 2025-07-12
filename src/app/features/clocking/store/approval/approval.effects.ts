@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {Store} from "@ngrx/store";
-import {ClockingApprovalService} from "../services/clocking-approval.service";
+import {ClockingApprovalService} from "../../services/clocking-approval.service";
 import {
   approveDailyRecord,
   approveDailyRecordsInRange,
@@ -14,19 +13,19 @@ import {
   reopenDailyRecord,
   setNextDailyRecordState,
   stateTransitionSuccess
-} from "./clocking.actions";
+} from "./approval.actions";
 import {mergeMap, of, withLatestFrom} from "rxjs";
-import {ApprovalStatus, Employee} from "../model/clocking.model";
+import {ApprovalStatus, Employee} from "../../model/clocking.model";
 
 @Injectable()
-export class ClockingEffects {
-  constructor(private actions$: Actions, private clockingService: ClockingApprovalService, private store: Store) {
+export class ApprovalEffects {
+  constructor(private actions$: Actions, private approvalService: ClockingApprovalService) {
   }
 
   loadApprovals$ = createEffect(() => this.actions$.pipe(
     ofType(loadApprovals),
     mergeMap((action) => {
-      return this.clockingService.loadEmployeeApprovals(action.from, action.to).pipe(
+      return this.approvalService.loadEmployeeApprovals(action.from, action.to).pipe(
         mergeMap((approvalState) => {
           return of(loadApprovalsSuccess({
             from: action.from,
@@ -40,7 +39,7 @@ export class ClockingEffects {
   loadTeams$ = createEffect(() => this.actions$.pipe(
     ofType(loadTeams),
     mergeMap(() => {
-      return this.clockingService.loadTeams().pipe(
+      return this.approvalService.loadTeams().pipe(
         mergeMap((teams) => {
           return of(loadTeamsSuccess({
             teams: teams
@@ -67,7 +66,7 @@ export class ClockingEffects {
   setNextDailyRecordState$ = createEffect(() => this.actions$.pipe(
     ofType(setNextDailyRecordState, completeDailyRecord, approveDailyRecord, reopenDailyRecord),
     mergeMap((action) => {
-      return this.clockingService.setNextDailyRecordState(action.employee, action.day).pipe(
+      return this.approvalService.setNextDailyRecordState(action.employee, action.day).pipe(
         mergeMap((changedRecords) => {
           return of(stateTransitionSuccess({
             employee: action.employee,
@@ -107,7 +106,7 @@ export class ClockingEffects {
   ));
 
   private setDailyRecordApprovalStatus(employee: Employee, from: Date, to: Date, status: ApprovalStatus) {
-    return this.clockingService.setDailyRecordApprovalState(employee, from, to, status).pipe(
+    return this.approvalService.setDailyRecordApprovalState(employee, from, to, status).pipe(
       mergeMap((changedRecords) => {
         return of(stateTransitionSuccess({
           employee: employee,

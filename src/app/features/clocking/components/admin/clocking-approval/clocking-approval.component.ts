@@ -22,7 +22,7 @@ import {FormsModule} from "@angular/forms";
 import {DatePicker, DatePickerTypeView} from "primeng/datepicker";
 import {ApprovalStatus, Day, Team} from "../../../model/clocking.model";
 import {ClockingApprovalService} from "../../../services/clocking-approval.service";
-import {EmployeeApprovalState} from "../../../store/clocking.state";
+import {EmployeeApprovalState} from "../../../store/approval/approval.state";
 import {formatTimeInMinutes, getProjectTimeDisplay, getProjectTimeSumDisplay} from "../../../clocking.utils";
 import {SelectButton} from "primeng/selectbutton";
 import {DisplayOption} from "@craftingcrew/app/shared";

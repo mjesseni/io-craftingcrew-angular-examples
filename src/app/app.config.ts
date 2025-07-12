@@ -17,9 +17,10 @@ import {provideState, provideStore} from "@ngrx/store";
 import {provideTodoFeatureStore} from "./features/todos/todo.providers";
 import {provideClockingFeatureStore} from "./features/clocking/clocking.providers";
 import {todoReducer} from "./features/todos/store/todo.reducer";
-import {clockingReducer} from "./features/clocking/store/clocking.reducer";
+import {approvalReducer} from "./features/clocking/store/approval/approval.reducer";
 import {provideEchartsCore} from "ngx-echarts";
 import {provideNgxMask} from "ngx-mask";
+import {trackingReducer} from "./features/clocking/store/tracking/tracking.reducer";
 
 export const appConfig: ApplicationConfig = {
 
@@ -58,8 +59,9 @@ export const appConfig: ApplicationConfig = {
     provideNgxMask(),
     provideEchartsCore({echarts}),
     provideState('router', routerReducer), // Register 'router' as a feature state
-    provideState('todo', todoReducer), // Register 'router' as a feature state
-    provideState('clocking', clockingReducer), // Register 'router' as a feature state
+    provideState('todo', todoReducer),
+    provideState('clocking.approval', approvalReducer),
+    provideState('clocking.tracking', trackingReducer),
     provideStore(), // Provide the root store
     provideRouterStore(), // Configure the router state management
     provideTodoFeatureStore(),

@@ -1,0 +1,19 @@
+<p-card header="Tasks" styleClass="dark:bg-gray-600 dark:text-primary-100">
+    <p-table styleClass="table-light" [value]="timeRecords$()"
+             [responsiveLayout]="'scroll'" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="project min-w-64 max-w-64">Project</th>
+                <th class="comment w-full">Comment</th>
+                <th class="time min-w-16 max-w-16">Time</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-day>
+            <tr class="status-row">
+                <td class="project">S2 - Clocking</td>
+                <td class="comment">Implement time tracking UI</td>
+                <td class="time">03:30</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

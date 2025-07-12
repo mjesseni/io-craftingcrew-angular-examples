@@ -1,12 +1,16 @@
 import {EnvironmentProviders, makeEnvironmentProviders} from "@angular/core";
 import {provideStore} from "@ngrx/store";
 import {provideEffects} from "@ngrx/effects";
-import {clockingReducer} from "./store/clocking.reducer";
-import {ClockingEffects} from "./store/clocking.effects";
+import {approvalReducer} from "./store/approval/approval.reducer";
+import {ApprovalEffects} from "./store/approval/approval.effects";
+import {trackingReducer} from "./store/tracking/tracking.reducer";
 
 export const provideClockingFeatureStore = (): EnvironmentProviders => {
   return makeEnvironmentProviders([
-    provideStore({clocking: clockingReducer}),
-    provideEffects([ClockingEffects]),
+    provideStore({
+      'clocking.approval': approvalReducer,
+      'clocking.tracking': trackingReducer
+    }),
+    provideEffects([ApprovalEffects]),
   ]);
 };

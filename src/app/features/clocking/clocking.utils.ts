@@ -1,5 +1,40 @@
-import {DailyRecordState, EmployeeApprovalState} from "./store/clocking.state";
-import {Project, WorkEntryKind} from "./model/clocking.model";
+import {DailyRecordState, EmployeeApprovalState} from "./store/approval/approval.state";
+import {Day, Project, WorkEntryKind} from "./model/clocking.model";
+import {format, getDate, isWeekend} from "date-fns";
+
+/**
+ * Converts a given date to a Day object.
+ *
+ * @param {Date} date - The date to convert.
+ * @returns {Day} The Day object containing date, day of the month, short day of the week, and weekend status.
+ */
+export const dateToDay = (date: Date): Day => {
+  return {
+    date: date,
+    dayOfMonth: getDate(date),
+    shortDayOfWeek: format(date, 'E').slice(0, 2),
+    weekend: isWeekend(date)
+  };
+}
+
+export const getMonth = (date: Date): Day[] => {
+  const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  return Array.from({length: daysInMonth}, (_, index) => {
+    const day = new Date(date.getFullYear(), date.getMonth(), index + 1);
+    return dateToDay(day);
+  });
+}
+
+export const getWeek = (date: Date): Day[] => {
+  const dayOfWeek = date.getDay();
+  const startOfWeek = new Date(date);
+  startOfWeek.setDate(date.getDate() - dayOfWeek);
+  return Array.from({length: 7}, (_, index) => {
+    const day = new Date(startOfWeek);
+    day.setDate(startOfWeek.getDate() + index);
+    return dateToDay(day);
+  });
+}
 
 /**
  * Formats a given time in minutes to a string in the format `HH:mm`.
@@ -38,11 +73,25 @@ export const getMinApprovalState = (dailyRecords: DailyRecordState[]): number =>
 }
 
 
+/**
+ * Gets the formatted time display for a specific project from the daily record state.
+ *
+ * @param {DailyRecordState | undefined} state - The state containing the daily records.
+ * @param {Project} project - The project for which to get the time display.
+ * @returns {string} The formatted time string in `HH:mm` format, or an empty string if no time is recorded.
+ */
 export const getProjectTimeDisplay = (state: DailyRecordState | undefined, project: Project) => {
   const projectRecord = state?.projectRecords?.find(record => record.project.id === project.id);
   return projectRecord && projectRecord.timeInMinutes > 0 ? formatTimeInMinutes(projectRecord.timeInMinutes) : '';
 }
 
+/**
+ * Gets the total time for a specific project from the employee's daily records.
+ *
+ * @param {EmployeeApprovalState | undefined} state - The state containing the employee's daily records.
+ * @param {Project} project - The project for which to get the total time.
+ * @returns {string} The formatted total time string in `HH:mm` format, or an empty string if no time is recorded.
+ */
 export const getProjectTimeSumDisplay = (state: EmployeeApprovalState | undefined, project: Project) => {
   const projectTime = state?.dailyRecords
     .map(record => record.projectRecords?.find(projectRecord => projectRecord.project.id === project.id))

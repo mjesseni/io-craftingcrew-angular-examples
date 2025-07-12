@@ -1,0 +1,90 @@
+<p-table [value]="dailyRecords()" [responsiveLayout]="'scroll'" [scrollable]="true" showGridlines="true"
+         class="w-full">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-row items-center justify-between w-full gap-x-5">
+            <!-- Left Section -->
+            <div class="flex-1 flex flex-row items-center">
+            </div>
+
+            <!-- Center Section (Month Selection) -->
+            <div class="flex flex-1 justify-center items-center gap-x-3">
+                <div class="min-w-12">
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+                            (click)="onPrevMonth()">
+                        <i class="p-button-icon pi pi-chevron-left"></i>
+                    </button>
+                </div>
+                <p-date-picker *ngIf="selectedMonth$()" inputId="selectedMonth"
+                               [ngModel]="selectedMonth$()" (onSelect)="onSelectMonth($event)"
+                               [view]="pickerMode$()" dateFormat="MM yy"
+                               [showIcon]="true" [readonlyInput]="true"></p-date-picker>
+                <div class="min-w-12">
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+                            (click)="onNextMonth()">
+                        <i class="p-button-icon pi pi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Section (Empty for future content) -->
+            <div class="flex-1 flex justify-end gap-x-5 items-center">
+                <p-togglebutton [ngModel]="showWeekends$()"
+                                (click)="showWeekends$.set(!showWeekends$())"
+                                styleClass="icon-button">
+                    <ng-template #icon>
+                        <i class="material-icons md" pTooltip="Show full week" tooltipPosition="left">calendar_view_week</i>
+                    </ng-template>
+                </p-togglebutton>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr class="header-row">
+            <th class="min-w-12 max-w-12 w-12">
+                <div class="flex flex-col items-center justify-center">
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only" (click)="onPrevWeek()">
+                        <i class="p-button-icon pi pi-chevron-left"></i>
+                    </button>
+                </div>
+            </th>
+            @for (day of selectedWeekDays$(); track day.date) {
+                @if (!day.weekend || showWeekends$()) {
+                    <th class="min-w-32 cursor-pointer relative" (click)="onDaySelected(day)" (keydown)="onKeyDown($event, day)"
+                        [class.selected]="isSameDay(selectedDay$().date, day.date)" [class.weekend]="day.weekend">
+                        <div class="day">
+                            <div class="title text-center">
+                                {{ day.shortDayOfWeek }}.&nbsp;&nbsp;{{ day.dayOfMonth }}.
+                            </div>
+                            <div class="worked text-center text-base font-normal text-nowrap">{{ formatTimeInMinutes(400) }}
+                                / {{ formatTimeInMinutes(62) }}
+                            </div>
+                        </div>
+                        <div class="status">
+                            <app-daily-record-status></app-daily-record-status>
+                        </div>
+                    </th>
+                }
+            }
+            <th class="min-w-12 max-w-12 w-12">
+                <div class="flex flex-col items-center justify-center">
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only" (click)="onNextWeek()">
+                        <i class="p-button-icon pi pi-chevron-right"></i>
+                    </button>
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body">
+        <tr class="action-row">
+            <td></td>
+            @for (day of selectedWeekDays$(); track day.date) {
+                @if (!day.weekend || showWeekends$()) {
+                    <td class="actions">
+                        <app-daily-record-action></app-daily-record-action>
+                    </td>
+                }
+            }
+            <td></td>
+        </tr>
+    </ng-template>
+</p-table>

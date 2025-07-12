@@ -1,6 +1,6 @@
 import {computed, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {ApprovalState, ClockingState, DailyRecordState, EmployeeApprovalState} from "../store/clocking.state";
+import {ApprovalState, DailyRecordState} from "../store/approval/approval.state";
 import {ApprovalStatus, Day, Employee, Team} from "../model/clocking.model";
 import {Store} from "@ngrx/store";
 import {
@@ -12,9 +12,9 @@ import {
   loadTeams,
   reopenDailyRecord,
   setNextDailyRecordState
-} from "../store/clocking.actions";
-import {selectApprovalState, selectLoadingState, selectTeams} from "../store/clocking.selectors";
-import {ClockingApprovalBackendService} from "./clocking-approval-backend.service";
+} from "../store/approval/approval.actions";
+import {selectApprovalState, selectLoadingState, selectTeams} from "../store/approval/approval.selectors";
+import {ClockingBackendService} from "./clocking-backend.service";
 
 /**
  * Service for managing clocking actions and state.
@@ -26,18 +26,16 @@ import {ClockingApprovalBackendService} from "./clocking-approval-backend.servic
 @Injectable({providedIn: 'root'})
 export class ClockingApprovalService {
 
-  loading$ = this.clockingStore.selectSignal(selectLoadingState);
-  approval$ = this.clockingStore.selectSignal(selectApprovalState);
-  teams$ = this.clockingStore.selectSignal(selectTeams);
+  loading$ = this.approvalStore.selectSignal(selectLoadingState);
+  approval$ = this.approvalStore.selectSignal(selectApprovalState);
+  teams$ = this.approvalStore.selectSignal(selectTeams);
   approvalDays$ = computed(() => this.approval$()?.days || []);
   employeeApprovalStates$ = computed(() => this.approval$()?.employeeStates || []);
   visibleEmployeeApprovalStates$ = computed(() => this.employeeApprovalStates$()
     .filter(state => state.visible));
 
-  employeeStates: EmployeeApprovalState[] = [];
-
-  constructor(private readonly clockingStore: Store<ClockingState>,
-              private readonly clockingBackendService: ClockingApprovalBackendService) {
+  constructor(private readonly approvalStore: Store<ApprovalState>,
+              private readonly clockingBackendService: ClockingBackendService) {
   }
 
   /**
@@ -50,14 +48,14 @@ export class ClockingApprovalService {
    * @param to - The end date of the range for which to load approvals.
    */
   public dispatchLoadApprovals(from: Date, to: Date): void {
-    this.clockingStore.dispatch(loadApprovals({from, to}));
+    this.approvalStore.dispatch(loadApprovals({from, to}));
   }
 
   /**
    * Dispatches an action to load the list of teams.
    */
   public dispatchLoadTeams() {
-    this.clockingStore.dispatch(loadTeams());
+    this.approvalStore.dispatch(loadTeams());
   }
 
   /**
@@ -69,7 +67,7 @@ export class ClockingApprovalService {
    * @param team - The team to apply the filter for.
    */
   public dispatchApplyTeamFilter(team: Team) {
-    this.clockingStore.dispatch(applyTeamFilter({team: team}));
+    this.approvalStore.dispatch(applyTeamFilter({team: team}));
   }
 
   /**
@@ -83,7 +81,7 @@ export class ClockingApprovalService {
    */
   public setDailyRecordState(employee: Employee | undefined, day: Day | undefined): void {
     if (employee && day) {
-      this.clockingStore.dispatch(setNextDailyRecordState({employee, day}));
+      this.approvalStore.dispatch(setNextDailyRecordState({employee, day}));
     }
   }
 
@@ -95,7 +93,7 @@ export class ClockingApprovalService {
    */
   public completeDailyRecord(employee: Employee | undefined, day: Day | undefined): void {
     if (employee && day) {
-      this.clockingStore.dispatch(completeDailyRecord({employee, day}));
+      this.approvalStore.dispatch(completeDailyRecord({employee, day}));
     }
   }
 
@@ -107,7 +105,7 @@ export class ClockingApprovalService {
    */
   public approveDailyRecord(employee: Employee | undefined, day: Day | undefined): void {
     if (employee && day) {
-      this.clockingStore.dispatch(approveDailyRecord({employee, day}));
+      this.approvalStore.dispatch(approveDailyRecord({employee, day}));
     }
   }
 
@@ -119,7 +117,7 @@ export class ClockingApprovalService {
    */
   public reopenDailyRecord(employee: Employee | undefined, day: Day | undefined): void {
     if (employee && day) {
-      this.clockingStore.dispatch(reopenDailyRecord({employee, day}));
+      this.approvalStore.dispatch(reopenDailyRecord({employee, day}));
     }
   }
 
@@ -132,7 +130,7 @@ export class ClockingApprovalService {
    */
   public approveDailyRecordsInRange(employee: Employee | undefined, from: Date | undefined, to: Date | undefined): void {
     if (employee && from && to) {
-      this.clockingStore.dispatch(approveDailyRecordsInRange({employee, from, to}));
+      this.approvalStore.dispatch(approveDailyRecordsInRange({employee, from, to}));
     }
   }
 

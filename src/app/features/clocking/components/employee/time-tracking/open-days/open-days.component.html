@@ -1,0 +1,21 @@
+<p-card header="Open days" styleClass="dark:bg-gray-600 dark:text-primary-100">
+    <p-table styleClass="open-days table-light" [value]="openDays$()"
+             [responsiveLayout]="'scroll'" [scrollable]="true" scrollHeight="250px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="day max-w-12">Day</th>
+                <th class="time max-w-12">Hours</th>
+                <th class="status"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-day>
+            <tr class="status-row">
+                <td class="day">{{ day.date | date }}</td>
+                <td class="time">07:20 / 07:42</td>
+                <td class="status">
+                    <app-daily-record-status [record]="day"></app-daily-record-status>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-card>

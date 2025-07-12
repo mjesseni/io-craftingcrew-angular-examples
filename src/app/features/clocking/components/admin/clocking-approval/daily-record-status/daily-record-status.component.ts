@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
 import {Tooltip} from "primeng/tooltip";
-import {DailyRecordState} from "../../../../store/clocking.state";
+import {DailyRecordState} from "../../../../store/approval/approval.state";
 import {ApprovalStatus, Employee, WorkingStatus} from "../../../../model/clocking.model";
 import {ClockingApprovalService} from "../../../../services/clocking-approval.service";
 

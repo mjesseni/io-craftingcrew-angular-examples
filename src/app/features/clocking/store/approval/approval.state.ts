@@ -1,4 +1,4 @@
-import {ApprovalStatus, Day, Employee, Project, Team, WorkingStatus} from "../model/clocking.model";
+import {ApprovalStatus, Day, Employee, Project, Team, WorkingStatus} from "../../model/clocking.model";
 
 /**
  * Represents the state of a project record.
@@ -13,11 +13,6 @@ export interface ProjectRecordState {
   /** Optional comment associated with the project record. */
   comment?: string;
 }
-
-export interface TimeRecordState {
-
-}
-
 
 /**
  * Represents the state of a daily record for an employee.
@@ -93,6 +88,7 @@ export interface EmployeeApprovalState {
  * Represents the approval state within a specific date range.
  */
 export interface ApprovalState {
+
   /** The start date of the approval period. */
   from: Date;
 
@@ -106,7 +102,7 @@ export interface ApprovalState {
   employeeStates: EmployeeApprovalState[];
 }
 
-export interface ClockingState {
+export interface ClockingApprovalState {
   loading: boolean;
   error: never | undefined;
 
@@ -114,7 +110,7 @@ export interface ClockingState {
   approval: ApprovalState | undefined
 }
 
-export const initialClockingState: ClockingState = {
+export const initialClockingApprovalState: ClockingApprovalState = {
   loading: false,
   error: undefined,
 

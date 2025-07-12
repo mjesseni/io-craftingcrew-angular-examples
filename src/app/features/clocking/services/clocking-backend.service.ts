@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ApprovalState, DailyRecordState, EmployeeApprovalState, ProjectRecordState} from "../store/clocking.state";
+import {ApprovalState, DailyRecordState, EmployeeApprovalState, ProjectRecordState} from "../store/approval/approval.state";
 import {ApprovalStatus, Day, Employee, Project, Team, WorkingStatus} from "../model/clocking.model";
 import {EMPTY, Observable, of, take} from "rxjs";
 import {getMinApprovalState} from "../clocking.utils";
@@ -9,7 +9,7 @@ import {delay} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class ClockingApprovalBackendService {
+export class ClockingBackendService {
 
   employeeStates: EmployeeApprovalState[] = [];
   projects: Project[] = [

@@ -1,0 +1,39 @@
+<p-card>
+    <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+        <div class="flex flex-col gap-5 mt-5 col-span-6">
+            <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+                <div class="field col-span-12">
+                    <label [htmlFor]="'kind'">Kind</label>
+                    <p-select id="kind" inputId="kind" [options]="workEntryKinds$()" showClear="true">
+                    </p-select>
+                </div>
+            </div>
+            <div class="grid grid-cols-12 gap-x-6 gap-y-6">
+                <div class="field col-span-6">
+                    <label [htmlFor]="'from'">From</label>
+                    <p-inputMask styleClass="w-full" inputId="from" mask="99:99"
+                                 placeholder="HH:mm"></p-inputMask>
+                </div>
+                <div class="field col-span-6">
+                    <label [htmlFor]="'to'">To</label>
+                    <p-inputMask styleClass="w-full" inputId="to" mask="99:99"
+                                 placeholder="HH:mm"></p-inputMask>
+                </div>
+            </div>
+            <div class="field-group-v">
+                <div class="field">
+                    <label for="project">Project</label>
+                    <input id="project" pInputText/>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-5 mt-5 col-span-6">
+            <div class="field-group-v h-full">
+                <div class="field h-full">
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" pTextarea rows="5" class="h-full"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-card>
