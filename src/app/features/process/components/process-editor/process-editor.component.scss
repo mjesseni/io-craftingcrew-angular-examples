@@ -29,7 +29,23 @@
   }
 
   .djs-palette {
-    @apply shadow-xl
+    @apply shadow-xl left-0 top-0;
+    background:unset;
+    * {
+      color:white;
+    }
+  }
+
+  .djs-parent {
+    padding-left: 100px !important;
+    padding-top: 25px !important;
+  }
+
+  svg {
+    &:focus-visible {
+      border: none;
+      outline: none;
+    }
   }
 
 }

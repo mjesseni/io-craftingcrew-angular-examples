@@ -15,11 +15,13 @@ import { ButtonDirective } from 'primeng/button';
 import EventBus from 'diagram-js/lib/core/EventBus';
 import { Shape } from 'bpmn-js/lib/model/Types';
 import { HttpClient } from '@angular/common/http';
+import { Ripple } from 'primeng/ripple';
 
 @Component({
   selector: 'app-process-editor',
   imports: [
-    ButtonDirective
+    ButtonDirective,
+    Ripple
   ],
   templateUrl: './process-editor.component.html',
   styleUrl: './process-editor.component.scss',
@@ -121,5 +123,24 @@ export class ProcessEditorComponent implements AfterViewInit {
     this.bpmnJS.saveXML({format: true}).then(({xml}) => {
       console.log(xml);
     });
+  }
+
+  zoomIn() {
+    const canvas: Canvas = this.bpmnJS.get('canvas');
+    const currentZoom = canvas.zoom();
+    canvas.zoom(currentZoom + 0.1);
+  }
+
+  zoomOut() {
+    const canvas: Canvas = this.bpmnJS.get('canvas');
+    const currentZoom = canvas.zoom();
+    canvas.zoom(currentZoom - 0.1);
+  }
+
+  resetZoom() {
+    const canvas: Canvas = this.bpmnJS.get('canvas');
+    const currentZoom = canvas.zoom();
+    canvas.zoom('fit-viewport');
+    canvas.zoom(currentZoom);
   }
 }

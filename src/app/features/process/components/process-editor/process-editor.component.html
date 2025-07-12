@@ -1,5 +1,20 @@
-<div style="display: flex; height: calc(100vh - 135px)">
+<h2 class="mb-4">Process Modelling</h2>
+<div style="display: flex; height: calc(100vh - 175px);">
   <div #canvas class="diagram-container"></div>
+  <div class="zoom-controls gap-1" style="position: relative; top: 1rem; right: 1rem; white-space: nowrap;">
+    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+            (click)="zoomIn()">
+      <i class="p-button-icon pi pi-plus"></i>
+    </button>
+    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+            (click)="zoomOut()">
+      <i class="p-button-icon pi pi-minus"></i>
+    </button>
+    <button pButton pRipple type="button" class="p-button-rounded p-button-icon-only"
+            (click)="resetZoom()">
+      <i class="p-button-icon pi pi-bullseye"></i>
+    </button>
+  </div>
   @if (selection()) {
     <div #properties style="flex: 1; min-width: 280px; padding: 10px; overflow-y: auto;">
       <h2>{{ name() }}</h2>
