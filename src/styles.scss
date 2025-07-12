@@ -12,6 +12,11 @@
 @forward '../node_modules/quill/dist/quill.core.css';
 @forward '../node_modules/quill/dist/quill.snow.css';
 
+/* BPMN */
+@import '../node_modules/bpmn-js/dist/assets/diagram-js.css';
+@import '../node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
+@import '../node_modules/bpmn-js/dist/assets/bpmn-js.css';
+
 /* Demos */
 //@forward 'assets/demo/styles/flags/flags.css';
 //@forward 'assets/demo/styles/badges.scss';

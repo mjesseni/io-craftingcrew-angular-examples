@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 interface Breadcrumb {
     label: string;
@@ -14,7 +14,7 @@ interface Breadcrumb {
     templateUrl: './app.breadcrumb.component.html',
     styleUrls: ['./app.breadcrumb.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgFor, NgIf, AsyncPipe],
+    imports: [AsyncPipe],
     standalone: true
 })
 export class AppBreadcrumbComponent {

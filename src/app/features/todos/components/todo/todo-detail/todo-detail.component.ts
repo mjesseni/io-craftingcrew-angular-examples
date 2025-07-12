@@ -10,7 +10,7 @@ import {Checkbox} from "primeng/checkbox";
 import {InputText} from "primeng/inputtext";
 import {selectRouteParam} from "@craftingcrew/app/shared";
 import {Skeleton} from "primeng/skeleton";
-import {NgIf} from "@angular/common";
+
 
 @Component({
   selector: 'app-todo-detail',
@@ -20,9 +20,8 @@ import {NgIf} from "@angular/common";
     ButtonDirective,
     Checkbox,
     InputText,
-    Skeleton,
-    NgIf
-  ],
+    Skeleton
+],
   templateUrl: './todo-detail.component.html',
   styleUrl: 'todo-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

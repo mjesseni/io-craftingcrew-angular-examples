@@ -1,14 +1,12 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {NgIf} from "@angular/common";
+
 import {DailyRecordState} from "../../../../store/approval/approval.state";
 import {ApprovalStatus, Employee, WorkingStatus} from "../../../../model/clocking.model";
 import {ClockingApprovalService} from "../../../../services/clocking-approval.service";
 
 @Component({
   selector: 'app-daily-record-action',
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './daily-record-action.component.html',
   styleUrl: './daily-record-action.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -7,7 +7,7 @@ import {
   DailyRecordStatusComponent
 } from "../../../admin/clocking-approval/daily-record-status/daily-record-status.component";
 import {DatePicker, DatePickerTypeView} from "primeng/datepicker";
-import {NgIf} from "@angular/common";
+
 import {PrimeTemplate} from "primeng/api";
 import {Ripple} from "primeng/ripple";
 import {TableModule} from "primeng/table";
@@ -27,14 +27,13 @@ import {ClockingTrackingService} from "../../../../services/clocking-tracking.se
     DailyRecordActionComponent,
     DailyRecordStatusComponent,
     DatePicker,
-    NgIf,
     PrimeTemplate,
     Ripple,
     TableModule,
     ToggleButton,
     Tooltip,
     FormsModule
-  ],
+],
   templateUrl: './time-recording-navigation.component.html',
   styleUrl: './time-recording-navigation.component.scss'
 })

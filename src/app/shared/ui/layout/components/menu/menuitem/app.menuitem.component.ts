@@ -18,7 +18,7 @@ import {MenuService} from '../../../service/app.menu.service';
 import {AppLayoutStore} from '../../../service/app.layout.store';
 import {isDesktop, isMobile} from '../../../utils/util.functions';
 import {LayoutService} from '../../../service/app.layout.service';
-import {NgIf, NgClass, NgFor} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {Ripple} from 'primeng/ripple';
 import {Tooltip} from 'primeng/tooltip';
 import {TranslocoPipe} from '@jsverse/transloco';
@@ -46,7 +46,7 @@ import {TranslocoPipe} from '@jsverse/transloco';
             transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
         ])
     ],
-    imports: [NgIf, Ripple, NgClass, Tooltip, RouterLinkActive, RouterLink, NgFor, TranslocoPipe],
+    imports: [Ripple, NgClass, Tooltip, RouterLinkActive, RouterLink, TranslocoPipe],
     standalone: true
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+        xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+        xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+        id="Definitions_1"
+        targetNamespace="http://bpmn.io/schema/bpmn">
+
+    <bpmn:process id="TicketProcess" isExecutable="true">
+        <bpmn:startEvent id="StartEvent_1" name="Ticket Submitted">
+            <bpmn:outgoing>Flow_1</bpmn:outgoing>
+        </bpmn:startEvent>
+
+        <bpmn:task id="Task_Categorize" name="Categorize Ticket">
+            <bpmn:incoming>Flow_1</bpmn:incoming>
+            <bpmn:outgoing>Flow_2</bpmn:outgoing>
+        </bpmn:task>
+
+        <bpmn:exclusiveGateway id="Gateway_Urgency" name="Is it urgent?">
+            <bpmn:incoming>Flow_2</bpmn:incoming>
+            <bpmn:outgoing>Flow_3</bpmn:outgoing>
+            <bpmn:outgoing>Flow_4</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+
+        <bpmn:task id="Task_L2" name="Escalate to Level 2">
+            <bpmn:incoming>Flow_3</bpmn:incoming>
+            <bpmn:outgoing>Flow_5</bpmn:outgoing>
+        </bpmn:task>
+
+        <bpmn:task id="Task_L1" name="Assign to Level 1">
+            <bpmn:incoming>Flow_4</bpmn:incoming>
+            <bpmn:outgoing>Flow_6</bpmn:outgoing>
+        </bpmn:task>
+
+        <bpmn:task id="Task_Resolve" name="Resolve Ticket">
+            <bpmn:incoming>Flow_5</bpmn:incoming>
+            <bpmn:incoming>Flow_6</bpmn:incoming>
+            <bpmn:outgoing>Flow_7</bpmn:outgoing>
+        </bpmn:task>
+
+        <bpmn:endEvent id="EndEvent_1" name="Ticket Closed">
+            <bpmn:incoming>Flow_7</bpmn:incoming>
+        </bpmn:endEvent>
+
+        <!-- Sequence Flows -->
+        <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_Categorize"/>
+        <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Categorize" targetRef="Gateway_Urgency"/>
+        <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Urgency" targetRef="Task_L2"/>
+        <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Urgency" targetRef="Task_L1"/>
+        <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_L2" targetRef="Task_Resolve"/>
+        <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_L1" targetRef="Task_Resolve"/>
+        <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Resolve" targetRef="EndEvent_1"/>
+
+    </bpmn:process>
+
+    <!-- Diagram Interchange omitted for brevity; bpmn-js will auto-layout -->
+
+</bpmn:definitions>

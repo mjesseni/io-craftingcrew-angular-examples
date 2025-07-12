@@ -1,0 +1,39 @@
+.diagram-container {
+  width: 100%;
+  height: 600px;
+
+  .djs-context-pad {
+    padding: 5px;
+
+    &.open {
+      @apply shadow-xl border-blue-50 border-solid border;
+      background-color: #364153;
+      width: 100px;
+    }
+    .group {
+      padding: 5px;
+      .entry {
+        padding: 5px;
+        background-color: unset;
+        box-shadow: unset;
+      }
+    }
+  }
+
+  .djs-popup {
+    background-color: unset;
+  }
+
+  .djs-direct-editing-parent {
+    color: black;
+  }
+
+  .djs-palette {
+    @apply shadow-xl
+  }
+
+}
+
+.bjs-powered-by {
+  display: none;
+}

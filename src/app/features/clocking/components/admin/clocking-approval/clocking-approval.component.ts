@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import {PrimeTemplate} from "primeng/api";
 import {TableModule} from "primeng/table";
-import {NgClass, NgIf} from "@angular/common";
+import { NgClass } from "@angular/common";
 import {addDays, endOfMonth, startOfMonth} from "date-fns";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
@@ -38,7 +38,6 @@ import {Select} from "primeng/select";
   imports: [
     PrimeTemplate,
     TableModule,
-    NgIf,
     NgClass,
     ButtonDirective,
     Ripple,
@@ -51,7 +50,7 @@ import {Select} from "primeng/select";
     ToggleButton,
     DropdownModule,
     Select
-  ],
+],
   standalone: true,
   templateUrl: './clocking-approval.component.html',
   styleUrl: './clocking-approval.component.scss',

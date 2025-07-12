@@ -1,11 +1,17 @@
 @if(!open() && working() || sick() || holiday()) {
-    <div class="actions">
-        <button *ngIf="finished()" (click)="onComplete($event)">finish</button>
-        <button *ngIf="completed()" (click)="onApprove($event)">approve</button>
-        <button *ngIf="approved()" (click)="onReopen($event)">reopen</button>
-    </div>
+  <div class="actions">
+    @if (finished()) {
+      <button (click)="onComplete($event)">finish</button>
+    }
+    @if (completed()) {
+      <button (click)="onApprove($event)">approve</button>
+    }
+    @if (approved()) {
+      <button (click)="onReopen($event)">reopen</button>
+    }
+  </div>
 } @else {
-    <div class="actions">
-        <button (click)="onComplete($event)">finish</button>
-    </div>
+  <div class="actions">
+    <button (click)="onComplete($event)">finish</button>
+  </div>
 }

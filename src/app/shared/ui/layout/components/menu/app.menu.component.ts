@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {NgFor, NgIf} from '@angular/common';
+
 import {AppMenuitemComponent} from './menuitem/app.menuitem.component';
 
 @Component({
@@ -7,7 +7,7 @@ import {AppMenuitemComponent} from './menuitem/app.menuitem.component';
   templateUrl: './app.menu.component.html',
   styleUrls: ['./app.menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgFor, NgIf, AppMenuitemComponent],
+  imports: [AppMenuitemComponent],
   standalone: true
 })
 export class AppMenuComponent implements OnInit {
@@ -98,6 +98,17 @@ export class AppMenuComponent implements OnInit {
             label: 'Approve',
             icon: 'pi pi-fw pi-calendar-clock',
             routerLink: ['/clocking/admin/approve']
+          }
+        ]
+      },
+      {
+        label: 'Process',
+        icon: 'pi pi-cog',
+        items: [
+          {
+            label: 'Modeller',
+            icon: 'pi pi-fw pi-sitemap',
+            routerLink: ['/process/editor']
           }
         ]
       }

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, computed, input} from '@angular/core';
-import {NgClass, NgIf} from "@angular/common";
+import { NgClass } from "@angular/common";
 import {Tooltip} from "primeng/tooltip";
 import {DailyRecordState} from "../../../../store/approval/approval.state";
 import {ApprovalStatus, Employee, WorkingStatus} from "../../../../model/clocking.model";
@@ -9,9 +9,8 @@ import {ClockingApprovalService} from "../../../../services/clocking-approval.se
   selector: 'app-daily-record-status',
   imports: [
     NgClass,
-    Tooltip,
-    NgIf
-  ],
+    Tooltip
+],
   templateUrl: './daily-record-status.component.html',
   styleUrl: './daily-record-status.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,12 @@
+<div style="display: flex; height: calc(100vh - 135px)">
+  <div #canvas class="diagram-container"></div>
+  @if (selection()) {
+    <div #properties style="flex: 1; min-width: 280px; padding: 10px; overflow-y: auto;">
+      <h2>{{ name() }}</h2>
+    </div>
+  }
+
+</div>
+<button pButton type="button" class="p-button-outlined"
+        (click)="onSave()">View
+</button>
