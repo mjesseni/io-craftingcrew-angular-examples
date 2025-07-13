@@ -1,7 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DocumentEditorState } from '../../store/document/document.state';
-import { selectAttributes, selectDocument, selectFocusedAttributeId } from '../../store/document/document.selectors';
+import {
+  selectAttributes,
+  selectDocument,
+  selectDocumentDirty,
+  selectFocusedAttributeId
+} from '../../store/document/document.selectors';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AttributeContainerComponent } from './attributes/attribute-container/attribute-container.component';
@@ -85,6 +90,12 @@ export class DocumentEditorComponent {
    * Derived signal for the title (example use of computed).
    */
   readonly documentTitle = computed(() => `Editing: ${this.document().definitionUuid || 'New Document'}`);
+
+  /**
+   * This is derived from the store's dirty state.
+   */
+  readonly dirty = toSignal(this.store.select(selectDocumentDirty),
+    {initialValue: false});
 
 
   constructor() {

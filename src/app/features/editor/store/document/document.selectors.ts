@@ -52,6 +52,14 @@ export const selectAttributeStates = createSelector(
 );
 
 /**
+ * Selects the validation summary for the current document.
+ */
+export const selectDocumentDirty = createSelector(
+  selectPresent,
+  present => present.dirty
+);
+
+/**
  * Recursively retrieves an attribute (by ID) from the document attribute tree.
  *
  * Supports nested lookup through blocks and tables.
