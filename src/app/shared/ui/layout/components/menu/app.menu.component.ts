@@ -111,6 +111,17 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['/process/editor']
           }
         ]
+      },
+      {
+        label: 'Documents',
+        icon: 'pi pi-cog',
+        items: [
+          {
+            label: 'Editor',
+            icon: 'pi pi-fw pi-sitemap',
+            routerLink: ['/editor']
+          }
+        ]
       }
     ];
   }

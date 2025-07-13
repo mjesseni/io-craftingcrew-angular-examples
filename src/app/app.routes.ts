@@ -5,6 +5,7 @@ import {todoRoutes} from "./features/todos/todo.routes";
 import {examplesRoutes} from "./features/examples/examples.routes";
 import {clockingRoutes} from "./features/clocking/clocking.routes";
 import { processRoutes } from './features/process/process.routes';
+import { editorRoutes } from './features/editor/editor.routes';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,7 @@ export const routes: Routes = [
       {path: 'clocking', data: {breadcrumb: 'Clocking'}, children: clockingRoutes},
       {path: 'examples', data: {breadcrumb: 'Examples'}, children: examplesRoutes},
       {path: 'process', data: {breadcrumb: 'Process'}, children: processRoutes},
+      {path: 'editor', data: {breadcrumb: 'Document Editor'}, children: editorRoutes},
     ]
   }
 ];

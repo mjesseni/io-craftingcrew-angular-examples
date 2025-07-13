@@ -1,0 +1,6 @@
+<div class="document-editor">
+  <h2>{{ documentTitle() }}</h2>
+  @for (attr of attributes(); track attr.uuid) {
+    <app-attribute-container [attribute]="attr"></app-attribute-container>
+  }
+</div>
