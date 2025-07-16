@@ -1,12 +1,25 @@
-import { Component, input } from '@angular/core';
-import { AttributeInstance, AttributeType } from '../../../../model/document.model';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AttributeType } from '../../../../model/document.model';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BaseAttributeComponent } from '../base-attribute.component';
 
 @Component({
   selector: 'app-picklist-attribute',
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule
+  ],
   templateUrl: './picklist-attribute.component.html',
-  styleUrl: './picklist-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
-export class PicklistAttributeComponent {
-  attribute = input<AttributeInstance>()
+export class PicklistAttributeComponent extends BaseAttributeComponent<AttributeType.PICKLIST> {
+  @ViewChild('input') inputRef!: ElementRef<HTMLInputElement>;
+
+  constructor() {
+    super(AttributeType.PICKLIST);
+  }
+
+  override focus() {
+    this.inputRef?.nativeElement?.focus();
+  }
 }

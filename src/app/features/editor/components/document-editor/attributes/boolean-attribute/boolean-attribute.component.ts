@@ -5,7 +5,7 @@ import { AttributeInstance } from '../../../../model/document.model';
   selector: 'app-boolean-attribute',
   imports: [],
   templateUrl: './boolean-attribute.component.html',
-  styleUrl: './boolean-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
 export class BooleanAttributeComponent {
   attribute = input<AttributeInstance>()

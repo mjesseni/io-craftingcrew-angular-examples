@@ -1,29 +1,39 @@
-@switch (attribute().type) {
-  @case (AttributeType.BLOCK) {
-    <app-block-attribute [attribute]="attribute()"></app-block-attribute>
-  }
-  @case (AttributeType.BOOLEAN) {
-    <app-boolean-attribute [attribute]="attribute()"></app-boolean-attribute>
-  }
-  @case (AttributeType.DATE) {
-    <app-date-attribute [attribute]="attribute()"></app-date-attribute>
-  }
-  @case (AttributeType.NUMERIC) {
-    <app-numeric-attribute [attribute]="attribute()"></app-numeric-attribute>
-  }
-  @case (AttributeType.PICKLIST) {
-    <app-picklist-attribute [attribute]="attribute()"></app-picklist-attribute>
-  }
-  @case (AttributeType.STRING) {
-    <app-string-attribute [attribute]="attribute()"></app-string-attribute>
-  }
-  @case (AttributeType.TABLE) {
-    <app-table-attribute [attribute]="attribute()"></app-table-attribute>
-  }
-  @case (AttributeType.TEXT) {
-    <app-text-attribute [attribute]="attribute()"></app-text-attribute>
-  }
-  @case (AttributeType.UNIT) {
-    <app-unit-attribute [attribute]="attribute()"></app-unit-attribute>
-  }
-}
+<div class="attribute-container">
+  <div class="attribute-label">
+    <!-- Label column -->
+    <label [for]="attributeId()"
+           [class.required]="definition().required">
+      {{ name() }}
+    </label>
+  </div>
+
+  <!-- Input column -->
+  <div class="attribute-control-wrapper">
+    @switch (attribute().type) {
+      @case (AttributeType.BOOLEAN) {
+        <app-boolean-attribute [attribute]="attribute()"></app-boolean-attribute>
+      }
+      @case (AttributeType.DATE) {
+        <app-date-attribute [attribute]="attribute()"></app-date-attribute>
+      }
+      @case (AttributeType.NUMERIC) {
+        <app-numeric-attribute [attribute]="attribute()"></app-numeric-attribute>
+      }
+      @case (AttributeType.PICKLIST) {
+        <app-picklist-attribute [attribute]="attribute()"></app-picklist-attribute>
+      }
+      @case (AttributeType.STRING) {
+        <app-string-attribute [attribute]="attribute()"></app-string-attribute>
+      }
+      @case (AttributeType.TABLE) {
+        <app-table-attribute [attribute]="attribute()"></app-table-attribute>
+      }
+      @case (AttributeType.TEXT) {
+        <app-text-attribute [attribute]="attribute()"></app-text-attribute>
+      }
+      @case (AttributeType.UNIT) {
+        <app-unit-attribute [attribute]="attribute()"></app-unit-attribute>
+      }
+    }
+  </div>
+</div>

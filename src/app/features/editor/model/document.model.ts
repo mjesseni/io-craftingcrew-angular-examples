@@ -443,11 +443,11 @@ export interface Identifiable {
  * @template T The specific attribute type (e.g., STRING, BOOLEAN, TABLE).
  */
 export interface AttributeInstance<T extends AttributeType = AttributeType> extends Identifiable {
+
   /**
-   * The technical name of the attribute as defined in the associated {@link AttributeDefinition}.
-   * Used for mapping and serialization.
+   * The globally unique identifier of the attribute definition this instance is based on.
    */
-  name: string;
+  definitionId: string;
 
   /**
    * The type of the attribute, determining how the `value` should be interpreted.

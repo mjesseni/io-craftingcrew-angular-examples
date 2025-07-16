@@ -1,1 +1,9 @@
-<p>date-attribute works!</p>
+<input #input
+       type="text"
+       class="attribute-control"
+       [id]="attributeId()"
+       [ngModel]="attribute().value"
+       (ngModelChange)="onInputChange($event)"
+       (focus)="onFocus()"
+       [ngModelOptions]="{ updateOn: 'blur' }"
+/>

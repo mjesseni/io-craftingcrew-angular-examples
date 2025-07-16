@@ -1,17 +1,9 @@
-<div class="grid grid-cols-12 items-center gap-2 py-2">
-  <!-- Label column -->
-  <label [for]="attribute().uuid" class="col-span-4">
-    {{ attribute().name }}
-  </label>
-
-  <!-- Input column -->
-  <div class="col-span-8">
-    <input
-        type="text"
-        class="w-full rounded border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        [id]="attribute().uuid"
-        [ngModel]="attribute().value"
-        (ngModelChange)="onInputChange($event)"
-    />
-  </div>
-</div>
+<input #input
+       type="text"
+       class="attribute-control"
+       [id]="attributeId()"
+       [ngModel]="attribute().value"
+       (ngModelChange)="onInputChange($event)"
+       [ngModelOptions]="{ updateOn: 'blur' }"
+       (focus)="onFocus()"
+/>

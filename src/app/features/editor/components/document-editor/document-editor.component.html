@@ -1,9 +1,22 @@
 <div class="document-editor">
-  <h2>{{ documentTitle() }}</h2>
-  @for (attr of attributes(); track attr.uuid) {
-    <app-attribute-container [attribute]="attr"></app-attribute-container>
-  }
-</div>
-<div>
-  {{ dirty() }}
+  <section class="header flex flex-row justify-between items-center">
+    <div>
+      <h2>{{ documentTitle() }}</h2>
+    </div>
+    <div class="flex gap-2">
+      <button tabindex="-1" (mousedown)="$event.preventDefault()" (click)="onUndo()">Undo</button>
+      <button tabindex="-1" (mousedown)="$event.preventDefault()" (click)="onRedo()">Redo</button>
+    </div>
+  </section>
+  <section class="content" tabindex="0" (keydown)="onKeyDown($event)">
+    <div #editorContent (focusout)="onFocusOut($event)">
+      @for (attr of attributes(); track attr.uuid) {
+        @if (attr.type === AttributeType.BLOCK) {
+          <app-block-attribute [attribute]="attr"></app-block-attribute>
+        } @else {
+          <app-attribute-container [attribute]="attr"></app-attribute-container>
+        }
+      }
+    </div>
+  </section>
 </div>

@@ -21,8 +21,6 @@ import { approvalReducer } from './features/clocking/store/approval/approval.red
 import { provideEchartsCore } from 'ngx-echarts';
 import { provideNgxMask } from 'ngx-mask';
 import { trackingReducer } from './features/clocking/store/tracking/tracking.reducer';
-import { documentEditorReducer } from './features/editor/store/document/document.reducer';
-import { provideEditorFeatureStore } from './features/editor/editor.providers';
 
 export const appConfig: ApplicationConfig = {
 
@@ -64,12 +62,10 @@ export const appConfig: ApplicationConfig = {
     provideState('todo', todoReducer),
     provideState('clocking.approval', approvalReducer),
     provideState('clocking.tracking', trackingReducer),
-    provideState('editor.document', documentEditorReducer),
     provideStore(), // Provide the root store
     provideRouterStore(), // Configure the router state management
     provideTodoFeatureStore(),
     provideClockingFeatureStore(),
-    provideEditorFeatureStore(),
 
     /* dev tools */
     provideStoreDevtools({

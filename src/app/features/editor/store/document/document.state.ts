@@ -1,4 +1,4 @@
-import { ConstraintType, DocumentInstance } from '../../model/document.model';
+import { ConstraintType, DocumentDefinition, DocumentInstance } from '../../model/document.model';
 
 /**
  * A validation error for a specific attribute.
@@ -69,6 +69,9 @@ export interface DocumentUIState {
 export interface DocumentEditorHistoryState {
   /** Document data at a point in time. */
   document: DocumentInstance;
+
+  /** Metadata about the document structure and attributes. */
+  definition: DocumentDefinition;
 
   /** Attribute-specific metadata such as visibility and validation. */
   attributeStates: Partial<Record<string, AttributeEditorState>>;

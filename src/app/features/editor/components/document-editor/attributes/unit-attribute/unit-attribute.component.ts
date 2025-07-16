@@ -5,7 +5,7 @@ import { AttributeInstance } from '../../../../model/document.model';
   selector: 'app-unit-attribute',
   imports: [],
   templateUrl: './unit-attribute.component.html',
-  styleUrl: './unit-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
 export class UnitAttributeComponent {
   attribute = input<AttributeInstance>()

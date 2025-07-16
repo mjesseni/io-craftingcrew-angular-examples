@@ -1,1 +1,26 @@
-<p>block-attribute works!</p>
+@if (depth() === 0) {
+  <div class="block-wrapper">
+    <p-panel [header]="name()">
+      <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: nestedAttributes(), depth: depth() }"></ng-container>
+    </p-panel>
+  </div>
+} @else {
+  <div class="block-wrapper nested">
+    <div class="attribute-label">
+      <h5>{{ name() }}</h5>
+    </div>
+    <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: nestedAttributes(), depth: depth() }"></ng-container>
+  </div>
+}
+
+<ng-template #renderBlock let-attributes let-depth="depth">
+  <div class="block-container">
+    @for (attr of attributes; track attr.uuid) {
+      @if (attr.type === AttributeType.BLOCK) {
+        <app-block-attribute [attribute]="attr" [depth]="depth + 1"></app-block-attribute>
+      } @else {
+        <app-attribute-container [attribute]="attr"></app-attribute-container>
+      }
+    }
+  </div>
+</ng-template>

@@ -5,7 +5,7 @@ import { AttributeInstance } from '../../../../model/document.model';
   selector: 'app-table-attribute',
   imports: [],
   templateUrl: './table-attribute.component.html',
-  styleUrl: './table-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
 export class TableAttributeComponent {
   attribute = input<AttributeInstance>()

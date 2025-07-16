@@ -5,7 +5,7 @@ import { AttributeInstance } from '../../../../model/document.model';
   selector: 'app-numeric-attribute',
   imports: [],
   templateUrl: './numeric-attribute.component.html',
-  styleUrl: './numeric-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
 export class NumericAttributeComponent {
   attribute = input<AttributeInstance>()

@@ -1,9 +1,7 @@
-import { Component, inject, input } from '@angular/core';
-import { AttributeInstance, AttributeType, AttributeValue } from '../../../../model/document.model';
-import { Store } from '@ngrx/store';
-import { DocumentEditorState } from '../../../../store/document/document.state';
-import { updateAttributeValue } from '../../../../store/document/document.actions';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AttributeType } from '../../../../model/document.model';
 import { FormsModule } from '@angular/forms';
+import { BaseAttributeComponent } from '../base-attribute.component';
 
 @Component({
   selector: 'app-string-attribute',
@@ -11,25 +9,16 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   templateUrl: './string-attribute.component.html',
-  styleUrl: './string-attribute.component.scss'
+  styleUrl: './../../../../editor-styles.scss'
 })
-export class StringAttributeComponent {
-  private readonly store = inject<Store<DocumentEditorState>>(Store);
-  readonly attribute = input.required({
-    transform: (value: AttributeInstance) => {
-      if (value.type !== AttributeType.STRING) {
-        throw new Error(`Expected attribute type STRING, but got ${value.type}`);
-      }
-      return value as AttributeInstance<AttributeType.STRING>;
-    }
-  });
+export class StringAttributeComponent extends BaseAttributeComponent<AttributeType.STRING> {
+  @ViewChild('input') inputRef!: ElementRef<HTMLInputElement>;
 
-  onInputChange(newValue: string) {
-    this.store.dispatch(updateAttributeValue()({
-        attributeId: this.attribute.name,
-        attributeType: AttributeType.STRING,
-        newValue: newValue as AttributeValue<AttributeType.STRING>
-      })
-    );
+  constructor() {
+    super(AttributeType.STRING);
+  }
+
+  override focus() {
+    this.inputRef?.nativeElement?.focus();
   }
 }
