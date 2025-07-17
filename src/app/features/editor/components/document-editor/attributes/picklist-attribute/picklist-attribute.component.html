@@ -1,9 +1,16 @@
-<input #input
-       type="text"
-       class="attribute-control"
-       [id]="attributeId()"
-       [ngModel]="attribute().value"
-       (ngModelChange)="onInputChange($event)"
-       (focus)="onFocus()"
-       [ngModelOptions]="{ updateOn: 'blur' }"
+<p-autoComplete
+    #input
+    class="attribute-control"
+    [id]="attributeId()"
+    [ngModel]="selection()"
+    [suggestions]="filteredValues()"
+    (completeMethod)="filterValues($event)"
+    (onSelect)="onInputChange($event)"
+    (focus)="onFocus()"
+    [forceSelection]="true"
+    [dropdown]="true"
+    [ngModelOptions]="{ updateOn: 'blur' }"
+    [optionLabel]="getOptionLabel"
+    (onBlur)="commitInputChange()"
+    [inputId]="attributeId()"
 />

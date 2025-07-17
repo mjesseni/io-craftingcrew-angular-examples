@@ -1,9 +1,9 @@
 <input #input
        type="text"
-       class="attribute-control"
+       pInputText
        [id]="attributeId()"
        [ngModel]="attribute().value"
        (ngModelChange)="onInputChange($event)"
-       (focus)="onFocus()"
        [ngModelOptions]="{ updateOn: 'blur' }"
+       (focus)="onFocus()"
 />

@@ -19,8 +19,11 @@ export abstract class BaseAttributeComponent<T extends AttributeType> {
   readonly attributeState = computed(() => {
     return this.store.attributeState$(this.attributeId())()
   });
+  readonly definition = computed(() =>
+    this.store.getAttributeDefById$(this.attributeId())());
 
-  protected value!: AttributeValue<T>;
+  protected value = computed(() =>
+    this.determineValue(this.attribute() as AttributeInstance<T>));
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
   protected constructor(private expectedType: T) {
@@ -30,14 +33,13 @@ export abstract class BaseAttributeComponent<T extends AttributeType> {
         queueMicrotask(() => this.focus());
       }
     });
-
-    effect(() => {
-      const s = this.attribute();
-      this.value = s.value as AttributeValue<T>;
-    });
   }
 
   protected abstract focus(): void;
+
+  protected determineValue(attr: AttributeInstance<T>): AttributeValue<T> {
+    return attr.value as AttributeValue<T>;
+  }
 
   onInputChange(value: unknown) {
     this.store.updateAttributeValue({

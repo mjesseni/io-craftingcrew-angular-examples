@@ -102,7 +102,6 @@ export class DocumentEditorStore extends ComponentStore<DocumentEditorState> {
     attributeId: string;
     newValue: AttributeValue<AttributeType>;
   }) => {
-
     const snapshot = structuredClone(state.present);
     updateFocusState(snapshot, attributeId);
 

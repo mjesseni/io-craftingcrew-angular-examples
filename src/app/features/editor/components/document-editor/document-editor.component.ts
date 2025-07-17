@@ -1,7 +1,7 @@
 import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AttributeContainerComponent } from './attributes/attribute-container/attribute-container.component';
-import { AttributeType, DocumentDefinition, DocumentInstance } from '../../model/document.model';
+import { AttributeType, DocumentDefinition, DocumentInstance, ValueSourceType } from '../../model/document.model';
 import { DocumentEditorStore } from '../../store/document/document-editor.store';
 import { BlockAttributeComponent } from './attributes/block-attribute/block-attribute.component';
 
@@ -157,7 +157,10 @@ export function createSampleDocument(): DocumentInstance {
               uuid: 'severity',
               definitionId: 'severity',
               type: AttributeType.PICKLIST,
-              value: 'HIGH'
+              value: {
+                type: ValueSourceType.OPTION,
+                value: {value: 'HIGH', label: 'High'}
+              }
             },
             {
               uuid: 'reportedAt',
@@ -169,7 +172,10 @@ export function createSampleDocument(): DocumentInstance {
               uuid: 'status',
               definitionId: 'status',
               type: AttributeType.PICKLIST,
-              value: 'NEW'
+              value: {
+                type: ValueSourceType.OPTION,
+                value: {value: 'NEW', label: 'New'}
+              }
             },
             {
               uuid: 'description',
@@ -215,7 +221,10 @@ export function createSampleDocument(): DocumentInstance {
               uuid: 'reportedVia',
               definitionId: 'reportedVia',
               type: AttributeType.PICKLIST,
-              value: 'EMAIL'
+              value: {
+                type: ValueSourceType.OPTION,
+                value: {value: 'EMAIL', label: 'Email'}
+              }
             },
             {
               uuid: 'reporterContact',
