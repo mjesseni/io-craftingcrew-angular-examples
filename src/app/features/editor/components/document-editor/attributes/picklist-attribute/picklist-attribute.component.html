@@ -1,12 +1,13 @@
 <p-autoComplete
     #input
-    class="attribute-control"
+    class="attribute-control focusable"
+    styleClass="max-w-120 min-w-72 w-full"
     [id]="attributeId()"
     [ngModel]="selection()"
     [suggestions]="filteredValues()"
     (completeMethod)="filterValues($event)"
     (onSelect)="onInputChange($event)"
-    (focus)="onFocus()"
+    (onFocus)="onFocus()"
     [forceSelection]="true"
     [dropdown]="true"
     [ngModelOptions]="{ updateOn: 'blur' }"

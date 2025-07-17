@@ -1,6 +1,8 @@
 <input #input
        type="text"
        pInputText
+       class="focusable"
+       [fluid]="true"
        [id]="attributeId()"
        [ngModel]="attribute().value"
        (ngModelChange)="onInputChange($event)"

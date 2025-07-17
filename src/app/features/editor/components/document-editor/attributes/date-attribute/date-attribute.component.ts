@@ -1,27 +1,33 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, effect, ViewChild } from '@angular/core';
 import { AttributeType } from '../../../../model/document.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BaseAttributeComponent } from '../base-attribute.component';
-import { InputText } from 'primeng/inputtext';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-date-attribute',
   imports: [
+    DatePicker,
     ReactiveFormsModule,
-    FormsModule,
-    InputText
+    FormsModule
   ],
   templateUrl: './date-attribute.component.html',
   styleUrl: './../../../../editor-styles.scss'
 })
 export class DateAttributeComponent extends BaseAttributeComponent<AttributeType.DATE> {
-  @ViewChild('input') inputRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('input') datePicker!: DatePicker;
 
   constructor() {
     super(AttributeType.DATE);
+
+    effect(() => {
+      if (!this.attributeState()?.transient?.focused) {
+        this.datePicker?.hideOverlay();
+      }
+    });
   }
 
   override focus() {
-    this.inputRef?.nativeElement?.focus();
+    this.datePicker.inputfieldViewChild?.nativeElement.focus();
   }
 }

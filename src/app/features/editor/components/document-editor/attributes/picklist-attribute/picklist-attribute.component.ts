@@ -20,12 +20,12 @@ export class PicklistAttributeComponent extends BaseAttributeComponent<Attribute
 
   protected readonly filteredValues = signal<Option[]>([]);
   protected readonly selection = computed(() => {
-    const option = (this.transientValue?.value || this.value().value) as Option;
-    return this.definition().options?.find(opt => opt.value === option.value) || option;
+    const option = (this.transientValue()?.value || this.value()?.value) as Option;
+    return option ? this.definition().options?.find(opt => opt.value === option.value) : option;
   });
 
   /* This is a transient value that holds the currently selected option */
-  private transientValue: AttributeValue<AttributeType.PICKLIST> | undefined;
+  private transientValue = signal<AttributeValue<AttributeType.PICKLIST> | undefined>(undefined);
 
   constructor() {
     super(AttributeType.PICKLIST);
@@ -46,7 +46,7 @@ export class PicklistAttributeComponent extends BaseAttributeComponent<Attribute
     const selectedOption = event.value as Option;
     if (!selectedOption) return;
 
-    this.transientValue = {type: ValueSourceType.OPTION, value: selectedOption};
+    this.transientValue.set({type: ValueSourceType.OPTION, value: selectedOption});
   }
 
   override focus() {
@@ -78,9 +78,9 @@ export class PicklistAttributeComponent extends BaseAttributeComponent<Attribute
   }
 
   protected commitInputChange() {
-    if (this.transientValue && !this.autoComplete.overlayVisible) {
-      super.onInputChange(this.transientValue);
-      this.transientValue = undefined;
+    if (this.transientValue() && !this.autoComplete.overlayVisible) {
+      super.onInputChange(this.transientValue());
+      this.transientValue.set(undefined);
     }
   }
 }

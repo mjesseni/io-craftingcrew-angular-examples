@@ -10,6 +10,12 @@ module.exports = {
             screens: {
                 'xl2': '1960px', // Custom breakpoint
             },
+            minWidth: {
+                120: '30rem', // Adds min-w-120
+            },
+            maxWidth: {
+                120: '30rem', // Adds max-w-120
+            },
         },
     }, plugins: [require('tailwindcss-primeui')]
 }

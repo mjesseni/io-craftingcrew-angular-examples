@@ -1,9 +1,12 @@
-<input #input
-       type="text"
-       pInputText
-       [id]="attributeId()"
-       [ngModel]="attribute().value"
-       (ngModelChange)="onInputChange($event)"
-       [ngModelOptions]="{ updateOn: 'blur' }"
-       (focus)="onFocus()"
-/>
+<textarea #input
+          type="text"
+          rows="5"
+          pTextarea
+          class="focusable multiline"
+          [fluid]="true"
+          [id]="attributeId()"
+          [ngModel]="attribute().value"
+          (ngModelChange)="onInputChange($event)"
+          [ngModelOptions]="{ updateOn: 'blur' }"
+          (focus)="onFocus()"
+></textarea>

@@ -1,9 +1,10 @@
-<input #input
-       type="text"
-       pInputText
-       [id]="attributeId()"
-       [ngModel]="attribute().value"
-       (ngModelChange)="onInputChange($event)"
-       [ngModelOptions]="{ updateOn: 'blur' }"
-       (focus)="onFocus()"
-/>
+<p-datePicker
+    #input
+    class="focusable"
+    styleClass="max-w-120 min-w-72 w-full focusable"
+    [id]="attributeId()"
+    inputId="{{attributeId()}}"
+    [ngModel]="attribute().value"
+    [iconDisplay]="'button'"
+    [showIcon]="true"
+    (focus)="onFocus()"/>

@@ -308,8 +308,10 @@ export class DocumentEditorComponent {
 
     if (key !== 'Tab' && key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Enter') return;
 
-    evt.preventDefault();
-
+    const moveFocus = this.canMoveFocus(evt);
+    if (moveFocus) {
+      evt.preventDefault();
+    }
 
     setTimeout(() => {
       if (key === 'Tab') {
@@ -322,7 +324,7 @@ export class DocumentEditorComponent {
         this.store.focusNext();
       } else if (key === 'ArrowUp') {
         this.store.focusPrevious();
-      } else if (key === 'Enter') {
+      } else if (key === 'Enter' && moveFocus) {
         this.store.focusNext();
       }
     }, 0)
@@ -331,11 +333,27 @@ export class DocumentEditorComponent {
   protected onFocusOut(evt: FocusEvent) {
     const relatedTarget = evt.relatedTarget as HTMLElement | null;
     const editorEl = this.editorWrapper.nativeElement;
-
     if (!relatedTarget || !editorEl.contains(relatedTarget)) {
       this.store.clearFocus();
     }
   }
 
   protected readonly AttributeType = AttributeType;
+
+  protected canMoveFocus(evt: KeyboardEvent): boolean {
+    const {key} = evt;
+    const target = evt.target as HTMLElement;
+    if (key === 'Enter') {
+      return !(target.closest('.multiline') !== null);
+    }
+    return true;
+  }
+
+  protected preventFocusLoss(evt: MouseEvent) {
+    const target = evt.target as HTMLElement;
+    const isFocusable = target.closest('.focusable') !== null;
+    if (!isFocusable) {
+      evt.preventDefault(); // Prevents input from losing focus
+    }
+  }
 }
