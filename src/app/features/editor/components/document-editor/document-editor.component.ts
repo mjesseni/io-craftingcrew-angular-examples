@@ -139,6 +139,56 @@ export const incidentDefinition: DocumentDefinition = {
           ]
         }
       ]
+    },
+    {
+      uuid: 'addresses',
+      name: 'addresses',
+      type: AttributeType.BLOCK,
+      label: 'Addresses',
+      multiple: true,
+      children: [
+        {
+          uuid: 'addressType',
+          name: 'addressType',
+          type: AttributeType.PICKLIST,
+          label: 'Address Type',
+          required: true,
+          options: [
+            { value: 'INVOICE', label: 'Invoice Address' },
+            { value: 'SHIPPING', label: 'Shipping Address' },
+            { value: 'OTHER', label: 'Other' }
+          ],
+          allowCustomValue: false
+        },
+        {
+          uuid: 'street',
+          name: 'street',
+          type: AttributeType.STRING,
+          label: 'Street',
+          required: true
+        },
+        {
+          uuid: 'postalCode',
+          name: 'postalCode',
+          type: AttributeType.STRING,
+          label: 'Postal Code',
+          required: true
+        },
+        {
+          uuid: 'city',
+          name: 'city',
+          type: AttributeType.STRING,
+          label: 'City',
+          required: true
+        },
+        {
+          uuid: 'country',
+          name: 'country',
+          type: AttributeType.STRING,
+          label: 'Country',
+          required: true
+        }
+      ]
     }
   ]
 };
@@ -173,7 +223,7 @@ export function createSampleDocument(): DocumentInstance {
               type: AttributeType.PICKLIST,
               value: {
                 type: ValueSourceType.OPTION,
-                value: {value: 'HIGH', label: 'High'}
+                value: { value: 'HIGH', label: 'High' }
               }
             },
             {
@@ -188,7 +238,7 @@ export function createSampleDocument(): DocumentInstance {
               type: AttributeType.PICKLIST,
               value: {
                 type: ValueSourceType.OPTION,
-                value: {value: 'NEW', label: 'New'}
+                value: { value: 'NEW', label: 'New' }
               }
             },
             {
@@ -237,7 +287,7 @@ export function createSampleDocument(): DocumentInstance {
               type: AttributeType.PICKLIST,
               value: {
                 type: ValueSourceType.OPTION,
-                value: {value: 'EMAIL', label: 'Email'}
+                value: { value: 'EMAIL', label: 'Email' }
               }
             },
             {
@@ -264,10 +314,94 @@ export function createSampleDocument(): DocumentInstance {
             }
           ]
         }
+      },
+      {
+        uuid: 'addresses',
+        definitionId: 'addresses',
+        type: AttributeType.BLOCK,
+        value: [
+          {
+            uuid: 'invoice-address',
+            attributes: [
+              {
+                uuid: 'invoice-address/addressType',
+                definitionId: 'addressType',
+                type: AttributeType.PICKLIST,
+                value: {
+                  type: ValueSourceType.OPTION,
+                  value: { value: 'INVOICE', label: 'Invoice Address' }
+                }
+              },
+              {
+                uuid: 'invoice-address/street',
+                definitionId: 'street',
+                type: AttributeType.STRING,
+                value: 'Main Street 1'
+              },
+              {
+                uuid: 'invoice-address/postalCode',
+                definitionId: 'postalCode',
+                type: AttributeType.STRING,
+                value: '1000'
+              },
+              {
+                uuid: 'invoice-address/city',
+                definitionId: 'city',
+                type: AttributeType.STRING,
+                value: 'Vienna'
+              },
+              {
+                uuid: 'invoice-address/country',
+                definitionId: 'country',
+                type: AttributeType.STRING,
+                value: 'Austria'
+              }
+            ]
+          },
+          {
+            uuid: 'shipping-address',
+            attributes: [
+              {
+                uuid: 'shipping-address/addressType',
+                definitionId: 'addressType',
+                type: AttributeType.PICKLIST,
+                value: {
+                  type: ValueSourceType.OPTION,
+                  value: { value: 'SHIPPING', label: 'Shipping Address' }
+                }
+              },
+              {
+                uuid: 'shipping-address/street',
+                definitionId: 'street',
+                type: AttributeType.STRING,
+                value: 'Warehouse Lane 7'
+              },
+              {
+                uuid: 'shipping-address/postalCode',
+                definitionId: 'postalCode',
+                type: AttributeType.STRING,
+                value: '2000'
+              },
+              {
+                uuid: 'shipping-address/city',
+                definitionId: 'city',
+                type: AttributeType.STRING,
+                value: 'Graz'
+              },
+              {
+                uuid: 'shipping-address/country',
+                definitionId: 'country',
+                type: AttributeType.STRING,
+                value: 'Austria'
+              }
+            ]
+          }
+        ]
       }
     ]
   };
 }
+
 
 
 @Component({

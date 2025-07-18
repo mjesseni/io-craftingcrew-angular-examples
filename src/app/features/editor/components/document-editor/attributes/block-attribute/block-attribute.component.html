@@ -14,7 +14,12 @@
 }
 
 <ng-template #renderBlock let-depth>
-  @for (block of instances(); track block.uuid) {
-    <app-block-instance [block]="block" [depth]="depth"></app-block-instance>
+  @for (block of instances(); let i = $index; track block.uuid) {
+    <div class="block-instance" [ngClass]="{ 'nested-instance': depth > 0 }">
+      <app-block-instance [block]="block" [depth]="depth"></app-block-instance>
+    </div>
+    @if (i < instances().length - 1) {
+      <div class="block-separator"></div>
+    }
   }
 </ng-template>

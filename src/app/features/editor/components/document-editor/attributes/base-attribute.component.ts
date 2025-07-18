@@ -20,7 +20,7 @@ export abstract class BaseAttributeComponent<T extends AttributeType> {
     return this.store.attributeState$(this.attributeId())()
   });
   readonly definition = computed(() =>
-    this.store.getAttributeDefById$(this.attributeId())());
+    this.store.getAttributeDefById$(this.attribute().definitionId)());
   readonly immutable = computed(() => this.definition().immutable);
 
   protected value = computed(() =>

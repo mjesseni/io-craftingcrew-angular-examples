@@ -2,7 +2,7 @@ import { Component, computed, inject, input, ViewEncapsulation } from '@angular/
 import { AttributeInstance, AttributeType, BlockAttributeDefinition } from '../../../../model/document.model';
 import { DocumentEditorStore } from '../../../../store/document/document-editor.store';
 import { Panel } from 'primeng/panel';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { getBlockInstances } from '../../../../store/document/document-utils';
 import { BlockInstanceComponent } from './block-instance/block-instance.component';
 
@@ -11,7 +11,8 @@ import { BlockInstanceComponent } from './block-instance/block-instance.componen
   imports: [
     Panel,
     NgTemplateOutlet,
-    BlockInstanceComponent
+    BlockInstanceComponent,
+    NgClass
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './block-attribute.component.html',

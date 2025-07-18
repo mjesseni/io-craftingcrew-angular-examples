@@ -33,6 +33,6 @@ export class AttributeContainerComponent {
 
   readonly attributeId = computed(() => this.attribute().uuid);
   readonly definition = computed(() =>
-    this.store.getAttributeDefById$(this.attributeId())());
+    this.store.getAttributeDefById$(this.attribute().definitionId)());
   readonly name = computed(() => this.definition()?.label ?? '');
 }
