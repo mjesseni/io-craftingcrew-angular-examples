@@ -1,0 +1,9 @@
+<div class="block-container">
+  @for (attr of attributes(); track attr.uuid) {
+    @if (attr.type === AttributeType.BLOCK) {
+      <app-block-attribute [attribute]="attr" [depth]="depth() + 1"></app-block-attribute>
+    } @else {
+      <app-attribute-container [attribute]="attr"></app-attribute-container>
+    }
+  }
+</div>

@@ -1,11 +1,15 @@
-<input #input
-       type="text"
-       pInputText
-       class="focusable"
-       [fluid]="true"
-       [id]="attributeId()"
-       [ngModel]="attribute().value"
-       (ngModelChange)="onInputChange($event)"
-       [ngModelOptions]="{ updateOn: 'blur' }"
-       (focus)="onFocus()"
-/>
+@if (!immutable()) {
+  <input #input
+         type="text"
+         pInputText
+         class="focusable"
+         [fluid]="true"
+         [id]="attributeId()"
+         [ngModel]="attribute().value"
+         (ngModelChange)="onInputChange($event)"
+         [ngModelOptions]="{ updateOn: 'blur' }"
+         (focus)="onFocus()"
+  />
+} @else {
+  <span>{{ attribute().value }}</span>
+}

@@ -21,6 +21,7 @@ export abstract class BaseAttributeComponent<T extends AttributeType> {
   });
   readonly definition = computed(() =>
     this.store.getAttributeDefById$(this.attributeId())());
+  readonly immutable = computed(() => this.definition().immutable);
 
   protected value = computed(() =>
     this.determineValue(this.attribute() as AttributeInstance<T>));

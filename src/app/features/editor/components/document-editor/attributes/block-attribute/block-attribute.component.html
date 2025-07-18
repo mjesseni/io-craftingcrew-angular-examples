@@ -1,7 +1,7 @@
 @if (depth() === 0) {
   <div class="block-wrapper">
     <p-panel [header]="name()">
-      <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: nestedAttributes(), depth: depth() }"></ng-container>
+      <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: depth() }"></ng-container>
     </p-panel>
   </div>
 } @else {
@@ -9,18 +9,12 @@
     <div class="attribute-label">
       <h5>{{ name() }}</h5>
     </div>
-    <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: nestedAttributes(), depth: depth() }"></ng-container>
+    <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: depth() }"></ng-container>
   </div>
 }
 
-<ng-template #renderBlock let-attributes let-depth="depth">
-  <div class="block-container">
-    @for (attr of attributes; track attr.uuid) {
-      @if (attr.type === AttributeType.BLOCK) {
-        <app-block-attribute [attribute]="attr" [depth]="depth + 1"></app-block-attribute>
-      } @else {
-        <app-attribute-container [attribute]="attr"></app-attribute-container>
-      }
-    }
-  </div>
+<ng-template #renderBlock let-depth>
+  @for (block of instances(); track block.uuid) {
+    <app-block-instance [block]="block" [depth]="depth"></app-block-instance>
+  }
 </ng-template>

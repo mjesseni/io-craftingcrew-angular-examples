@@ -9,6 +9,7 @@ import {
 } from './document.state';
 
 import {
+  AttributeDefinition,
   AttributeInstance,
   AttributeType,
   AttributeTypeDefinition,
@@ -17,9 +18,9 @@ import {
   BlockInstance,
   DocumentDefinition,
   DocumentInstance,
-  TableAttributeDefinition,
-  TableInstance
+  TableAttributeDefinition
 } from '../../model/document.model';
+import { getBlockInstances } from './document-utils';
 
 const DEFAULT_ATTRIBUTE_STATE: AttributeEditorState = {
   visible: true,
@@ -100,7 +101,7 @@ export class DocumentEditorStore extends ComponentStore<DocumentEditorState> {
 
   readonly updateAttributeValue = this.updater((state, {attributeId, newValue}: {
     attributeId: string;
-    newValue: AttributeValue<AttributeType>;
+    newValue: AttributeValue<AttributeType>
   }) => {
     const snapshot = structuredClone(state.present);
     updateFocusState(snapshot, attributeId);
@@ -173,25 +174,23 @@ export class DocumentEditorStore extends ComponentStore<DocumentEditorState> {
   readonly focusNext = this.updater(state =>
     produce(state, draft => {
       const flat = this.flattenedAttributes$();
+      const defs = this.flattenedAttributeDefs$();
       const currentId = draft.present.ui.focusedAttribute;
-      const index = flat.findIndex(a => a.uuid === currentId);
 
-      if (index === flat.length - 1) {
-        updateFocusState(draft.present, flat[0]?.uuid);
-      } else {
-        const next = flat[Math.min(index + 1, flat.length - 1)];
-        updateFocusState(draft.present, next?.uuid);
-      }
+      const nextId = this.findNextFocusableAttribute(flat, defs, currentId, 'forward');
+      updateFocusState(draft.present, nextId);
     })
   );
+
 
   readonly focusPrevious = this.updater(state =>
     produce(state, draft => {
       const flat = this.flattenedAttributes$();
+      const defs = this.flattenedAttributeDefs$();
       const currentId = draft.present.ui.focusedAttribute;
-      const index = flat.findIndex(a => a.uuid === currentId);
-      const prev = flat[Math.max(index - 1, 0)];
-      updateFocusState(draft.present, prev?.uuid);
+
+      const prevId = this.findNextFocusableAttribute(flat, defs, currentId, 'backward');
+      updateFocusState(draft.present, prevId);
     })
   );
 
@@ -224,57 +223,121 @@ export class DocumentEditorStore extends ComponentStore<DocumentEditorState> {
 
   private flattenAttributes(attributes: AttributeInstance[], result: AttributeInstance[] = []): AttributeInstance[] {
     for (const attr of attributes) {
-      if (attr.type === AttributeType.BLOCK) {
-        this.flattenAttributes((attr as AttributeInstance<AttributeType.BLOCK>).value.attributes, result);
-      } else if (attr.type === AttributeType.TABLE) {
-        for (const row of (attr as AttributeInstance<AttributeType.TABLE>).value.rows) {
-          this.flattenAttributes(row.columns, result);
+      switch (attr.type) {
+        case AttributeType.BLOCK: {
+          const blocks = this.getBlockInstances(attr);
+          for (const b of blocks) {
+            this.flattenAttributes(b.attributes, result);
+          }
+          break;
         }
-      } else {
-        result.push(attr);
+        case AttributeType.TABLE: {
+          const table = attr as AttributeInstance<AttributeType.TABLE>;
+          for (const row of table.value.rows) {
+            this.flattenAttributes(row.columns, result);
+          }
+          break;
+        }
+        default:
+          result.push(attr);
       }
     }
     return result;
   }
 
+
+  private getBlockInstances(attr: AttributeInstance): BlockInstance[] {
+    const block = attr as AttributeInstance<AttributeType.BLOCK>;
+    const def = this.flattenedAttributeDefs$().get(block.definitionId) as BlockAttributeDefinition | undefined;
+    return def ? getBlockInstances(attr, def) : [];
+  }
+
   private flattenAttributeDefinitions(definitions: AttributeTypeDefinition[], map = new Map<string, AttributeTypeDefinition>()): Map<string, AttributeTypeDefinition> {
     for (const def of definitions) {
       map.set(def.uuid, def);
-      if (def.type === AttributeType.BLOCK) {
-        this.flattenAttributeDefinitions((def as BlockAttributeDefinition).children, map);
-      } else if (def.type === AttributeType.TABLE) {
-        const table = def as TableAttributeDefinition;
-        for (const column of table.columns) {
-          map.set(column.uuid, column);
+
+      switch (def.type) {
+        case AttributeType.BLOCK: {
+          const block = def as BlockAttributeDefinition;
+          this.flattenAttributeDefinitions(block.children, map);
+          break;
+        }
+        case AttributeType.TABLE: {
+          const table = def as TableAttributeDefinition;
+          for (const column of table.columns) {
+            map.set(column.uuid, column);
+          }
+          break;
         }
       }
     }
+
     return map;
   }
+
 
   /**
    * Recursively searches for an attribute instance by ID in the given attribute list.
    */
   private findAttributeById(attributes: AttributeInstance[], attributeId: string): AttributeInstance | undefined {
     for (const attr of attributes) {
-      if (attr.uuid == attributeId) {
+      if (attr.uuid === attributeId) {
         return attr;
       }
 
-      if (attr.type === AttributeType.BLOCK) {
-        const nested = this.findAttributeById((attr.value as BlockInstance).attributes, attributeId);
-        if (nested) return nested;
-      }
+      switch (attr.type) {
+        case AttributeType.BLOCK: {
+          const blocks = this.getBlockInstances(attr);
+          for (const b of blocks) {
+            const nested = this.findAttributeById(b.attributes, attributeId);
+            if (nested) return nested;
+          }
+          break;
+        }
 
-      if (attr.type === AttributeType.TABLE) {
-        const rows = (attr.value as TableInstance).rows;
-        for (const row of rows) {
-          const nested = this.findAttributeById(row.columns, attributeId);
-          if (nested) return nested;
+        case AttributeType.TABLE: {
+          const table = attr as AttributeInstance<AttributeType.TABLE>;
+          for (const row of table.value.rows) {
+            const nested = this.findAttributeById(row.columns, attributeId);
+            if (nested) return nested;
+          }
+          break;
         }
       }
     }
 
+    return undefined;
+  }
+
+
+  /**
+   * Finds the next focusable attribute's uuid.
+   *
+   * This method searches through a flattened list of attribute instances starting from the current focus position (or
+   * beginning/end based on the direction) and returns the uuid of the first attribute that is not read-only or
+   * immutable.
+   *
+   * @param flat - The flattened list of attribute instances.
+   * @param defs - A map of attribute definitions keyed by their uuid.
+   * @param currentId - The uuid of the currently focused attribute, if any.
+   * @param direction - The focus traversal direction, either 'forward' or 'backward'.
+   * @returns The uuid of the next focusable attribute, or undefined if none found.
+   */
+  private findNextFocusableAttribute(flat: AttributeInstance[], defs: Map<string, AttributeDefinition>,
+                                     currentId: string | undefined, direction: 'forward' | 'backward'): string | undefined {
+    const currentIndex = flat.findIndex(a => a.uuid === currentId);
+    const length = flat.length;
+    const indexRange = direction === 'forward'
+      ? [...Array(length).keys()].slice(currentIndex + 1).concat([...Array(currentIndex + 1).keys()])
+      : [...Array(length).keys()].slice(0, currentIndex).reverse().concat([...Array(length).keys()].slice(currentIndex).reverse());
+
+    for (const i of indexRange) {
+      const candidate = flat[i];
+      const def = defs.get(candidate.definitionId);
+      if (def && !def.readOnly && !def.immutable) {
+        return candidate.uuid;
+      }
+    }
     return undefined;
   }
 }
@@ -287,10 +350,7 @@ function updateFocusState(state: DocumentEditorHistoryState, newId?: string) {
   }
 
   if (newId) {
-    state.attributeStates[newId] ??= {
-      ...DEFAULT_ATTRIBUTE_STATE,
-      transient: {focused: false, loading: false}
-    };
+    state.attributeStates[newId] ??= {...DEFAULT_ATTRIBUTE_STATE, transient: {focused: false, loading: false}};
     state.attributeStates[newId].transient!.focused = true;
     state.ui.focusedAttribute = newId;
   } else {

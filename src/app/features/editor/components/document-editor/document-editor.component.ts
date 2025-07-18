@@ -16,6 +16,14 @@ export const incidentDefinition: DocumentDefinition = {
       label: 'General Information',
       children: [
         {
+          uuid: 'number',
+          name: 'number',
+          type: AttributeType.STRING,
+          label: 'Incident Number',
+          required: true,
+          immutable: true
+        },
+        {
           uuid: 'title',
           name: 'title',
           type: AttributeType.STRING,
@@ -147,6 +155,12 @@ export function createSampleDocument(): DocumentInstance {
         value: {
           uuid: 'general',
           attributes: [
+            {
+              uuid: 'number',
+              definitionId: 'number',
+              type: AttributeType.STRING,
+              value: 'S2INC-2025-001'
+            },
             {
               uuid: 'title',
               definitionId: 'title',

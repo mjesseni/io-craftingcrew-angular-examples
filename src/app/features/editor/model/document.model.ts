@@ -74,7 +74,6 @@ export enum AttributeType {
   DOCUMENT_REFERENCE = 'docRef'
 }
 
-
 /**
  * Enum representing the different types of constraints that can be applied
  * to a field or property in validation logic or schema definition.
@@ -313,6 +312,11 @@ export interface AttributeDefinition<T extends AttributeType = AttributeType> {
   readOnly?: boolean;
 
   /**
+   * Marks the attribute as immutable, meaning it cannot be changed after creation.
+   */
+  immutable?: boolean;
+
+  /**
    * The default value assigned to the attribute when no user input is provided.
    * The type of the value depends on the attribute's type (see {@link AttributeValue}).
    */
@@ -349,6 +353,11 @@ export interface BlockAttributeDefinition extends Omit<AttributeDefinition<Attri
    * Always set to 'block' to indicate this is a layout grouping element.
    */
   type: AttributeType.BLOCK;
+
+  /**
+   * Indicates whether this block can contain multiple instances.
+   */
+  multiple?: boolean;
 
   /**
    * The child attributes contained within this block.
@@ -463,7 +472,7 @@ export interface AttributeInstance<T extends AttributeType = AttributeType> exte
    * - For `TABLE` attributes, the value is a {@link TableInstance}.
    */
   value:
-    T extends AttributeType.BLOCK ? BlockInstance :
+    T extends AttributeType.BLOCK ? BlockInstance | BlockInstance[] :
       T extends AttributeType.TABLE ? TableInstance :
         AttributeValue<T>;
 }
@@ -498,7 +507,7 @@ export interface TableRow extends Identifiable {
 /**
  * A table contains multiple rows of column-based attribute values.
  */
-export interface TableInstance extends Identifiable  {
+export interface TableInstance extends Identifiable {
   /**
    * The data rows of the table, each composed of column-based attribute instances.
    */

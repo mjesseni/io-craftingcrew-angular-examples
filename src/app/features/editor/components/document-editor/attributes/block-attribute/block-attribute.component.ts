@@ -1,22 +1,24 @@
 import { Component, computed, inject, input, ViewEncapsulation } from '@angular/core';
-import { AttributeInstance, AttributeType } from '../../../../model/document.model';
-import { AttributeContainerComponent } from '../attribute-container/attribute-container.component';
+import { AttributeInstance, AttributeType, BlockAttributeDefinition } from '../../../../model/document.model';
 import { DocumentEditorStore } from '../../../../store/document/document-editor.store';
 import { Panel } from 'primeng/panel';
 import { NgTemplateOutlet } from '@angular/common';
+import { getBlockInstances } from '../../../../store/document/document-utils';
+import { BlockInstanceComponent } from './block-instance/block-instance.component';
 
 @Component({
   selector: 'app-block-attribute',
   imports: [
-    AttributeContainerComponent,
     Panel,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    BlockInstanceComponent
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './block-attribute.component.html',
   styleUrl: './../../../../editor-styles.scss'
 })
 export class BlockAttributeComponent {
+  protected readonly AttributeType = AttributeType;
   protected readonly store = inject(DocumentEditorStore);
 
   readonly attribute = input.required({
@@ -28,12 +30,8 @@ export class BlockAttributeComponent {
     }
   });
   readonly depth = input<number>(0);
-
   readonly attributeId = computed(() => this.attribute().uuid);
-  readonly definition = computed(() =>
-    this.store.getAttributeDefById$(this.attributeId())());
+  readonly definition = computed(() => this.store.getAttributeDefById$(this.attributeId())());
   readonly name = computed(() => this.definition()?.label as string ?? '');
-
-  readonly nestedAttributes = computed(() => this.attribute().value.attributes || []);
-  protected readonly AttributeType = AttributeType;
+  readonly instances = computed(() => getBlockInstances(this.attribute(), this.definition() as BlockAttributeDefinition));
 }
