@@ -4,6 +4,7 @@ import { AttributeContainerComponent } from './attributes/attribute-container/at
 import { AttributeType, DocumentDefinition, DocumentInstance, ValueSourceType } from '../../model/document.model';
 import { DocumentEditorStore } from '../../store/document/document-editor.store';
 import { BlockAttributeComponent } from './attributes/block-attribute/block-attribute.component';
+import {v4 as uuidv4} from 'uuid';
 
 export const incidentDefinition: DocumentDefinition = {
   uuid: 'incident-definition',
@@ -199,26 +200,26 @@ export function createSampleDocument(): DocumentInstance {
     name: 'Sample Incident Report',
     attributes: [
       {
-        uuid: 'general',
+        uuid: uuidv4(),
         definitionId: 'general',
         type: AttributeType.BLOCK,
         value: {
-          uuid: 'general',
+          uuid: uuidv4(),
           attributes: [
             {
-              uuid: 'number',
+              uuid: uuidv4(),
               definitionId: 'number',
               type: AttributeType.STRING,
               value: 'S2INC-2025-001'
             },
             {
-              uuid: 'title',
+              uuid: uuidv4(),
               definitionId: 'title',
               type: AttributeType.STRING,
               value: 'Network outage in datacenter'
             },
             {
-              uuid: 'severity',
+              uuid: uuidv4(),
               definitionId: 'severity',
               type: AttributeType.PICKLIST,
               value: {
@@ -227,13 +228,13 @@ export function createSampleDocument(): DocumentInstance {
               }
             },
             {
-              uuid: 'reportedAt',
+              uuid: uuidv4(),
               definitionId: 'reportedAt',
               type: AttributeType.DATE,
               value: new Date().toISOString()
             },
             {
-              uuid: 'status',
+              uuid: uuidv4(),
               definitionId: 'status',
               type: AttributeType.PICKLIST,
               value: {
@@ -242,13 +243,13 @@ export function createSampleDocument(): DocumentInstance {
               }
             },
             {
-              uuid: 'description',
+              uuid: uuidv4(),
               definitionId: 'description',
               type: AttributeType.TEXT,
               value: 'Systems in Zone A are unreachable.'
             },
             {
-              uuid: 'resolution',
+              uuid: uuidv4(),
               definitionId: 'resolution',
               type: AttributeType.TEXT,
               value: ''
@@ -257,32 +258,32 @@ export function createSampleDocument(): DocumentInstance {
         }
       },
       {
-        uuid: 'reporterDetails',
+        uuid: uuidv4(),
         definitionId: 'reporterDetails',
         type: AttributeType.BLOCK,
         value: {
-          uuid: 'reporterDetails',
+          uuid: uuidv4(),
           attributes: [
             {
-              uuid: 'reporterName',
+              uuid: uuidv4(),
               definitionId: 'reporterName',
               type: AttributeType.STRING,
               value: 'Jane Doe'
             },
             {
-              uuid: 'reporterDepartment',
+              uuid: uuidv4(),
               definitionId: 'reporterDepartment',
               type: AttributeType.STRING,
               value: 'IT Infrastructure'
             },
             {
-              uuid: 'reporterRole',
+              uuid: uuidv4(),
               definitionId: 'reporterRole',
               type: AttributeType.STRING,
               value: 'Network Administrator'
             },
             {
-              uuid: 'reportedVia',
+              uuid: uuidv4(),
               definitionId: 'reportedVia',
               type: AttributeType.PICKLIST,
               value: {
@@ -291,20 +292,20 @@ export function createSampleDocument(): DocumentInstance {
               }
             },
             {
-              uuid: 'reporterContact',
+              uuid: uuidv4(),
               definitionId: 'reporterContact',
               type: AttributeType.BLOCK,
               value: {
-                uuid: 'reporterContact',
+                uuid: uuidv4(),
                 attributes: [
                   {
-                    uuid: 'email',
+                    uuid: uuidv4(),
                     definitionId: 'email',
                     type: AttributeType.STRING,
                     value: 'jane.doe@example.com'
                   },
                   {
-                    uuid: 'phone',
+                    uuid: uuidv4(),
                     definitionId: 'phone',
                     type: AttributeType.STRING,
                     value: '+1-234-567-890'
@@ -316,15 +317,15 @@ export function createSampleDocument(): DocumentInstance {
         }
       },
       {
-        uuid: 'addresses',
+        uuid: uuidv4(),
         definitionId: 'addresses',
         type: AttributeType.BLOCK,
         value: [
           {
-            uuid: 'invoice-address',
+            uuid: uuidv4(),
             attributes: [
               {
-                uuid: 'invoice-address/addressType',
+                uuid: uuidv4(),
                 definitionId: 'addressType',
                 type: AttributeType.PICKLIST,
                 value: {
@@ -333,25 +334,25 @@ export function createSampleDocument(): DocumentInstance {
                 }
               },
               {
-                uuid: 'invoice-address/street',
+                uuid: uuidv4(),
                 definitionId: 'street',
                 type: AttributeType.STRING,
                 value: 'Main Street 1'
               },
               {
-                uuid: 'invoice-address/postalCode',
+                uuid: uuidv4(),
                 definitionId: 'postalCode',
                 type: AttributeType.STRING,
                 value: '1000'
               },
               {
-                uuid: 'invoice-address/city',
+                uuid: uuidv4(),
                 definitionId: 'city',
                 type: AttributeType.STRING,
                 value: 'Vienna'
               },
               {
-                uuid: 'invoice-address/country',
+                uuid: uuidv4(),
                 definitionId: 'country',
                 type: AttributeType.STRING,
                 value: 'Austria'
@@ -359,10 +360,10 @@ export function createSampleDocument(): DocumentInstance {
             ]
           },
           {
-            uuid: 'shipping-address',
+            uuid: uuidv4(),
             attributes: [
               {
-                uuid: 'shipping-address/addressType',
+                uuid: uuidv4(),
                 definitionId: 'addressType',
                 type: AttributeType.PICKLIST,
                 value: {
@@ -371,25 +372,25 @@ export function createSampleDocument(): DocumentInstance {
                 }
               },
               {
-                uuid: 'shipping-address/street',
+                uuid: uuidv4(),
                 definitionId: 'street',
                 type: AttributeType.STRING,
                 value: 'Warehouse Lane 7'
               },
               {
-                uuid: 'shipping-address/postalCode',
+                uuid: uuidv4(),
                 definitionId: 'postalCode',
                 type: AttributeType.STRING,
                 value: '2000'
               },
               {
-                uuid: 'shipping-address/city',
+                uuid: uuidv4(),
                 definitionId: 'city',
                 type: AttributeType.STRING,
                 value: 'Graz'
               },
               {
-                uuid: 'shipping-address/country',
+                uuid: uuidv4(),
                 definitionId: 'country',
                 type: AttributeType.STRING,
                 value: 'Austria'

@@ -18,6 +18,15 @@
 
 .block-wrapper {
   padding-top: 20px;
+  &.nested {
+    .block-label {
+      @apply grid grid-cols-12 items-center gap-2 gap-x-10 py-2;
+
+      * {
+        @apply col-span-4 text-right;
+      }
+    }
+  }
 }
 
 .p-panel-title {

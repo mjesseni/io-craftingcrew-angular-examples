@@ -31,8 +31,7 @@ export class BlockAttributeComponent {
     }
   });
   readonly depth = input<number>(0);
-  readonly attributeId = computed(() => this.attribute().uuid);
-  readonly definition = computed(() => this.store.getAttributeDefById$(this.attributeId())());
+  readonly definition = computed(() => this.store.getAttributeDefById$(this.attribute().definitionId)());
   readonly name = computed(() => this.definition()?.label as string ?? '');
   readonly instances = computed(() => getBlockInstances(this.attribute(), this.definition() as BlockAttributeDefinition));
 }

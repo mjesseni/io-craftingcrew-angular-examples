@@ -6,7 +6,7 @@
   </div>
 } @else {
   <div class="block-wrapper nested">
-    <div class="attribute-label">
+    <div class="block-label">
       <h5>{{ name() }}</h5>
     </div>
     <ng-container *ngTemplateOutlet="renderBlock; context: { $implicit: depth() }"></ng-container>
